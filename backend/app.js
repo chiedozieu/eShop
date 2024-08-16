@@ -2,19 +2,24 @@ import express from "express";
 import dotenv from "dotenv";
 import { errorHandler } from "./utils/errorHandler.js";
 import cookieParser from "cookie-parser";
-import fileUpload from "express-fileupload"
+import router from "./routes/userRoute.js";
+import { upload } from "./multer.js";
+
 
 const app = express();
 
 // Middleware for parsing JSON and URL-encoded data
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// for multer
+app.use('/', express.static('uploads'));
+
 
 // Middleware for parsing cookies
 app.use(cookieParser());
 
-// for multer
-app.use(fileUpload({ useTempFiles: true }));
+
 
 // config
 
@@ -29,7 +34,11 @@ if (process.env.NODE_ENV !== "production") {
   }
 }
 
-// Error handling
+// routes
+
+app.use('/api/v2/user', router)
+
+// Error handling middleware
 app.use(errorHandler);
 
 export default app;
