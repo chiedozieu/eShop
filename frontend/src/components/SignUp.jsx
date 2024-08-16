@@ -4,6 +4,8 @@ import { TbEyeClosed } from "react-icons/tb";
 import styles from "../styles/style.js";
 import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
+import axios from 'axios'
+import { server } from "../server.js";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -12,14 +14,31 @@ const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [avatar, setAvatar] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     setAvatar(file);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const config = {Headers: {'content-type': 'multipart/form-data'}};
+
+    const newForm = new FormData();
+
+    newForm.append('file', avatar)
+    newForm.append('name', name)
+    newForm.append('email', email.trim());
+    newForm.append('password', password)
+
+    try {
+      const res = await axios.post(`${server}/user/create-user`, newForm, config);
+      console.log(res);
+    } catch (err) {
+      console.error(err); // Improved error handling
+    }
+  };
+
+  
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
@@ -31,8 +50,8 @@ const SignUp = () => {
       <div className="mt-8 sm :mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/* form starts */}
-          <form className="space-y-6">
-            <div className="">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className=""> 
               <label
                 htmlFor="name"
                 className="block text-sm text-gray-700 font-medium"
@@ -123,8 +142,15 @@ const SignUp = () => {
                   htmlFor="file-input"
                   className="ml-5 flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                 >
-                <span>Upload File</span>
-                <input type="file" name="avatar" id="file-input" accept="image/*" onChange={handleFileUpload} className="sr-only" />
+                  <span>Upload File</span>
+                  <input
+                    type="file"
+                    name="avatar"
+                    id="file-input"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="sr-only"
+                  />
                 </label>
               </div>
             </div>

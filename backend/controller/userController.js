@@ -20,5 +20,9 @@ export const createUser = async (req, res, next) => {
         password: password,
         avatar: fileUrl,
     }
- console.log('user:', user)
+ const newUser = await userModel.create(user);
+ res.status(201).json({
+    success: true,
+    newUser
+ })
 }
