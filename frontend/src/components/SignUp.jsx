@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
 import styles from "../styles/style.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
-import axios from 'axios'
+import axios from "axios";
 import { server } from "../server.js";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [avatar, setAvatar] = useState(null);
+
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -21,25 +23,26 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {Headers: {'content-type': 'multipart/form-data'}};
+    const config = { Headers: { "content-type": "multipart/form-data" } };
 
     const newForm = new FormData();
 
-    newForm.append('file', avatar)
-    newForm.append('name', name)
-    newForm.append('email', email.trim());
-    newForm.append('password', password)
+    newForm.append("file", avatar);
+    newForm.append("name", name);
+    newForm.append("email", email.trim());
+    newForm.append("password", password);
 
-    try {
-      const res = await axios.post(`${server}/user/create-user`, newForm, config);
-      console.log(res);
-    } catch (err) {
-      console.error(err); // Improved error handling
-    }
+    axios
+      .post(`${server}/user/create-user`, newForm, config)
+      .then((res) => {
+        if (res.data.success === true) {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
-  
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -51,14 +54,14 @@ const SignUp = () => {
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/* form starts */}
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className=""> 
+            <div className="">
               <label
                 htmlFor="name"
                 className="block text-sm text-gray-700 font-medium"
               >
                 Full Name
               </label>
-              <div className="mt-2 p-2">
+              <div className="p-2">
                 <input
                   type="text"
                   name="text"
@@ -77,7 +80,7 @@ const SignUp = () => {
               >
                 Email address
               </label>
-              <div className="mt-2 p-2">
+              <div className="p-2">
                 <input
                   type="email"
                   name="email"
@@ -96,7 +99,7 @@ const SignUp = () => {
               >
                 Password
               </label>
-              <div className="mt-2 relative p-2">
+              <div className="relative p-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"

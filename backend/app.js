@@ -2,9 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import { errorHandler } from "./utils/errorHandler.js";
 import cookieParser from "cookie-parser";
-import router from "./routes/userRoute.js";
 import cors from "cors";
 import { upload } from "./multer.js";
+import {createUser} from "./controller/userController.js";
 
 const app = express();
 
@@ -35,7 +35,7 @@ if (process.env.NODE_ENV !== "production") {
 
 // routes
 
-app.use("/api/v2/user", router);
+app.use("/api/v2/user", createUser);
 
 // Error handling middleware
 app.use(errorHandler);
