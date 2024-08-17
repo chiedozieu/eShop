@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
 import styles from "../styles/style.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../server.js";
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [avatar, setAvatar] = useState(null);
-
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -35,9 +34,7 @@ const SignUp = () => {
     axios
       .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
-        if (res.data.success === true) {
-          navigate("/");
-        }
+        alert(res.message);
       })
       .catch((error) => {
         console.log(error);

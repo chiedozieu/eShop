@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { LoginPage, SignUpPage } from './routes.js'
+import { LoginPage, SignUpPage, ActivationPage } from './routes.js'
 import HomePage from './pages/HomePage.jsx'
 
 
@@ -11,6 +11,7 @@ const App = () => {
         <Route path='/' element={<HomePage />}/>     
         <Route path='/login' element={<LoginPage />}/>
         <Route path='/sign-up' element={<SignUpPage />}/>     
+        <Route path='/activation/:activation_token' element={<ActivationPage />}/>     
       </Routes>
     </BrowserRouter>
   )
