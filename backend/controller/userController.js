@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { sendToken } from "../utils/jwtToken.js";
+import { errorMiddleware } from "../middleware/error.js";
 
 const router = express.Router();
 
@@ -71,7 +72,7 @@ export const createUser = router.post(
         return next(errorHandler(500, error.message));
       }
     } catch (error) {
-      next(error);
+      next(errorMiddleware);
     }
   }
 );
@@ -110,6 +111,41 @@ router.post(
       sendToken(user, 201, res);
     } catch (error) {
       return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// Login
+router.post(
+  "/login-user",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return next(errorHandler(400, "Please enter a valid email & password"));
+      }
+
+      const user = await userModel.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(
+          errorHandler(
+            400,
+            "User not found, please enter a valid email & password or kindly register"
+          )
+        );
+      }
+
+      const isPasswordValid = await user.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(errorHandler(400, "Please enter a valid email & password"));
+      }
+
+      sendToken(user, 201, res);
+    } catch (error) {
+      next(errorMiddleware);
     }
   })
 );

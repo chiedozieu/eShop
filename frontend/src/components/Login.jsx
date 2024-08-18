@@ -2,12 +2,31 @@ import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
 import styles from "../styles/style.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { server } from "../server.js";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await axios.post(`${server}/user/login-user`, {
+      email,
+      password,
+    }).then((res) => {
+      toast.success('Login successful')
+      navigate('/')
+    }).catch((err) => {
+      toast.error(err.response?.data?.message || "An error occurred");
+    
+    })
+  }
 
  
   return (
@@ -20,7 +39,7 @@ const Login = () => {
       <div className="mt-8 sm :mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/* form starts */}
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="">
               <label
                 htmlFor="email"
