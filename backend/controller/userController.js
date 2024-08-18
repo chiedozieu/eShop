@@ -97,7 +97,7 @@ router.post(
       let user = await userModel.findOne({ email });
 
       if (user) {
-        return next(errorHandler(400, "User already exists"));
+        return next(errorHandler(400, "User already exists. Please login"));
       }
 
       user = await userModel.create({
