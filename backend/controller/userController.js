@@ -9,6 +9,7 @@ import { sendMail } from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { sendToken } from "../utils/jwtToken.js";
 import { errorMiddleware } from "../middleware/error.js";
+import { isAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -20,62 +21,59 @@ const createActivationToken = (user) => {
 };
 
 // Route to create a user and send activation email
-export const createUser = router.post(
-  "/create-user",
-  upload.single("file"),
-  async (req, res, next) => {
-    try {
-      const { name, email, password } = req.body;
+// Removed export const create user????? Remember to delete this
+router.post("/create-user", upload.single("file"), async (req, res, next) => {
+  try {
+    const { name, email, password } = req.body;
 
-      const userEmail = await userModel.findOne({ email });
-      if (userEmail) {
-        const filename = req.file.filename;
-        const filePath = `uploads/${filename}`;
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            console.log(err);
-            res.status(500).json({ message: "Error deleting file" });
-          }
-        });
-        return next(errorHandler(400, "User already exists"));
-      }
-
+    const userEmail = await userModel.findOne({ email });
+    if (userEmail) {
       const filename = req.file.filename;
-      const fileUrl = path.join(filename);
-
-      const user = {
-        name: name,
-        email: email,
-        password: password,
-        avatar: {
-          public_id: filename,
-          url: fileUrl,
-        },
-      };
-
-      const activationToken = createActivationToken(user);
-
-      const activationUrl = `http://localhost:3000/activation/${activationToken}`;
-
-      try {
-        await sendMail({
-          email: user.email,
-          subject: "Activate your account",
-          message: `Hello ${user.name}, please click the link to activate your account: ${activationUrl}`,
-        });
-
-        res.status(201).json({
-          success: true,
-          message: `Please check your email: ${user.email} to activate your account`,
-        });
-      } catch (error) {
-        return next(errorHandler(500, error.message));
-      }
-    } catch (error) {
-      next(errorMiddleware);
+      const filePath = `uploads/${filename}`;
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.log(err);
+          res.status(500).json({ message: "Error deleting file" });
+        }
+      });
+      return next(errorHandler(400, "User already exists"));
     }
+
+    const filename = req.file.filename;
+    const fileUrl = path.join(filename);
+
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+      avatar: {
+        public_id: filename,
+        url: fileUrl,
+      },
+    };
+
+    const activationToken = createActivationToken(user);
+
+    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+
+    try {
+      await sendMail({
+        email: user.email,
+        subject: "Activate your account",
+        message: `Hello ${user.name}, please click the link to activate your account: ${activationUrl}`,
+      });
+
+      res.status(201).json({
+        success: true,
+        message: `Please check your email: ${user.email} to activate your account`,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  } catch (error) {
+    next(errorHandler(500, error.message));
   }
-);
+});
 
 // Route to activate the user
 router.post(
@@ -145,7 +143,28 @@ router.post(
 
       sendToken(user, 201, res);
     } catch (error) {
-      next(errorMiddleware);
+      next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// load or store user // Goto Apps.js add useEffect
+
+router.get( 
+  "/get-user",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await userModel.findById(req.user.id);
+      if (!user) {
+        return next(errorHandler(400, "User doesn't exists"));
+      }
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+     return next(errorHandler(500, error.message));
     }
   })
 );

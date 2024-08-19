@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import userRoutes from "./controller/userController.js"; // Import the whole router, not just createUser
+import userRoutes from "./controller/userController.js"; 
 import { errorMiddleware } from "./middleware/error.js";
 
 const app = express();
@@ -11,7 +11,12 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 // Serve static files from the "uploads" directory
 app.use("/", express.static("uploads"));

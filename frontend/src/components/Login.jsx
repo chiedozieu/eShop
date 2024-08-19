@@ -8,27 +8,31 @@ import { server } from "../server.js";
 import { toast } from "react-toastify";
 
 const Login = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${server}/user/login-user`, {
-      email,
-      password,
-    }).then((res) => {
-      toast.success('Login successful')
-      navigate('/')
-    }).catch((err) => {
-      toast.error(err.response?.data?.message || "An error occurred");
-    
-    })
-  }
+    await axios
+      .post(
+        `${server}/user/login-user`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success("Login successful");
+        navigate("/");
+      })
+      .catch((err) => {
+        toast.error(err.response?.data?.message || "An error occurred");
+      });
+  };
 
- 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -92,28 +96,45 @@ const Login = () => {
               </div>
             </div>
             <div className={`${styles.noramlFlex} justify-between`}>
-                <div className={`${styles.noramlFlex}`}>
-                  <input type="checkbox" name="remember-me" id="remember-me" className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"/>
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                    Remember me
-                  </label>
-                </div>
-                <div className="text-sm">
-                  <a href=".forgot-password" className="font-medium text-blue-600 hover:underline">
-                    Forgot your password? 
-                  </a>
-                </div>
+              <div className={`${styles.noramlFlex}`}>
+                <input
+                  type="checkbox"
+                  name="remember-me"
+                  id="remember-me"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700"
+                >
+                  Remember me
+                </label>
+              </div>
+              <div className="text-sm">
+                <a
+                  href=".forgot-password"
+                  className="font-medium text-blue-600 hover:underline"
+                >
+                  Forgot your password?
+                </a>
+              </div>
             </div>
             <div className="">
-              <button type="submit" className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-md rounded-md text-white bg-blue-600 hover:bg-blue-700">
+              <button
+                type="submit"
+                className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-md rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
                 Submit
               </button>
             </div>
             <div className={`${styles.noramlFlex} w-full`}>
-                <h4 className="text-gray-700">Don't have account</h4>
-                <Link to='/sign-up' className="text-blue-600 pl-2 hover:underline">
-                  Sign Up
-                </Link>
+              <h4 className="text-gray-700">Don't have account</h4>
+              <Link
+                to="/sign-up"
+                className="text-blue-600 pl-2 hover:underline"
+              >
+                Sign Up
+              </Link>
             </div>
           </form>
           {/* form ends */}
