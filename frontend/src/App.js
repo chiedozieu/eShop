@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { LoginPage, SignUpPage, ActivationPage } from "./routes.js";
-import HomePage from "./pages/HomePage.jsx";
+import { LoginPage, SignUpPage, ActivationPage, HomePage } from "./routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
