@@ -48,7 +48,7 @@ const Header = ({ activeHeading }) => {
   return (
     <>
       <div className={`${styles.section}`}>
-        <div className="hidden md:h-12 md:my-5 md:flex items-center justify-between">
+        <div className="hidden md:h-14 md:my-5 md:flex items-center justify-between">
           <div className="logo">
             <Link to="/">
               <img

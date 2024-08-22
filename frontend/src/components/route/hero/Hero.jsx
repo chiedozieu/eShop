@@ -11,7 +11,7 @@ const Hero = () => {
           "url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)",
       }}
     >
-      <div className={`max-w-4xl mx-auto`}>
+      <div className={`max-w-4xl mx-auto px-4`}>
         <h1
           className={`text-2xl md:text-6xl text-[#3a5a3a] font-semibold capitalize`}
         >
@@ -24,8 +24,8 @@ const Hero = () => {
           atmosphere. Transform your home into a reflection of your personal
           style with our unique and affordable decor solutions.
         </p>
-        <Link to='/products' className="">
-            <div className={`${styles.button} inline-block`}>
+        <Link to='/products' className="inline-block ">
+            <div className={`${styles.button}`}>
                 <span className="text-[#fff] font-Poppins text-lg">
                     Shop Now
                 </span>
