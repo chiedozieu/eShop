@@ -11,6 +11,7 @@ import Navbar from "./Navbar.jsx";
 import { PiHeartThin } from "react-icons/pi";
 import { PiHandbagThin } from "react-icons/pi";
 import { PiUserCircleThin } from "react-icons/pi";
+import { CiShop } from "react-icons/ci";
 
 const Header = ({ activeHeading }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,7 +35,7 @@ const Header = ({ activeHeading }) => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      if (window.screenY > 70) {
+      if (window.scrollY > 70) {
         setActive(true);
       } else {
         setActive(false);
@@ -50,11 +51,17 @@ const Header = ({ activeHeading }) => {
       <div className={`${styles.section}`}>
         <div className="hidden md:h-14 md:my-5 md:flex items-center justify-between">
           <div className="logo">
-            <Link to="/">
-              <img
-                src="https://shopo.quomodothemes.website/assets/images/logo.svg"
-                alt=""
-              />
+            <Link to="/" className="flex relative">
+              <div className="bg-black rounded-full absolute p-1 -top-2 -left-4">
+                <CiShop size={20} className="text-[#ffbb38]" />
+              </div>
+
+              <p className="text-3xl font-bold tracking-wider">
+                Shop
+                <span className="text-4xl text-[#ffbb38] font-extrabold tracking-tighter">
+                  4All
+                </span>
+              </p>
             </Link>
           </div>
           <div className="search-box w-1/2 relative">
@@ -112,6 +119,7 @@ const Header = ({ activeHeading }) => {
       >
         <div
           className={`${styles.section} relative ${styles.normalFlex} justify-between`}
+          onClick={() => setDropDown(!dropDown)}
         >
           {/* categories  */}
           <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
@@ -157,10 +165,9 @@ const Header = ({ activeHeading }) => {
             </div>
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-4">
-                <Link to={'/login'} >
+                <Link to={"/login"}>
                   <PiUserCircleThin size={30} />
                 </Link>
-                 
               </div>
             </div>
           </div>
