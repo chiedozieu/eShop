@@ -38,8 +38,9 @@ const ProductDetailsCard = ({ setOpen, data }) => {
           >
             <RxCrossCircled
               size={30}
-              className="absolute z-50 top-3 right-3 p-1 hover:animate-spin text-red-600 cursor-pointer"
+              className="absolute z-50 top-3 right-3 p-1 text-red-600 cursor-pointer"
               onClick={() => setOpen(false)}
+              title="close"
             />
             <div className="block w-full md:flex">
               <div className="w-full md:w-1/2">
@@ -97,6 +98,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                             onClick={() => setClick(!click)}
                             color={click ? "red" : "white"}
                             title="Remove from wishlist"
+                            className="hover:animate-spin transition-all"
                           />
                         </div>
                       ) : (
@@ -106,6 +108,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                             onClick={() => setClick(!click)}
                             color={click ? "red" : "white"}
                             title="Add to wishlist"
+                            className="hover:animate-bounce transition-all"
                           />
                         </div>
                       )}
@@ -124,7 +127,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
 
 export default ProductDetailsCard;
 
-// import React, { useState } from "react";
+// import React, { useEffect, useState } from "react";
 // import { RxCrossCircled } from "react-icons/rx";
 // import styles from "../../../styles/style";
 // import { AiOutlineMessage } from "react-icons/ai";
@@ -139,11 +142,12 @@ export default ProductDetailsCard;
 //   const [click, setClick] = useState(false);
 //   const [select, setSelect] = useState(false);
 
-//   console.log("data", data);
+ 
 
 //   const handleMessageSubmit = () => {};
+
 //   return (
-//     <div className="bg-[#fff]">
+//     <div className="bg-[#fff] product_details_card">
 //       {data ? (
 //         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
 //           <div className=" w-[90%] md:w-[60%] h-[90vh] overflow-y-scroll md:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
@@ -223,7 +227,6 @@ export default ProductDetailsCard;
 //                         </div>
 //                       )}
 //                     </div>
-
 //                   </div>
 //                 </div>
 //               </div>

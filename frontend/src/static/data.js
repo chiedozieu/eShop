@@ -424,7 +424,7 @@ export const navItems = [
       image_Url: [
         {
           public_id: "test",
-          url: "https://www.startech.com.bd/image/cache/catalog/headphone/havit/h763d/h763d-02-500x500.jpg",
+          url: "https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g435/swatches/g435-gaming-headset-gallery-2-black.png?v=1",
         },
         {
           public_id: "test",
@@ -492,7 +492,7 @@ export const navItems = [
       image_Url: [
         {
           public_id: "test",
-          url: "https://www.startech.com.bd/image/cache/catalog/headphone/havit/h763d/h763d-02-500x500.jpg",
+          url: "https://2egaming.com/wp-content/uploads/2e-hg315yw-7.1_main-1.png",
         },
         {
           public_id: "test",
@@ -561,7 +561,7 @@ export const navItems = [
       image_Url: [
         {
           public_id: "test",
-          url: "https://www.startech.com.bd/image/cache/catalog/headphone/havit/h763d/h763d-02-500x500.jpg",
+          url: "https://m2.me-retail.com/cdn-cgi/image/w=1000,q=75,f=auto/pub/media/catalog/product/x/p/xp-neon-4g_01_1.png",
         },
         {
           public_id: "test",

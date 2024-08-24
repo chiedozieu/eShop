@@ -27,11 +27,11 @@ const ProductCard = ({ data }) => {
   return (
     <>
       <div
-        className="w-full h-[370px] rounded-lg p-3 shadow-sm bg-white cursor-pointer relative"
+        className="w-full h-[370px] rounded-lg p-3 shadow-sm bg-white cursor-pointer relative "
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="flex justify-end"></div>
+        {/* <div className="flex justify-end"></div>  Check the div mistake later */}
         <Link to={`/product${product_name}`}>
           <img
             src={data.image_Url[0].url}
