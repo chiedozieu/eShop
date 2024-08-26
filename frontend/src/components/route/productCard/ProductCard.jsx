@@ -16,6 +16,8 @@ const ProductCard = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+ 
+
   const productName = data.name;
   const product_name = productName.replace(/\s+/g, "-");
 

@@ -80,7 +80,7 @@ const Footer = () => {
 
       {/* 2 */}
       <div className="max-w-6xl mx-auto p-4">
-        <div className="h-[1px] bg-[#e9e9e9] shadow-2xl mb-12"></div>
+        <div className="h-[1.5px] bg-[#e9e9e9] shadow-2xl mb-12"></div> {/* Top Line */ }
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-10 md:grid-cols-4 md:gap-5">
           {/* flex flex-col md:flex-row mt-12 justify-around gap-5 */}
           <div className="flex flex-col p-4">
@@ -137,10 +137,10 @@ const Footer = () => {
               <Link to="/" className="hover:underline hover:text-black">
                 Become a seller
               </Link>
-              <Link to="/" className="hover:underline hover:text-black">
+              <Link to="/faq" className="hover:underline hover:text-black">
                 FAQ
               </Link>
-              <Link to="/" className="hover:underline hover:text-black">
+              <Link to="/events" className="hover:underline hover:text-black">
                 Event Sales
               </Link>
               <Link to="/" className="hover:underline hover:text-black">
@@ -149,9 +149,9 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="h-[1px] bg-[#e9e9e9] shadow-2xl mt-12 mb-6"></div>
+        <div className="h-[1.5px] bg-[#e9e9e9] shadow-2xl mt-12 mb-6"></div> {/* Bottom Line  */ }
       <div className="flex justify-between p-4">
-        <p className="text-lg text-gray-500">&#169;2024 <span className="text-black">Shop4All</span> </p>
+        <p className="text-lg text-gray-500">&#169;2024 <span className="text-gray-700 font-semibold">Shop4All</span> </p>
         <div className=" text-xl flex gap-4 text-slate-600">
             <FaSquareWhatsapp className="cursor-pointer hover:text-green-500" />
             <FaFacebook className="cursor-pointer hover:text-blue-400" />

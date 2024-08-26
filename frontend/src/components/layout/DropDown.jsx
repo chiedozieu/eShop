@@ -6,7 +6,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
   const navigate = useNavigate();
 
   const handleSubmit = (i) => {
-    navigate(`/products?categories=${i.title}`);
+    navigate(`/products?category=${i.title}`);
     setDropDown(false);
     window.location.reload();
   };
@@ -18,7 +18,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
           <div
             className={`${styles.normalFlex} p-1`}
             key={index}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit(i)}
           >
             <img src={i.image_Url } alt="" className="w-6 h-6 object-contain ml-10px select-none"/>
             <h3 className="m-3 cursor-pointer select-none">{i.title}</h3>

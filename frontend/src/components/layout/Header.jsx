@@ -14,6 +14,7 @@ import { PiUserCircleThin } from "react-icons/pi";
 import { CiShop } from "react-icons/ci";
 
 const Header = ({ activeHeading }) => {
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);

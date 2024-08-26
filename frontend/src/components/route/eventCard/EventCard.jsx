@@ -3,9 +3,9 @@ import styles from '../../../styles/style'
 import { displayNGNCurrency } from '../../../utils/displayCurrency'
 import CountDown from './CountDown'
 
-const EventCard = () => {
+const EventCard = ({active}) => {
   return (
-    <div className='w-full block rounded-lg lg:flex p-2 mb-12'>
+    <div className={`w-full block rounded-lg ${active ? 'unset': 'mb-12'} lg:flex p-2`}>
         <div className="w-full lg:w-[50%] m-auto">
           <img src={'https://i0.wp.com/ogtmartng.com/wp-content/uploads/2024/07/latin-en-uhd-4k-tv-un65du7000pxpa-front-black-542481479.webp?fit=650%2C519&ssl=1'} alt="" />
         </div>

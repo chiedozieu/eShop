@@ -19,24 +19,24 @@ const ProductSectionCard = ({ data }) => {
   return (
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
-        <div className="flex justify-between px-4">
+        <div className="flex justify-between px-4 ">
           <Link to={`/product${product_name}`}>
             <img
               src={data.image_Url[0].url}
               alt={data.id}
-              className="w-[85px] h-[85px] object-contain"
+              className="w-[85px] h-[85px] object-contain mt-2"
             />           
           </Link>
 
-          <Link to={`/product${product_name}`} className="flex flex-col ml-3 ">
+          <Link to={`/product${product_name}`} className="flex flex-col ml-3 mt-2">
             <h4 className="font-medium">
-              {data?.name.length > 33
-                ? data?.name.slice(0, 33) + " ..."
+              {data?.name.length > 27
+                ? data?.name.slice(0, 27) + " ..."
                 : data?.name}
             </h4>
 
             <div className="">
-                <div className="py-2 flex items-center justify-between">
+                <div className="py-1 flex items-center justify-between">
                   <div className="flex">
                     <p className={`${styles.productDiscountPrice}`}>
                       {displayNGNCurrency(
