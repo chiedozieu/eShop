@@ -9,16 +9,19 @@ import { IoIosArrowDown } from "react-icons/io";
 import DropDown from "./DropDown.jsx";
 import Navbar from "./Navbar.jsx";
 import { PiHeartThin } from "react-icons/pi";
-import { PiHandbagThin } from "react-icons/pi";
 import { PiUserCircleThin } from "react-icons/pi";
 import { CiShop } from "react-icons/ci";
+import { useSelector } from "react-redux";
+import { backend_url } from "../../server.js";
 
 const Header = ({ activeHeading }) => {
-  
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+
+  console.log(user);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -56,7 +59,6 @@ const Header = ({ activeHeading }) => {
               <div className="bg-black rounded-full absolute p-1 -top-2 -left-4">
                 <CiShop size={20} className="text-[#ffbb38]" />
               </div>
-
               <p className="text-3xl font-bold tracking-wider">
                 Shop
                 <span className="text-4xl text-[#ffbb38] font-extrabold tracking-tighter">
@@ -112,7 +114,6 @@ const Header = ({ activeHeading }) => {
           </div>
         </div>
       </div>
-
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
@@ -146,7 +147,6 @@ const Header = ({ activeHeading }) => {
           <div className={`${styles.normalFlex}`}>
             <Navbar active={activeHeading} />
           </div>
-
           <div className="flex">
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-4">
@@ -157,24 +157,30 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
             <div className={`${styles.normalFlex}`}>
-              <div className="relative cursor-pointer mr-4">
-                <PiHandbagThin size={30} />
-                <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
-                  1
-                </span>
+              <div className="relative mr-4 capitalize">
+                {user ? <h6>Hi {user?.name.split(" ")[0]}</h6> : "Hi Guest"}
               </div>
             </div>
             <div className={`${styles.normalFlex}`}>
               <div className="relative cursor-pointer mr-4">
-                <Link to={"/login"}>
-                  <PiUserCircleThin size={30} />
-                </Link>
+                {isAuthenticated ? (
+                  <Link to={"/profile"}>
+                    <img
+                      src={`${backend_url}${user.avatar.url}`}
+                      alt=""
+                      className="h-10 w-10 rounded-full object-cover"
+                    />
+                  </Link>
+                ) : (
+                  <Link to={"/login"}>
+                    <PiUserCircleThin size={30} />
+                  </Link>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-
       {/* last */}
     </>
   );

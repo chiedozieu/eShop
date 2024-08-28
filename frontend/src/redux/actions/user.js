@@ -4,6 +4,7 @@ import { server } from "../../server";
 // load user
 
 export const loadUser = () => {
+  
   return async (dispatch) => {
     try {
       dispatch({
@@ -15,6 +16,7 @@ export const loadUser = () => {
       dispatch({
         type: "loadUserSuccess",
         payload: data.user,
+       
       });
     } catch (error) {
       dispatch({

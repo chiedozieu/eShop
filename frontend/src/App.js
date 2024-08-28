@@ -16,14 +16,26 @@ import { useEffect } from "react";
 import { store } from "./redux/store.js";
 import { loadUser } from "./redux/actions/user.js";
 import Footer from "./components/layout/Footer.jsx";
+import { useSelector } from "react-redux";
+
+
 
 const App = () => {
+  const { loading } = useSelector((state) => state.user)
+
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
 
+
+
   return (
-    <BrowserRouter>
+   <>
+    {
+       loading ? (
+      null
+    ) : (
+      <BrowserRouter>
       <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -51,6 +63,9 @@ const App = () => {
       </Routes>
       <Footer />
     </BrowserRouter>
+    )
+    }
+   </>
   );
 };
 
