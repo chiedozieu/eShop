@@ -13,6 +13,9 @@ import { PiUserCircleThin } from "react-icons/pi";
 import { CiShop } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server.js";
+import  Wishlist from '../wishlist/Wishlist'
+
+
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -20,6 +23,8 @@ const Header = ({ activeHeading }) => {
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [openWishlist, setOpenWishlist] = useState(false);
+  
 
   console.log(user);
 
@@ -121,13 +126,13 @@ const Header = ({ activeHeading }) => {
       >
         <div
           className={`${styles.section} relative ${styles.normalFlex} justify-between`}
-          onClick={() => setDropDown(!dropDown)}
+          
         >
           {/* categories  */}
           <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
             <BiMenuAltLeft size={30} className="absolute p-1 top-3 left-2" />
             <button
-              className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-semibold  select-none rounded-t-md `}
+              className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-semibold  select-none rounded-t-md `} onClick={() => setDropDown(!dropDown)}
             >
               All Categories
             </button>
@@ -148,27 +153,27 @@ const Header = ({ activeHeading }) => {
             <Navbar active={activeHeading} />
           </div>
           <div className="flex">
-            <div className={`${styles.normalFlex}`}>
-              <div className="relative cursor-pointer mr-4">
+            <div className={`wishlist ${styles.normalFlex} `}>
+              <div className="relative cursor-pointer mr-4" onClick={()=>setOpenWishlist(true)}>
                 <PiHeartThin size={30} />
                 <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
-                  0
+                  12
                 </span>
               </div>
             </div>
-            <div className={`${styles.normalFlex}`}>
-              <div className="relative mr-4 capitalize">
+            <div className={`username ${styles.normalFlex} `}>
+              <div className="relative mr-4 capitalize font-thin ">
                 {user ? <h6>Hi {user?.name.split(" ")[0]}</h6> : "Hi Guest"}
               </div>
             </div>
-            <div className={`${styles.normalFlex}`}>
+            <div className={`user ${styles.normalFlex} `}>
               <div className="relative cursor-pointer mr-4">
                 {isAuthenticated ? (
                   <Link to={"/profile"}>
                     <img
                       src={`${backend_url}${user.avatar.url}`}
                       alt=""
-                      className="h-10 w-10 rounded-full object-cover"
+                      className="profile-pic h-10 w-10 rounded-full object-cover"
                     />
                   </Link>
                 ) : (
@@ -178,6 +183,14 @@ const Header = ({ activeHeading }) => {
                 )}
               </div>
             </div>
+            {/* wishlist popup */}
+            {
+              openWishlist ? (
+                <Wishlist  setOpenWishlist={setOpenWishlist} />
+              ) : (
+                null
+              )
+            }
           </div>
         </div>
       </div>
