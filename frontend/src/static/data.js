@@ -271,11 +271,19 @@ export const productData = [
     image_Url: [
       {
         public_id: "test",
-        url: "https://cdsassets.apple.com/live/SZLF0YNV/images/sp/111902_mbp14-silver2.png",
+        url: "https://www.howzitsa.com/wp-content/uploads/2022/12/apple-13-inch-macbook-pro-m2-8-core-256gb-ssd-silver-2.webp",
       },
       {
         public_id: "test",
-        url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+        url: "https://cdn.hukut.com/Apple-MacBook-Pro-16-inch-price-in-nepal-2.png1724241998369",
+      },
+      {
+        public_id: "test",
+        url: "https://i0.wp.com/breyeangear.com/wp-content/uploads/2023/10/image-14.png?fit=2400%2C2400&quality=80&ssl=1",
+      },
+      {
+        public_id: "test",
+        url: "https://istorepreowned.co.za/cdn/shop/products/MacBook_Pro_14-inch_2023_-Space_Grey_0ef74b4e-dab8-42d4-8749-23cc201e92b4_1.png?v=1710872902&width=1800",
       },
     ],
     shop: {
@@ -305,7 +313,15 @@ export const productData = [
       },
       {
         public_id: "test",
-        url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
+        url: "https://www.otterbox.ie/dw/image/v2/BGMS_PRD/on/demandware.static/-/Sites-masterCatalog/en/dw403d8d01/productimages/dis/cases-screen-protection/symmetry-plus-iphd22/symmetry-plus-iphd22-clear-1.png?sw=800&sh=800",
+      },
+      {
+        public_id: "test",
+        url: "https://static1.xdaimages.com/wordpress/wp-content/uploads/2023/05/apple-iphone-14-pro-in-space-black.png",
+      },
+      {
+        public_id: "test",
+        url: "https://res-2.cloudinary.com/grover/image/upload/v1668183892/f0atpnw1ib4phhxidxfo.png",
       },
     ],
     shop: {
@@ -335,7 +351,15 @@ export const productData = [
       },
       {
         public_id: "test",
-        url: "https://www.istorebangladesh.com/images/thumbs/0000286_macbook-pro-m1_550.png",
+        url: "https://macfinder.co.uk/wp-content/uploads/2021/12/macbookpro-13-big-sur.png",
+      },
+      {
+        public_id: "test",
+        url: "https://www.sales366.com/storage/2022/12/Apple-MacBook-Pro-M2-chip-13-8GB-RAM-512GB-SSD-Storage.webp",
+      },
+      {
+        public_id: "test",
+        url: "https://qskinz.com/cdn/shop/products/03Softpink_f63a3bda-ccac-4af0-b8da-9b3ac5f9514e.png?v=1667573576",
       },
     ],
     shop: {
@@ -366,7 +390,15 @@ export const productData = [
       },
       {
         public_id: "test",
-        url: "https://i0.wp.com/eccocibd.com/wp-content/uploads/2022/01/1802NL02_1.png?fit=550%2C550&ssl=1",
+        url: "https://www.pointekonline.com/wp-content/uploads/2022/07/11-1.png",
+      },
+      {
+        public_id: "test",
+        url: "https://images.samsung.com/is/image/samsung/assets/uk/2407/pcd/watches/PCD_WatchUltra_WatchNew_mo.png?$264_264_PNG$",
+      },
+      {
+        public_id: "test",
+        url: "https://cdn.tmobile.com/content/dam/t-mobile/en-p/internet-devices/apple/Apple-Watch-Ultra-2/Titanium-Blue-Ocean/Apple-Watch-Ultra-2-Titanium-Blue-Ocean-thumbnail.png",
       },
     ],
     shop: {
@@ -398,6 +430,14 @@ export const productData = [
         public_id: "test",
         url: "https://mirzacdns3.s3.ap-south-1.amazonaws.com/cache/catalog/RLV0015/2-800x800.jpg",
       },
+      {
+        public_id: "test",
+        url: "https://images.ctfassets.net/hnk2vsx53n6l/4FbcPBOlJKrfexSlXHPi79/a5dcfef40a58a7233f3a6b0345b458f5/ku8fs1nzo1yz8f7br9fd.png?fm=webp",
+      },
+      {
+        public_id: "test",
+        url: "https://mirzacdns3.s3.ap-south-1.amazonaws.com/cache/catalog/RLV0015/2-800x800.jpg",
+      },
     ],
     shop: {
       name: "Alisha Shoes Mart",
@@ -420,6 +460,14 @@ export const productData = [
     description:
       "Product details are a crucial part of any eCommerce website or online marketplace. These details help the potential customers to make an informed decision about the product they are interested in buying. A well-written product description can also be a powerful marketing tool that can help to increase sales.Product details typically include information about the product's features, specifications, dimensions, weight, materials, and other relevant information that can help customers to understand the product better. The product details section should also include high-quality images and videos of the product, as well as customer reviews and ratings.",
     image_Url: [
+      {
+        public_id: "test",
+        url: "https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g435/swatches/g435-gaming-headset-gallery-2-black.png?v=1",
+      },
+      {
+        public_id: "test",
+        url: "https://eratablet.com/wp-content/uploads/2022/08/H51ba6537405f4948972e293927673546u.jpg",
+      },
       {
         public_id: "test",
         url: "https://resource.logitechg.com/w_692,c_lpad,ar_4:3,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/products/g435/swatches/g435-gaming-headset-gallery-2-black.png?v=1",
@@ -467,6 +515,14 @@ export const productData = [
         public_id: "test",
         url: "https://i0.wp.com/eccocibd.com/wp-content/uploads/2022/01/1802NL02_1.png?fit=550%2C550&ssl=1",
       },
+      {
+        public_id: "test",
+        url: "https://i0.wp.com/eccocibd.com/wp-content/uploads/2022/01/1802NL02_1.png?fit=550%2C550&ssl=1",
+      },
+      {
+        public_id: "test",
+        url: "https://i0.wp.com/eccocibd.com/wp-content/uploads/2022/01/1802NL02_1.png?fit=550%2C550&ssl=1",
+      },
     ],
     shop: {
       name: "Shahriar Watch House",
@@ -488,6 +544,14 @@ export const productData = [
     description:
       "Product details are a crucial part of any eCommerce website or online marketplace. These details help the potential customers to make an informed decision about the product they are interested in buying. A well-written product description can also be a powerful marketing tool that can help to increase sales.Product details typically include information about the product's features, specifications, dimensions, weight, materials, and other relevant information that can help customers to understand the product better. The product details section should also include high-quality images and videos of the product, as well as customer reviews and ratings.",
     image_Url: [
+      {
+        public_id: "test",
+        url: "https://2egaming.com/wp-content/uploads/2e-hg315yw-7.1_main-1.png",
+      },
+      {
+        public_id: "test",
+        url: "https://eratablet.com/wp-content/uploads/2022/08/H51ba6537405f4948972e293927673546u.jpg",
+      },
       {
         public_id: "test",
         url: "https://2egaming.com/wp-content/uploads/2e-hg315yw-7.1_main-1.png",
@@ -535,6 +599,14 @@ export const productData = [
         public_id: "test",
         url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
       },
+      {
+        public_id: "test",
+        url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
+      },
+      {
+        public_id: "test",
+        url: "https://m.media-amazon.com/images/I/31Vle5fVdaL.jpg",
+      },
     ],
     shop: {
       name: "Amazon Ltd",
@@ -557,6 +629,14 @@ export const productData = [
     description:
       "Product details are a crucial part of any eCommerce website or online marketplace. These details help the potential customers to make an informed decision about the product they are interested in buying. A well-written product description can also be a powerful marketing tool that can help to increase sales.Product details typically include information about the product's features, specifications, dimensions, weight, materials, and other relevant information that can help customers to understand the product better. The product details section should also include high-quality images and videos of the product, as well as customer reviews and ratings.",
     image_Url: [
+      {
+        public_id: "test",
+        url: "https://m2.me-retail.com/cdn-cgi/image/w=1000,q=75,f=auto/pub/media/catalog/product/x/p/xp-neon-4g_01_1.png",
+      },
+      {
+        public_id: "test",
+        url: "https://eratablet.com/wp-content/uploads/2022/08/H51ba6537405f4948972e293927673546u.jpg",
+      },
       {
         public_id: "test",
         url: "https://m2.me-retail.com/cdn-cgi/image/w=1000,q=75,f=auto/pub/media/catalog/product/x/p/xp-neon-4g_01_1.png",

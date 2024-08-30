@@ -7,6 +7,7 @@ const styles = {
     price:"font-[500] text-[16px] text-[#d55b45] pl-3 mt-[-4px] line-through",
     shop_name:"pt-3 text-[15px] text-blue-400 pb-3",
     active_indicator:"absolute bottom-[-27%] left-0 h-[3px] w-full bg-[crimson]",
+    active_indicator50:"absolute bottom-[-27%] left-0 h-[3px] w-[50%] bg-[crimson]",
     button: 'w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer',
     cart_button: "px-[20px] h-[38px] rounded-[20px] bg-[#f63b60] flex items-center justify-center cursor-pointer",
     cart_button_text:"text-[#fff] text-[16px] font-[600]",

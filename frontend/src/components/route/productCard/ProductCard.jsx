@@ -11,7 +11,7 @@ import {
 } from "../../../utils/displayCurrency";
 import ProductDetailsCard from '../productDetailsCard/ProductDetailsCard.jsx';
 
-const ProductCard = ({ data }) => {
+const  ProductCard = ({ data }) => {
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -34,7 +34,7 @@ const ProductCard = ({ data }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* <div className="flex justify-end"></div>  Check the div mistake later */}
-        <Link to={`/product${product_name}`}>
+        <Link to={`/product/${product_name}`}>
           <img
             src={data.image_Url[0].url}
             alt={data.id}
@@ -44,7 +44,7 @@ const ProductCard = ({ data }) => {
         <Link to="/">
           <h2 className={`${styles.shop_name}`}>{data.shop.name}</h2>
         </Link>
-        <Link to={`/product${product_name}`}>
+        <Link to={`/product/${product_name}`}>
           <h4 className="pb-3 font-medium">
             {data?.name.length > 40
               ? data?.name.slice(0, 40) + " ..."

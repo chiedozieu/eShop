@@ -9,7 +9,7 @@ import {
   BestSellingPage,
   EventsPage,
   FAQPage,
-  ProductDetailPage,
+  ProductDetailsPage,
 } from "./routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -47,7 +47,7 @@ const App = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="dark"
+        theme="dark" 
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -58,7 +58,7 @@ const App = () => {
           element={<ActivationPage />}
         />
         <Route path="/products" element={<ProductsPage />} />
-        <Route path="/product/:id" element={<ProductDetailPage />} />
+        <Route path="/product/:name" element={<ProductDetailsPage />} />
         <Route path="/best-selling" element={<BestSellingPage />} />
         <Route path="/events" element={<EventsPage />} />
         <Route path="/faq" element={<FAQPage />} />
