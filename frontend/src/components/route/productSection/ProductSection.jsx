@@ -10,7 +10,7 @@ const ProductSection = () => {
         <div className={`${styles.heading} mt-10`}>
           <h1>Product Section</h1>
         </div>
-        <div className='grid lg:grid-cols-3 md:grid-cols-2 md:gap-5 grid-cols-1 xl:gap-[30px] lg:gap-5 gap-5'>
+        <div className='grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-[30px]'>
           {productData &&
             productData.map((i, index) => (
               <ProductSectionCard data={i} key={index} />

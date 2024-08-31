@@ -12,6 +12,8 @@ const ProductDetails = ({ data }) => {
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
+ 
+  window.scrollTo(0,0)
 
   const handleMessageSubmit = () => {
     navigate("/inbox?conversation=tryhrt53heghs");

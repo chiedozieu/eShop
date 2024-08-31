@@ -44,7 +44,7 @@ const Header = ({ activeHeading }) => {
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 70) {
+      if (window.scrollY > 120) {
         setActive(true);
       } else {
         setActive(false);

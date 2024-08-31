@@ -20,7 +20,7 @@ const ProductSectionCard = ({ data }) => {
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
         <div className="flex justify-between px-4 ">
-          <Link to={`/product${product_name}`}>
+          <Link to={`/product/${product_name}`}>
             <img
               src={data.image_Url[0].url}
               alt={data.id}
@@ -28,7 +28,7 @@ const ProductSectionCard = ({ data }) => {
             />           
           </Link>
 
-          <Link to={`/product${product_name}`} className="flex flex-col ml-3 mt-2">
+          <Link to={`/product/${product_name}`} className="flex flex-col ml-3 mt-2">
             <h4 className="font-medium">
               {data?.name.length > 27
                 ? data?.name.slice(0, 27) + " ..."

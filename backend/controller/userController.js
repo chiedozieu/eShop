@@ -157,7 +157,7 @@ router.get(
     try {
       const user = await userModel.findById(req.user.id);
       if (!user) {
-        return next(errorHandler(400, "User doesn't exists"));
+        return next(errorHandler(400, "User doesn't exists")); 
       }
       res.status(200).json({
         success: true,
@@ -168,5 +168,22 @@ router.get(
     }
   })
 );
+
+// logout
+ router.get('/logout', isAuthenticated, catchAsyncErrors(async (req, res, next) => {
+  try {
+    res.cookie('token', null, {
+      expires: new Date(Date.now()),
+      httpOnly: true
+    })
+
+    res.status(201).json({
+      success: true,
+      message: 'Logout successful!'
+    })
+  } catch (error) {
+    return next(errorHandler(500, error.message));
+  }
+ }));
 
 export default router;
