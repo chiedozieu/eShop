@@ -23,7 +23,7 @@ const Faq = () => {
   };
   // window.scrollTo(0,0)
   return (
-    <div className={`${styles.section} my-8 `}>
+    <div className={`${styles.section} my-8 mt-20`}>
       <h2 className="text-3xl font-bold text-gray-900 mb-8 ">FAQ</h2>
       <div className="mx-auto space-y-4">
         {/* Single FAQ 1 */}

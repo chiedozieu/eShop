@@ -134,7 +134,7 @@ const Footer = () => {
               Helpful
             </h1>
             <div className="text-base text-gray-500 flex flex-col gap-2">
-              <Link to="/" className="hover:underline hover:text-black">
+              <Link to="/shop-create" className="hover:underline hover:text-black">
                 Become a seller
               </Link>
               <Link to="/faq" className="hover:underline hover:text-black">

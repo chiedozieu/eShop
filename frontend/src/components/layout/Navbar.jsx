@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 const Navbar = ({ active }) => {
   return (
-    <div className={`${styles.normalFlex}`} >
+    <div className={`md:${styles.normalFlex}`} >
       {navItems &&
         navItems.map((i, index) => (
-          <div className="flex" key={index}>
+          <div className="flex pb-5 md:pb-0" key={index}>
             <Link
               to={i.url}
               className={`${

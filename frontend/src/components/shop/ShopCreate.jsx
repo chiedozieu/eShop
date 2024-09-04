@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
-import styles from "../styles/style.js";
-import { Link } from "react-router-dom";
-import { RxAvatar } from "react-icons/rx";
+import styles from "../../styles/style";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { server } from "../server.js";
+import { server } from "../../server";
 import { toast } from "react-toastify";
+import { RxAvatar } from "react-icons/rx";
 
-const SignUp = () => {
-  // const navigate = useNavigate();
+
+
+const ShopCreate = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [address, setAddress] = useState("");
+  const [avatar, setAvatar] = useState();
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [avatar, setAvatar] = useState(null);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,43 +30,52 @@ const SignUp = () => {
     newForm.append("name", name);
     newForm.append("email", email.trim());
     newForm.append("password", password);
+    newForm.append("address", address);
+    newForm.append("phoneNumber", phoneNumber);
 
     await axios
-      .post(`${server}/user/create-user`, newForm, config)
+      .post(`${server}/shop/create-shop`, newForm, config)
       .then((res) => {
         toast.success(res.data.message);
         setName("");
         setEmail("");
         setPassword("");
         setAvatar();
+        setAddress("");
+        setPhoneNumber();
       })
       .catch((error) => {
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data.message);
       });
   };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign Up
+          Register as a seller
         </h2>
       </div>
-      <div className="mt-8 sm :mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-8 sm :mx-auto sm:w-full sm:max-w-xl ">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           {/* form starts */}
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="">
+            <div className="name">
               <label
                 htmlFor="name"
                 className="block text-sm text-gray-700 font-medium"
               >
-                Full Name
+                Shop Name 
               </label>
-              <div className="p-2">
+              <div className="mt-2 p-2 ">
                 <input
-                  type="text"
-                  name="text"
-                  autoComplete="name"
+                  type="name"
+                  name="name"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -75,18 +83,37 @@ const SignUp = () => {
                 />
               </div>
             </div>
-            <div className="">
+
+            <div className="phone-number">
+              <label
+                htmlFor="phone-number"
+                className="block text-sm text-gray-700 font-medium"
+              >
+               Phone Number  
+              </label>
+              <div className="mt-2 p-2 ">
+                <input
+                  type="number"
+                  name="phone-number"
+                  required
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="email">
               <label
                 htmlFor="email"
                 className="block text-sm text-gray-700 font-medium"
               >
-                Email address
+                Email Address 
               </label>
-              <div className="p-2">
+              <div className="mt-2 p-2 ">
                 <input
                   type="email"
                   name="email"
-                  autoComplete="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -94,14 +121,34 @@ const SignUp = () => {
                 />
               </div>
             </div>
-            <div className="">
+ 
+            <div className="address">
+              <label
+                htmlFor="address"
+                className="block text-sm text-gray-700 font-medium"
+              >
+                Address 
+              </label>
+              <div className="mt-2 p-2 ">
+                <input
+                  type="address"
+                  name="address"
+                  required
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="password">
               <label
                 htmlFor="password"
                 className="block text-sm text-gray-700 font-medium mt-4"
               >
                 Password
               </label>
-              <div className="relative p-2">
+              <div className="mt-2 relative p-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -126,7 +173,8 @@ const SignUp = () => {
                 )}
               </div>
             </div>
-            <div className="avatar">
+
+            <div className="avatar">  
               <label
                 htmlFor="avatar"
                 className="text-sm block font-medium text-gray-700"
@@ -159,6 +207,8 @@ const SignUp = () => {
                 </label>
               </div>
             </div>
+
+            
             <div className="">
               <button
                 type="submit"
@@ -167,9 +217,12 @@ const SignUp = () => {
                 Submit
               </button>
             </div>
-            <div className={`${styles.noramlFlex} w-full`}>
-              <h4 className="text-gray-700">Have account</h4>
-              <Link to="/login" className="text-blue-600 pl-2 hover:underline">
+            <div className={`${styles.noramlFlex} w-full flex`}>
+              <h4 className="text-gray-700">Already have account</h4>
+              <Link
+                to="/shop-login"
+                className="text-blue-600 pl-2 hover:underline"
+              >
                 Login
               </Link>
             </div>
@@ -181,4 +234,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ShopCreate;

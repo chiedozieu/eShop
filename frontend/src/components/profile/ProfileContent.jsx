@@ -23,7 +23,7 @@ const ProfileContent = ({ active }) => {
       {active === 1 && (
         <>
           <div className="flex justify-center w-full">
-            <div className="relative">
+            <div className="relative md:mt-0 mt-10">
               <img
                 src={`${backend_url}${user?.avatar.url}`}
                 alt=""
@@ -50,7 +50,7 @@ const ProfileContent = ({ active }) => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
-                <div className="w-[100%] md:w-[50%]">
+                <div className="w-[100%] md:w-[50%] ">
                   <label className="block pb-2">Email Address</label>
                   <input
                     type="text"
@@ -120,7 +120,7 @@ const ProfileContent = ({ active }) => {
       )}
       {/*  address view */}
       {active === 3 && (
-        <div className="">
+        <div className="md:mt-0 mt-10">
           <Address />
         </div>
       )}
@@ -150,7 +150,7 @@ const Address = () => {
         <div className="flex items-center pl-8 mb-4 md:mb-0 "> 
           <h6 className="">0801 234 5678</h6>
         </div>
-        <div className="min-w-[5%] flex pl-8 justify-end">
+        <div className="min-w-[5%] flex pr-8 justify-end">
           <MdOutlineDeleteSweep size={25} className="cursor-pointer text-red-500"/>
         </div>
       </div>

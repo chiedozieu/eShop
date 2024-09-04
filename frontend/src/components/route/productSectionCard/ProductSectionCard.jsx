@@ -7,6 +7,7 @@ import {
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
 
+
 const ProductSectionCard = ({ data }) => {
   const productName = data.name;
   const product_name = productName.replace(/\s+/g, "-");

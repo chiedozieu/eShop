@@ -10,7 +10,9 @@ const LoginPage = () => {
    if(isAuthenticated){
     navigate('/')
    }
-  }, [  ])
+  }, [])
+
+  window.scrollTo(0,0)
   
   return (
     <div>

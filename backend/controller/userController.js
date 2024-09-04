@@ -21,12 +21,12 @@ const createActivationToken = (user) => {
 };
 
 // Route to create a user and send activation email
-// Removed export const create user????? Remember to delete this
 router.post("/create-user", upload.single("file"), async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
     const userEmail = await userModel.findOne({ email });
+    
     if (userEmail) {
       const filename = req.file.filename;
       const filePath = `uploads/${filename}`;
@@ -73,7 +73,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
   } catch (error) {
     next(errorHandler(500, error.message));
   }
-});
+}); 
 
 // Route to activate the user
 router.post(

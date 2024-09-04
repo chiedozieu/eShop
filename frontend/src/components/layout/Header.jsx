@@ -13,9 +13,8 @@ import { PiUserCircleThin } from "react-icons/pi";
 import { CiShop } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { backend_url } from "../../server.js";
-import  Wishlist from '../wishlist/Wishlist'
-
-
+import Wishlist from "../wishlist/Wishlist";
+import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -24,7 +23,7 @@ const Header = ({ activeHeading }) => {
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
-  
+  const [open, setOpen] = useState(false);
 
   console.log(user);
 
@@ -74,11 +73,11 @@ const Header = ({ activeHeading }) => {
           </div>
           <div className="search-box w-1/2 relative">
             <input
-              type="text"
+              type="text "
               placeholder="Search Products..."
               value={searchTerm}
               onChange={handleSearchChange}
-              className="h-10 w-full px-2 border-2 border-[#ffbb38] rounded-md"
+              className="h-10 w-full px-2 border border-[#ffbb38] rounded-md"
             />
             <CiSearch
               size={30}
@@ -110,8 +109,8 @@ const Header = ({ activeHeading }) => {
               </div>
             ) : null}
           </div>
-          <div className={`${styles.button}`}>
-            <Link to="/seller">
+          <div className={`${styles.button} !rounded-md !h-10`}>
+            <Link to="/shop-create">
               <h1 className="text-white flex items-center">
                 Become Seller <IoIosArrowForward />
               </h1>
@@ -126,13 +125,13 @@ const Header = ({ activeHeading }) => {
       >
         <div
           className={`${styles.section} relative ${styles.normalFlex} justify-between`}
-          
         >
           {/* categories  */}
           <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
             <BiMenuAltLeft size={30} className="absolute p-1 top-3 left-2" />
             <button
-              className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-semibold  select-none rounded-t-md `} onClick={() => setDropDown(!dropDown)}
+              className={`h-[100%] w-full flex justify-between items-center pl-10 bg-white font-sans text-lg font-semibold  select-none rounded-t-md `}
+              onClick={() => setDropDown(!dropDown)}
             >
               All Categories
             </button>
@@ -154,13 +153,17 @@ const Header = ({ activeHeading }) => {
           </div>
           <div className="flex">
             <div className={`wishlist ${styles.normalFlex} `}>
-              <div className="relative cursor-pointer mr-4" onClick={()=>setOpenWishlist(true)}>
+              <div
+                className="relative cursor-pointer mr-4"
+                onClick={() => setOpenWishlist(true)}
+              >
                 <PiHeartThin size={30} />
                 <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
                   12
                 </span>
               </div>
             </div>
+            {/* user */}
             <div className={`username ${styles.normalFlex} `}>
               <div className="relative mr-4 capitalize font-thin ">
                 {user ? <h6>Hi {user?.name.split(" ")[0]}</h6> : "Hi Guest"}
@@ -184,17 +187,152 @@ const Header = ({ activeHeading }) => {
               </div>
             </div>
             {/* wishlist popup */}
-            {
-              openWishlist ? (
-                <Wishlist  setOpenWishlist={setOpenWishlist} />
-              ) : (
-                null
-              )
-            }
+            {openWishlist ? (
+              <Wishlist setOpenWishlist={setOpenWishlist} />
+            ) : null}
           </div>
         </div>
       </div>
       {/* last */}
+
+      {/* mobile screen header  */}
+      <div
+        className={`${
+          active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
+        } fixed w-full h-[60px] bg-[#fff] z-50 top-0 left-0 shadow-sm md:hidden`}
+      >
+        <div className="w-full flex items-center justify-between ">
+          {/* left */}
+          <div className="mt-1 ">
+            <BiMenuAltLeft
+              size={40}
+              className="ml-4"
+              onClick={() => setOpen(true)}
+            />
+          </div>
+          {/* center */}
+          <div className="logo items-center mt-3">
+            <Link to="/" className="flex relative">
+              <div className="bg-black rounded-full absolute p-1 -top-0 -left-3">
+                <CiShop size={12} className="text-[#ffbb38]" />
+              </div>
+              <p className="text-xl font-bold tracking-wider">
+                Shop
+                <span className="text-2xl text-[#ffbb38] font-extrabold tracking-tighter">
+                  4All
+                </span>
+              </p>
+            </Link>
+          </div>
+          {/* right */}
+          <div className="mt-3">
+            <div className={`user ${styles.normalFlex} `}>
+              <div className="relative cursor-pointer mr-4">
+                {isAuthenticated ? (
+                  <Link to={"/profile"}>
+                    <img
+                      src={`${backend_url}${user.avatar.url}`}
+                      alt=""
+                      className="profile-pic h-10 w-10 rounded-full object-cover"
+                    />
+                  </Link>
+                ) : (
+                  <Link to={"/login"}>
+                    <PiUserCircleThin size={30} />
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* header sidebar popup */}
+        {open && (
+          <div
+            className={`fixed w-full h-full bg-[#0000005f] z-20 top-0 left-0 `}
+          >
+            <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10">
+              <div className="w-full justify-between flex pr-3">
+                <div className="">
+                  <div className="relative mr-[15px]">
+                    <PiHeartThin size={30} className=" mt-5 ml-3" />
+                    <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
+                      12
+                    </span>
+                  </div>
+                </div>
+                <RxCross1
+                  size={25}
+                  className="ml-4 mt-5 font-thin"
+                  onClick={() => setOpen(false)}
+                />
+              </div>
+              {/* search */}
+              <div className="my-8 w-[92%] mx-auto h-[40px]">
+                <input
+                  type="search"
+                  placeholder="Search Products..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="h-10 w-full px-2 border border-[#ffbb38] rounded-md"
+                />
+                {searchData && searchData.length > 0 ? (
+                  <div
+                    className={
+                      "absolute min-h-[30vh] max-h-[70vh] overflow-y-scroll bg-slate-50 shadow-sm-2 z-10 p-4"
+                    }
+                  >
+                    {searchData &&
+                      searchData.map((i, index) => {
+                        const d = i.name;
+                        const product_name = d.replace(/\s+/g, "-");
+                        return (
+                          <Link to={`/product/${product_name}`} key={index}>
+                            <div className={`w-full flex items-start py-3 `}>
+                              <img
+                                src={i.image_Url[0].url}
+                                alt=""
+                                className="w-10 h-10 mr-2.5"
+                              />
+                              <h1>{i.name}</h1>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                  </div>
+                ) : null}
+              </div>
+              <div className={`${styles.normalFlex}`}>
+                <Navbar active={activeHeading} />
+              </div>
+              <div className={`${styles.button} !rounded-md !h-10 ml-4`}>
+                <Link to="/shop-create">
+                  <h1 className="text-white flex items-center">
+                    Become Seller <IoIosArrowForward />
+                  </h1>
+                </Link>
+              </div>
+              <br />
+              <br />
+              <br />
+
+              {
+                !isAuthenticated && (
+                <div className="w-full justify-center flex">
+                  <Link
+                    to="/login"
+                    className="text-[18px] text-[#000000b7] mr-2 "
+                  >
+                    Login /
+                  </Link>
+                  <Link to="/sign-up" className="text-[18px] text-[#000000b7]">
+                    Sign Up
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };
