@@ -2,8 +2,8 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { isAuthenticated } from "../middleware/auth.js";
-import { sendToken } from "../utils/jwtToken.js";
+import { isSeller } from "../middleware/auth.js";
+import { sendShopToken } from "../utils/shopToken.js";
 import { sendMail } from "../utils/sendMail.js";
 import jwt from "jsonwebtoken";
 import { upload } from "../multer.js";
@@ -98,7 +98,7 @@ router.post(
       const { name, email, password, avatar, address, phoneNumber } = newSeller;
 
       // Check if seller already exists before creating a new one
-      let seller = await shopModel.findOne({ email });
+      let seller = await shopModel.findOne({ email: newSeller.email});
       if (seller) {
         console.log("Seller already exists, not creating again");
         return next(errorHandler(400, "Seller already exists. Please login"));
@@ -115,7 +115,20 @@ router.post(
       });
 
       // Send token to client if seller creation is successful
-      sendToken(seller, 201, res);
+      sendShopToken(seller, 201, res);
+
+       // Send activation confirmation email
+    await sendMail({
+      email: seller.email,
+      subject: "Activation successful",
+      message: `Hello ${seller.name}, your shop has been activated`,
+    });
+
+    res.status(201).json({
+      success: true,
+    });
+
+      
     } catch (error) {
       return next(errorHandler(500, error.message));
     }
@@ -123,3 +136,62 @@ router.post(
 );
 
 export default router;
+
+// login shop
+
+router.post(
+  "/login-shop",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return next(errorHandler(400, "Please enter a valid email & password"));
+      }
+
+      const user = await shopModel.findOne({ email }).select("+password");
+
+      if (!user) {
+        return next(
+          errorHandler(
+            400,
+            "User not found, please enter a valid email & password or kindly register"
+          )
+        );
+      }
+
+      const isPasswordValid = await user.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(errorHandler(400, "Please enter a valid email & password"));
+      }
+
+      sendShopToken(user, 201, res);
+    } catch (error) {
+      next(errorHandler(500, error.message));
+    }
+  })
+);
+
+
+// load shop or store shop // Goto Apps.js add useEffect // redux
+
+router.get( 
+  "/getSeller",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+  
+      const seller = await shopModel.findById(req.seller._id);
+      if (!seller) {
+        return next(errorHandler(400, "User doesn't exists")); 
+      }
+      res.status(200).json({
+        success: true,
+        seller,
+      });
+    } catch (error) {
+     return next(errorHandler(500, error.message));
+    }
+  })
+);

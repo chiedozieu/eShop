@@ -24,7 +24,7 @@ const ActivationPage = () => {
       };
       activationEmail();
     }
-  }, []);
+  }, [activation_token]);
 
   return (
     <div className="h-screen w-full flex justify-center items-center">

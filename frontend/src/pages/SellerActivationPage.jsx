@@ -14,7 +14,7 @@ const SellerActivationPage = () => {
         try {
           const res = await axios.post(
             `${server}/shop/activation`,
-            { activation_token } // Consistent key name
+            { activation_token } 
           );
           console.log(res.data.message);
         } catch (error) {

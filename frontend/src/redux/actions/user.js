@@ -26,3 +26,30 @@ export const loadUser = () => {
     }
   };
 };
+
+
+// load seller
+
+export const loadSeller = () => {
+  
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "loadSellerRequest",
+      });
+      const { data } = await axios.get(`${server}/shop/getSeller`, {
+        withCredentials: true,
+      });
+      dispatch({
+        type: "loadSellerSuccess",
+        payload: data.seller,
+       
+      });
+    } catch (error) {
+      dispatch({
+        type: "loadSellerFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
+};

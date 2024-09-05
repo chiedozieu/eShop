@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
 import styles from "../../styles/style";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
@@ -11,7 +11,7 @@ import { RxAvatar } from "react-icons/rx";
 
 
 const ShopCreate = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState();

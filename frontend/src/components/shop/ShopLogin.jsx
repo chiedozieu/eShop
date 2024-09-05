@@ -1,55 +1,43 @@
 import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
-import styles from "../styles/style.js";
-import { Link } from "react-router-dom";
-import { RxAvatar } from "react-icons/rx";
+import styles from "../../styles/style.js";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { server } from "../server.js";
+import { server } from "../../server.js";
 import { toast } from "react-toastify";
 
-const SignUp = () => {
-  // const navigate = useNavigate();
+const ShopLogin = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [avatar, setAvatar] = useState(null);
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    setAvatar(file);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = { Headers: { "content-type": "multipart/form-data" } };
-
-    const newForm = new FormData();
-
-    newForm.append("file", avatar);
-    newForm.append("name", name);
-    newForm.append("email", email.trim());
-    newForm.append("password", password);
-
     await axios
-      .post(`${server}/user/create-user`, newForm, config)
-      .then((res) => {
-        toast.success(res.data.message);
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar();
+      .post(
+        `${server}/shop/login-shop`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {  
+        navigate('/dashboard')
+        window.location.reload(true);
       })
-      .catch((error) => {
-        toast.error(error.response.data.message);
+      .catch((err) => {
+        toast.error(err?.response?.data?.message || "An error occurred");
       });
   };
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign Up
+          Login to your shop
         </h2>
       </div>
       <div className="mt-8 sm :mx-auto sm:w-full sm:max-w-md">
@@ -58,31 +46,12 @@ const SignUp = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="">
               <label
-                htmlFor="name"
-                className="block text-sm text-gray-700 font-medium"
-              >
-                Full Name
-              </label>
-              <div className="p-2">
-                <input
-                  type="text"
-                  name="text"
-                  autoComplete="name"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-            <div className="">
-              <label
                 htmlFor="email"
                 className="block text-sm text-gray-700 font-medium"
               >
                 Email address
               </label>
-              <div className="p-2">
+              <div className="mt-2 p-2 ">
                 <input
                   type="email"
                   name="email"
@@ -101,7 +70,7 @@ const SignUp = () => {
               >
                 Password
               </label>
-              <div className="relative p-2">
+              <div className="mt-2 relative p-2">
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
@@ -126,37 +95,28 @@ const SignUp = () => {
                 )}
               </div>
             </div>
-            <div className="avatar">
-              <label
-                htmlFor="avatar"
-                className="text-sm block font-medium text-gray-700"
-              ></label>
-              <div className="flex items-center mt-2 p-2">
-                <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
-                  {avatar ? (
-                    <img
-                      src={URL.createObjectURL(avatar)}
-                      alt="avatar"
-                      className="h-full w-full object-cover rounded-full"
-                    />
-                  ) : (
-                    <RxAvatar className="h-8 w-8" />
-                  )}
-                </span>
+            <div className={`${styles.normalFlex} justify-between`}>
+              <div className={`${styles.normalFlex}`}>
+                <input
+                  type="checkbox"
+                  name="remember-me"
+                  id="remember-me"
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
                 <label
-                  htmlFor="file-input"
-                  className="ml-5 flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700"
                 >
-                  <span>Upload File</span>
-                  <input
-                    type="file"
-                    name="avatar"
-                    id="file-input"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    className="sr-only"
-                  />
+                  Remember me
                 </label>
+              </div>
+              <div className="text-sm">
+                <a
+                  href=".forgot-password"
+                  className="font-medium text-blue-600 hover:underline"
+                >
+                  Forgot your password?
+                </a>
               </div>
             </div>
             <div className="">
@@ -168,9 +128,12 @@ const SignUp = () => {
               </button>
             </div>
             <div className={`${styles.normalFlex} w-full`}>
-              <h4 className="text-gray-700">Have account</h4>
-              <Link to="/login" className="text-blue-600 pl-2 hover:underline">
-                Login
+              <h4 className="text-gray-700">Don't have account</h4>
+              <Link
+                to="/shop-create"
+                className="text-blue-600 pl-2 hover:underline"
+              >
+                Sign Up
               </Link>
             </div>
           </form>
@@ -181,4 +144,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default ShopLogin;
