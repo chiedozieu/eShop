@@ -3,6 +3,7 @@ import Header from "../components/layout/Header";
 import styles from "../styles/style";
 import { productData } from "../static/data.js";
 import ProductCard from "../components/route/productCard/ProductCard";
+import Footer from "../components/layout/Footer.jsx";
 
 const BestSellingPage = () => {
   const [data, setData] = useState([]);
@@ -26,6 +27,7 @@ const BestSellingPage = () => {
           {data && data.map((i, index) => <ProductCard data={i} key={index} />)}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

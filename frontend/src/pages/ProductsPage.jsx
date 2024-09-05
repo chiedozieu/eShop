@@ -4,6 +4,7 @@ import styles from '../styles/style'
 import { useSearchParams } from 'react-router-dom'
 import { productData } from '../static/data.js'
 import ProductCard from '../components/route/productCard/ProductCard'
+import Footer from '../components/layout/Footer.jsx'
 
 
 const ProductsPage = () => {
@@ -48,6 +49,7 @@ const ProductsPage = () => {
                 )
             }
         </div>
+        <Footer />
     
     </div>
   )

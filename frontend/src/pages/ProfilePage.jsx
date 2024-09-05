@@ -3,6 +3,7 @@ import Header from '../components/layout/Header'
 import styles from '../styles/style'
 import ProfileSidebar from '../components/profile/ProfileSidebar'
 import ProfileContent  from '../components/profile/ProfileContent'
+import Footer from '../components/layout/Footer'
 // import { useSelector } from 'react-redux'
 
 const ProfilePage = () => {
@@ -18,6 +19,7 @@ const ProfilePage = () => {
             </div>
             <ProfileContent active={active} />
         </div>
+        <Footer />
     </div>
   )
 }
