@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { PiUploadSimpleThin } from "react-icons/pi";
-import { MdPreview } from "react-icons/md";
-import { TbPointerPlus } from "react-icons/tb";
+import { createProduct } from "../../redux/actions/product";
+import {toast} from 'react-toastify'
 
 const CreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
-  const navigate = useNavigate();
+  const { success, error } = useSelector((state) => state.product);
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [images, setImages] = useState([]);
@@ -20,15 +21,43 @@ const CreateProduct = () => {
   const [originalPrice, setOriginalPrice] = useState();
   const [stock, setStock] = useState();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  }; 
+  useEffect(() => {
+   if(error){
+    toast.error(error)
+   }
+   if(success){
+    toast.success('Product created successfully')
+    // navigate('/dashboard')
+   }
+  }, [dispatch, error, success]);
+
 
   const handleImageChange = (e) => {
+    let files = Array.from(e.target.files);
+    setImages((prevImages) => [...prevImages, ...files]);
+  };
+  
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    let files = Array.from(e.target.files)
-    setImages((prevImages)=> [...prevImages, ...files]);
-  }
+
+    const newForm = new FormData();
+    images.forEach((image) => {
+      newForm.append("images", image);
+    });
+    newForm.append("name", name);
+    newForm.append("description", description);
+    newForm.append("category", category);
+    newForm.append("tags", tags);
+    newForm.append("originalPrice", originalPrice);
+    newForm.append("discountPrice", discountPrice);
+    newForm.append("stock", stock);
+    newForm.append("shopId", seller._id);
+
+    dispatch(createProduct(newForm));
+  };
+
+ 
 
   return (
     <div className="md:w-[50%] w-[90%] bg-white shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
@@ -54,14 +83,17 @@ const CreateProduct = () => {
           <label htmlFor="" className="pb-2">
             Description<span className="text-red-500">*</span>
           </label>
-          <input
+          <textarea
             type="text"
+            required
+            cols="30"
+            rows="8"
             name="description"
             value={description}
-            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            className="mt-2 appearance-none block w-full px-3 pt-2 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter product description..."
             onChange={(e) => setDescription(e.target.value)}
-          />
+          ></textarea>
         </div>
         <br />
         <div className="productTags ">
@@ -75,13 +107,10 @@ const CreateProduct = () => {
             className="mt-2 w-full border h-[36px] rounded-[5px]"
           >
             <option value="Choose a category">Choose a category</option>
-           { 
-            categoriesData && categoriesData.map((i) => (
-                <option key={i.title}>
-                    {i.title}
-                </option>
-            ))
-            }
+            {categoriesData &&
+              categoriesData.map((i, index) => (
+                <option key={index}>{i.title}</option>
+              ))}
           </select>
         </div>
         <br />
@@ -106,7 +135,7 @@ const CreateProduct = () => {
           <input
             type="number"
             name="price "
-            value={originalPrice }
+            value={originalPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             placeholder="Enter product price..."
             onChange={(e) => setOriginalPrice(e.target.value)}
@@ -134,40 +163,48 @@ const CreateProduct = () => {
           <input
             type="number"
             name="stock"
-            value={discountPrice}
+            value={stock}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            placeholder="Enter product stock..."
+            placeholder="Please specify the available quantity..."
             onChange={(e) => setStock(e.target.value)}
           />
-        </div> 
+        </div>
         <br />
         <div className="productDescription">
           <label htmlFor="upload" className="pb-2 flex gap-4 items-center">
-            <p>Upload Image <span className="text-red-500">*</span></p>
-            <PiUploadSimpleThin size={25} className="cursor-pointer"/>
+            <p>
+              Upload Image <span className="text-red-500">*</span>
+            </p>
+            <PiUploadSimpleThin size={25} className="cursor-pointer" />
           </label>
-          
+
           <input
             type="file"
             id="upload"
-            value={discountPrice}
-            multiple 
+            multiple
             hidden
             onChange={handleImageChange}
           />
           <div className="w-full flex items-center flex-wrap ">
-              {
-                images && images.map((i) => (
-                    <img src={URL.createObjectURL(i)} alt="" key={i} className="w-[120px] h-[120px]  object-cover m-2"/>
-                ))
-              }
+            {images &&
+              images.map((i, index) => (
+                <img
+                  src={URL.createObjectURL(i)}
+                  alt=""
+                  key={index}
+                  className="w-[120px] h-[120px] object-cover m-2"
+                />
+              ))}
           </div>
           <br />
-          <div className="">
-            <input type="submit" value='create' className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+          <div className="submitButton">
+            <input
+              type="submit"
+              value="Create"
+              className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm cursor-pointer hover:bg-teal-500 hover:text-white"
+            />
           </div>
-        </div> 
-        
+        </div>
       </form>
     </div>
   );
@@ -175,10 +212,7 @@ const CreateProduct = () => {
 
 export default CreateProduct;
 
-
-
-
-
+ 
 
 // import React, { useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";

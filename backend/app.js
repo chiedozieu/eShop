@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 // routes imports
-import userRoutes from "./controller/userController.js"; 
-import shopRoutes from "./controller/shopController.js"; 
+import user from "./controller/userController.js"; 
+import shop from "./controller/shopController.js"; 
+import product from "./controller/productController.js"; 
 
 
 import { errorMiddleware } from "./middleware/error.js";
@@ -41,9 +42,10 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Use the user routes
-app.use("/api/v2/user", userRoutes); 
-app.use("/api/v2/shop", shopRoutes); 
-
+app.use("/api/v2/user", user); 
+app.use("/api/v2/shop", shop); 
+app.use("/api/v2/product", product); 
+ 
 // Error handling middleware
 app.use(errorMiddleware);
 

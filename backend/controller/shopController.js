@@ -13,8 +13,16 @@ import { errorHandler } from "../utils/errorHandler.js";
 
 const router = express.Router();
 
+  // Create the activation token function
+  const createActivationToken = (seller) => {
+    return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
+      expiresIn: "10m",
+    });
+  };
+
+
 // Route to create a shop and send activation email
-router.post("/create-shop", upload.single("file"), async (req, res, next) => {
+router.post("/create-shop", upload.single("file"), catchAsyncErrors(async (req, res, next) => {
   try {
     const { email } = req.body;
     const sellerEmail = await shopModel.findOne({ email });
@@ -46,13 +54,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
       phoneNumber: req.body.phoneNumber,
     };
 
-     // Create the activation token function
-     const createActivationToken = (seller) => {
-        return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
-          expiresIn: "10m",
-        });
-      };
-
+   
     // Generate activation token
     const activationToken = createActivationToken(seller);
     const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
@@ -73,7 +75,7 @@ router.post("/create-shop", upload.single("file"), async (req, res, next) => {
   } catch (error) {
     return next(errorHandler(500, error.message));
   }
-});
+}));
 
 // Route to activate the seller/shop
 router.post(
@@ -135,7 +137,7 @@ router.post(
   })
 );
 
-export default router;
+
 
 // login shop
 
@@ -195,3 +197,5 @@ router.get(
     }
   })
 );
+
+export default router;
