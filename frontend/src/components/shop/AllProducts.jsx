@@ -154,7 +154,7 @@ const AllProducts = () => {
     { field: "stock", headerName: "Stock", type: "number", minWidth: 80, flex: 0.5 },
     {
       field: "image",
-      headerName: "delete",
+      headerName: "Product Image",
       minWidth: 150,
       flex: 0.6,
       renderCell: (params) => {
