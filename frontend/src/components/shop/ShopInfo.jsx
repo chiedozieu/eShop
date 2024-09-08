@@ -9,7 +9,7 @@ const ShopInfo = ({ isOwner }) => {
 
 
   const handleLogout = async () => {
-     axios.get(`${server}/product/logout`, {withCredentials: true})
+     axios.get(`${server}/shop/logout`, {withCredentials: true})
      window.location.reload();
   }
 

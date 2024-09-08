@@ -6,6 +6,7 @@ import cors from "cors";
 import user from "./controller/userController.js"; 
 import shop from "./controller/shopController.js"; 
 import product from "./controller/productController.js"; 
+import event from "./controller/eventController.js"; 
 
 
 import { errorMiddleware } from "./middleware/error.js";
@@ -45,6 +46,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use("/api/v2/user", user); 
 app.use("/api/v2/shop", shop); 
 app.use("/api/v2/product", product); 
+app.use("/api/v2/event", event); 
  
 // Error handling middleware
 app.use(errorMiddleware);

@@ -24,7 +24,13 @@ import { loadSeller, loadUser } from "./redux/actions/user.js";
 import ProtectedRoute from "./Routes/ProtectedRoute.js";
 import { ShopHomePage } from "./ShopRoutes.js";
 import SellerProtectedRoute from "./Routes/SellerProtectedRoute.js";
-import { ShopDashboardPage, ShopCreateProduct, ShopAllProduct  } from "./Routes/shopRoutes.js";
+import {
+  ShopDashboardPage,
+  ShopCreateProduct,
+  ShopAllProduct,
+  ShopCreateEvents,
+  ShopAllEvents,
+} from "./Routes/shopRoutes.js";
 
 const App = () => {
   useEffect(() => {
@@ -97,7 +103,7 @@ const App = () => {
           path="/dashboard-create-product"
           element={
             <SellerProtectedRoute>
-              <ShopCreateProduct  />
+              <ShopCreateProduct />
             </SellerProtectedRoute>
           }
         />
@@ -106,7 +112,23 @@ const App = () => {
           path="/dashboard-products"
           element={
             <SellerProtectedRoute>
-              <ShopAllProduct  />
+              <ShopAllProduct />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-create-event"
+          element={
+            <SellerProtectedRoute>
+              <ShopCreateEvents />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-events"
+          element={
+            <SellerProtectedRoute>
+              <ShopAllEvents />
             </SellerProtectedRoute>
           }
         />
