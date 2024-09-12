@@ -6,14 +6,18 @@ import {
   displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
+// import { useSelector } from "react-redux";
+import { backend_url } from "../../../server";
 
 
 const ProductSectionCard = ({ data }) => {
-  const productName = data.name;
-  const product_name = productName.replace(/\s+/g, "-");
+  // const { products } = useSelector((state) => state.product);
+console.log('ProductSectionCardata', data);
+  // const productName = data.name;
+  // const product_name = productName.replace(/\s+/g, "-");
 
-  const originalPrice = data.price;
-  const discountPrice = data.discount_price;
+  const originalPrice = data.originalPrice;
+  const discountPrice = data.discountPrice;
   const discountAmount = originalPrice - discountPrice;
   const discountPercentage = (discountAmount / originalPrice) * 100;
 
@@ -21,15 +25,15 @@ const ProductSectionCard = ({ data }) => {
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
         <div className="flex justify-between px-4 ">
-          <Link to={`/product/${product_name}`}>
+          <Link to={`/product/${data._id}`}>
             <img
-              src={data.image_Url[0].url}
+              src={`${backend_url}${data.images && data.images[0]}`}
               alt={data.id}
               className="w-[85px] h-[85px] object-contain mt-2"
             />           
           </Link>
 
-          <Link to={`/product/${product_name}`} className="flex flex-col ml-3 mt-2">
+          <Link to={`/shop/preview/${data?.shop._id}`} className="flex flex-col ml-3 mt-2">
             <h4 className="font-medium">
               {data?.name.length > 27
                 ? data?.name.slice(0, 27) + " ..."
@@ -41,12 +45,12 @@ const ProductSectionCard = ({ data }) => {
                   <div className="flex">
                     <p className={`${styles.productDiscountPrice}`}>
                       {displayNGNCurrency(
-                        data.price === 0 ? data.price : data.discount_price
+                        data.originalPrice === 0 ? data.originalPrice : data.discountPrice
                       )}
                     </p>
-                    <p className={`${styles.price} ${data.discount_price}`}>
-                      {data.price !== data.discount_price
-                        ? displayCurrencyOnly(data.price)
+                    <p className={`${styles.price} ${data.discountPrice}`}>
+                      {data.originalPrice !== data.discountPrice
+                        ? displayCurrencyOnly(data.originalPrice)
                         : null}
                     </p>
                   </div>

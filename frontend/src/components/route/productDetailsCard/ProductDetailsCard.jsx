@@ -7,6 +7,7 @@ import {
   displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
+import { backend_url } from "../../../server";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
   const [click, setClick] = useState(false);
@@ -44,10 +45,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             />
             <div className="block w-full md:flex">
               <div className="w-full md:w-1/2">
-                <img src={data.image_Url[0].url} alt="" />
+                <img src={`${backend_url}${data.images && data.images[0]}`}alt="" />
                 <div className="flex items-center">
                   <img
-                    src={data.shop.shop_avatar.url}
+                    src={`${backend_url}${data.shop && data.shop.avatar.url}`}
                     alt=""
                     className="w-12 h-12 rounded-full mr-2 mt-2 "
                   />
@@ -71,16 +72,16 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 </h5>
               </div>
               {/* Right */}
-              <div className="w-full md:w-[50%] pt-5 pl-[5px] pr-5px">
+              <div className="w-full md:w-[50%] pt-5 pl-[5px] pr-[5px]">
                 <h1 className={`${styles.productTitle}`}>{data.name}</h1>
                 <p>{data.description}</p>
                 <div className="">
                   <div className="flex pt-3">
                     <h4 className={`${styles.productDiscountPrice}`}>
-                      {displayNGNCurrency(data.discount_price)}
+                      {displayNGNCurrency(data.discountPrice)}
                     </h4>
                     <h3 className={`${styles.price}`}>
-                      {data.price ? displayCurrencyOnly(data.price) : null}
+                      {data.originalPrice ? displayCurrencyOnly(data.originalPrice) : null}
                     </h3>
                   </div>
                   <div className="flex items-center justify-between mt-4">

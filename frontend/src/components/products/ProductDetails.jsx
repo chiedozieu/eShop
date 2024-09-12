@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styles from "../../styles/style";
 import {
   displayCurrencyOnly,
@@ -7,13 +7,28 @@ import {
 } from "../../utils/displayCurrency";
 import { PiHeartStraightFill, PiHeartStraightThin } from "react-icons/pi";
 import { AiOutlineMessage } from "react-icons/ai";
+import { backend_url } from "../../server";
+import {scrollTop} from '../../../src/utils/scrollTop'
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProductsShop } from "../../redux/actions/product";
 
 const ProductDetails = ({ data }) => {
+scrollTop()
+
   const [click, setClick] = useState(false);
-  const [select, setSelect] = useState(0);
+  const [select, setSelect] = useState(0); 
   const navigate = useNavigate();
+
+  // for shop data
+  const { products } = useSelector((state) => state.product);
+  
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(getAllProductsShop(data && data.shop?._id));
+  }, [dispatch]);
  
-  window.scrollTo(0,0)
+ 
 
   const handleMessageSubmit = () => {
     navigate("/inbox?conversation=tryhrt53heghs");
@@ -28,7 +43,7 @@ const ProductDetails = ({ data }) => {
               {/* Left */}
               <div className="w-full md:w-50%">
                 <img
-                  src={data.image_Url[select].url}
+                  // src={data.image_Url[select].url}
                   alt=""
                   className="w-[80%] h-[500px] object-contain"
                 />
@@ -39,7 +54,7 @@ const ProductDetails = ({ data }) => {
                     } cursor-pointer `}
                   >
                     <img
-                      src={data?.image_Url[0].url}
+                      src={`${backend_url}${data.images && data.images[0]}`}
                       alt=""
                       className="h-[120px] w-[120px] object-contain p-1 "
                       onClick={() => setSelect(0)}
@@ -51,7 +66,7 @@ const ProductDetails = ({ data }) => {
                     } cursor-pointer `}
                   >
                     <img
-                      src={data?.image_Url[1].url}
+                      src={`${backend_url}${data.images && data.images[1]}`}
                       alt=""
                       className="h-[120px] w-[120px] object-contain p-1"
                       onClick={() => setSelect(1)}
@@ -63,7 +78,7 @@ const ProductDetails = ({ data }) => {
                     } cursor-pointer `}
                   >
                     <img
-                      src={data?.image_Url[2].url}
+                      src={`${backend_url}${data.images && data.images[3]}`}
                       alt=""
                       className="h-[120px] w-[120px] object-contain p-1"
                       onClick={() => setSelect(2)}
@@ -75,7 +90,7 @@ const ProductDetails = ({ data }) => {
                     } cursor-pointer `}
                   >
                     <img
-                      src={data?.image_Url[3].url}
+                      src={`${backend_url}${data.images && data.images[3]}`}
                       alt=""
                       className="h-[120px] w-[120px] object-contain p-1"
                       onClick={() => setSelect(3)}
@@ -91,10 +106,10 @@ const ProductDetails = ({ data }) => {
                 <div className="flex pt-3 justify-between">
                   <div className="flex">
                     <h4 className={`${styles.productDiscountPrice}`}>
-                      {displayNGNCurrency(data.discount_price)}
+                      {displayNGNCurrency(data.discountPrice)}
                     </h4>
                     <h3 className={`${styles.price}`}>
-                      {data.price ? displayCurrencyOnly(data.price) : null}
+                      {data.originalPrice ? displayCurrencyOnly(data.originalPrice) : null}
                     </h3>
                   </div>
                   <div className="mr-4">
@@ -123,14 +138,14 @@ const ProductDetails = ({ data }) => {
                 {/* shop name/message */}
                 <div className="flex items-center pt-8 justify-between">
                   <img
-                    src={data.shop.shop_avatar.url}
+                    src={`${backend_url}${data?.shop?.avatar}`}
                     alt=""
                     className="w-12 h-12 rounded-full mr-2 mt-2 "
                   />
                   <div className="">
-                    <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
+                    {/* <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3> */}
                     <h5 className="pb-3 text-[15px]">
-                      ({data.shop.ratings}) Ratings
+                      (4/5 ) Ratings
                     </h5>
                   </div>
                   <div
@@ -148,7 +163,7 @@ const ProductDetails = ({ data }) => {
               </div>
             </div>
           </div>
-          <ProductDetailsInfo data={data} />
+          <ProductDetailsInfo data={data} products={products}/>
           <br />
           <br />
         </div>
@@ -157,7 +172,7 @@ const ProductDetails = ({ data }) => {
   );
 };
 
-const ProductDetailsInfo = ({ data }) => {
+const ProductDetailsInfo = ({ data, products}) => {
   const [active, setActive] = useState(1);
   return (
     <div className="bg-[#f5f6fb] rounded md:px-10 py-2">
@@ -205,38 +220,11 @@ const ProductDetailsInfo = ({ data }) => {
       {active === 1 ? (
         <>
           <p className="p-4 text-[18px] leading-8 pb-10 whitespace-pre-line overflow-scroll">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat ad,
-            quidem doloribus iste accusamus placeat a reiciendis velit eum
-            molestias consequuntur asperiores nam animi amet dicta adipisci
-            eveniet molestiae praesentium aut nemo provident veritatis? Quos,
-            cupiditate! Libero maxime odio, assumenda quidem exercitationem
-            officiis illum recusandae veniam incidunt eum ad nostrum temporibus
-            magnam iure voluptates quo ex blanditiis. Dolor soluta facilis quasi
-            assumenda natus culpa voluptate beatae earum numquam, non nam esse
+           {
+            data?.description
+           }
           </p>
-          <p className="p-4 text-[18px] leading-8 pb-10 whitespace-pre-line overflow-scroll">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat ad,
-            quidem doloribus iste accusamus placeat a reiciendis velit eum
-            molestias consequuntur asperiores nam animi amet dicta adipisci
-            eveniet molestiae praesentium aut nemo provident veritatis? Quos,
-            cupiditate! Libero maxime odio, assumenda quidem exercitationem
-            reprehenderit minima sit atque! Corporis vitae fuga minima
-            consequuntur ratione iusto, tempora enim illo veritatis facilis
-            dolore rerum, provident, a id qui doloremque ipsam suscipit neque
-            deserunt cupiditate laboriosam obcaecati magni? Officiis reiciendis
-            culpa quia est?
-          </p>
-          <p className="p-4 text-[18px] leading-8 pb-10 whitespace-pre-line overflow-scroll">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat ad,
-            quidem doloribus iste accusamus placeat a reiciendis velit eum
-            molestias consequuntur asperiores nam animi amet dicta adipisci
-            eveniet molestiae praesentium aut nemo provident veritatis? Quos,
-            cupiditate! Libero maxime odio, assumenda quidem exercitationem
-            officiis illum recusandae veniam incidunt eum ad nostrum temporibus
-            magnam iure voluptates quo ex blanditiis. Dolor soluta facilis quasi
-            assumenda natus culpa voluptate beatae earum numquam, non nam esse
-            culpa quia est?
-          </p>
+         
         </>
       ) : null}
       {/* active 2 */}
@@ -270,13 +258,16 @@ const ProductDetailsInfo = ({ data }) => {
           <div className="w-full md:w-[50%] mt-5 md:mt-0 md:flex flex-col items-end">
             <div className="text-left">
                 <h5 className="font-bold">
-                    Joined: <span className="font-semibold">10 June 2024</span>
+                    Joined: <span className="font-semibold">{data.shop?.createdAt?.slice(0, 10)}</span>
+                </h5>
+                <h5 className="font-bold">
+                    <p>{data.shop.description}</p>
                 </h5>
                 <h5 className="font-bold mt-3">
-                    Total Products: <span className="font-semibold">204</span>
+                    Total Products: <span className="font-semibold">{products && products.length}</span>
                 </h5>
                 <h5 className="font-bold mt-3">
-                    Total Reviews: <span className="font-semibold">50 </span>
+                    Ratings: <span className="font-semibold">4/5 </span>
                 </h5>
                 <Link to='/'>
                 <div className={`${styles.button} !rounded-[4px] !h-10 mt-3`}>

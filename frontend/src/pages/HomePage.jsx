@@ -6,9 +6,10 @@ import FeaturedProduct  from '../components/route/featuredProduct/FeaturedProduc
 import Events from '../components/route/events/Events' 
 import ProductSection from '../components/route/productSection/ProductSection'
 import Footer from '../components/layout/Footer'
+import { scrollTop } from "../utils/scrollTop";
 
 const HomePage = () => {
-  window.scrollTo(0,0)
+  scrollTop()
   return (
     <div >
     

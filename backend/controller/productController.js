@@ -4,7 +4,8 @@ import { upload } from "../multer.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import shopModel from "../model/shopModel.js";
-import { isSeller } from "../middleware/auth.js"; 
+import { isSeller } from "../middleware/auth.js";
+import fs from "fs";
 
 const router = express.Router();
 
@@ -65,13 +66,24 @@ router.delete(
   catchAsyncErrors(async (req, res, next) => {
     try {
       const productId = req.params.id;
+      const productData = await productModel.findById(productId);
+
+      productData.images.forEach((imageUrl) => {
+        const filename = imageUrl;
+        const filePath = `uploads/${filename}`;
+
+        fs.unlink(filePath, (err) => {
+          console.log(err);
+        });
+      });
       const product = await productModel.findByIdAndDelete(productId);
+
       if (!product) {
         return next(errorHandler(500, "Product not found"));
       }
       res.status(201).json({
         success: true,
-       message: "Product deleted successfully"
+        message: "Product deleted successfully",
       });
     } catch (error) {
       return next(errorHandler(400, error));
@@ -79,6 +91,23 @@ router.delete(
   })
 );
 
+
+// get all products
+router.get(
+  "/get-all-products",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const products = await productModel.find().sort({ createdAt: -1 });
+      
+      res.status(201).json({
+        success: true,
+        products,
+      });
+    } catch (error) {
+      return next(errorHandler(400, error));
+    }
+  })
+);
 
 
 export default router;

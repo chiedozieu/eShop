@@ -5,6 +5,7 @@ import eventModel from "../model/eventModel.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import shopModel from "../model/shopModel.js";
 import { isSeller } from "../middleware/auth.js";
+import fs from "fs";
 
 
 
@@ -70,10 +71,24 @@ router.get(
     catchAsyncErrors(async (req, res, next) => {
       try {
         const productId = req.params.id;
-        const event = await eventModel.findByIdAndDelete(productId);
+        const eventData = await eventModel.findById(productId);
+       
+       eventData.images.forEach((imageUrl) => {
+          const filename = imageUrl
+          const filePath = `uploads/${filename}`;
+  
+          fs.unlink(filePath, (err) => {
+            console.log(err);
+          } )
+        })
+        const event = await eventModel.findByIdAndDelete(productId)
         if (!event) {
           return next(errorHandler(500, "Event not found"));
         }
+  
+
+
+
         res.status(201).json({
           success: true,
          message: "Event deleted successfully"
