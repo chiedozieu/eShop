@@ -3,8 +3,6 @@ import { createReducer } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: true,
   product: null,
-  products: [],
-  allProducts: [],
 };
 
 export const productReducer = createReducer(initialState, (builder) => {

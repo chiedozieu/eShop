@@ -12,7 +12,6 @@ const ShopInfo = ({ isOwner }) => {
   const { id } = useParams();
  console.log('ShopInfoData', data)
  
-  
   useEffect(() => {
     setIsLoading(true);
     axios.get(`${server}/shop/get-shop-info/${id}`).then((res) => {
@@ -22,9 +21,7 @@ const ShopInfo = ({ isOwner }) => {
       console.log(error);
       setIsLoading(false)
     })
-  }, []);
-
-
+  }, [id]);
 
   const handleLogout = async () => {
      axios.get(`${server}/shop/logout`, {withCredentials: true})

@@ -2,32 +2,41 @@ import React, { useEffect, useState } from 'react'
 import Header from '../components/layout/Header'
 import styles from '../styles/style'
 import { useSearchParams } from 'react-router-dom'
-import { productData } from '../static/data.js'
+// import { productData } from '../static/data.js'
 import ProductCard from '../components/route/productCard/ProductCard'
 import Footer from '../components/layout/Footer.jsx'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllProducts } from '../redux/actions/product.js'
 
 
 const ProductsPage = () => {
-    const [searchParams] = useSearchParams();
-    const categoryData = searchParams.get('category')
-    const [data, setData] = useState([])
+  const { allProducts, isLoading } = useSelector((state) => state.product)
+  const [searchParams] = useSearchParams();
+  const categoryData = searchParams.get('category');
+  const [data, setData] = useState([]);
 
-    
-    useEffect(() => {
-      if(categoryData === null) {
-        const d = productData && productData.sort((a, b) => a.total_sell - b.total_sell);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProducts());  // Fetch products when the component mounts
+  }, [dispatch])
+
+  useEffect(() => {
+    console.log("allProducts:", allProducts);
+    if (!isLoading) {
+      if (categoryData === null) {
+        const d =
+        allProducts && allProducts.sort((a,b) => a.originalPrice - b.originalPrice)
         setData(d);
-      }else{
-        const d = productData && productData.filter((i) => i.category === categoryData)
+      } else {
+       
+        const d = allProducts?.filter((i) => i.category === categoryData);
         setData(d);
       }
-      window.scrollTo(0,0)
-    },[categoryData])
+    }
+    window.scrollTo(0, 0);
+  }, [categoryData, allProducts, isLoading]);
     
-
-
-
-
   return (
     <div>
         <Header activeHeading={3}/>
@@ -56,3 +65,4 @@ const ProductsPage = () => {
 }
 
 export default ProductsPage
+

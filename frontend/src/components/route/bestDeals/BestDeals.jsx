@@ -3,7 +3,7 @@ import styles from "../../../styles/style";
 import ProductCard from "../productCard/ProductCard";
 import { useSelector } from "react-redux";
 
-const BestDeals = () => {
+const BestDeals = () => { 
   const [data, setData] = useState([]);
   const { allProducts } = useSelector((state) => state.product);
  

@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
-// import { productData } from "../../static/data";
 import styles from "../../styles/style";
 import ProductCard from "../route/productCard/ProductCard";
 import { useSelector } from "react-redux";
-
+ 
 const SuggestedProduct = ({ data }) => {
-  const {allProducts} = useSelector((state) => state.product)
+  const { allProducts } = useSelector((state) => state.product)
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
-    const sameCategory =
-    allProducts && allProducts.filter((i) => i.category === data.category);
-      setProductData (sameCategory);
-  }, [data.category]);
-
+    const sameCategory = allProducts && allProducts.filter((i) => i.category === data?.category)
+    setProductData(sameCategory)
+  }, [allProducts, data?.category]);
   return (
     <div>
       {data ? (
@@ -24,10 +21,10 @@ const SuggestedProduct = ({ data }) => {
             Related Products
           </h2>
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
-            {
-              productData &&
-              productData.map((i, index) => <ProductCard data={i} key={index} />)
-            }
+            {productData &&
+              productData.map((i, index) => (
+                <ProductCard data={i} key={index} />
+              ))}
           </div>
         </div>
       ) : null}

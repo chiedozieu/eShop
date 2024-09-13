@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/style";
 import { Link } from "react-router-dom";
-import { categoriesData, productData } from "../../static/data.js";
+import { categoriesData } from "../../static/data.js";
 import { CiSearch } from "react-icons/ci";
 import { IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
@@ -18,14 +18,13 @@ import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { allProducts } = useSelector((state) => state.product);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
-
-  console.log(user);
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -34,7 +33,7 @@ const Header = ({ activeHeading }) => {
     if (term === "") {
       setSearchData([]); // Clear search results when the input is empty
     } else {
-      const filteredProducts = productData.filter((product) =>
+      const filteredProducts = allProducts &&  allProducts.filter((product) =>
         product.name.toLowerCase().includes(term.toLowerCase())
       );
       setSearchData(filteredProducts);
@@ -97,7 +96,7 @@ const Header = ({ activeHeading }) => {
                       <Link to={`/product/${product_name}`} key={index}>
                         <div className={`w-full flex items-start py-3 `}>
                           <img
-                            src={i.image_Url[0].url}
+                            src={`${backend_url}${i.images[0]}`}
                             alt=""
                             className="w-10 h-10 mr-2.5"
                           />

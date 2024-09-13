@@ -8,15 +8,13 @@ import { getAllProductsShop } from "../../redux/actions/product";
 
 const ShopProfileData = ({ isOwner }) => {
   const [active, setActive] = useState(1);
-
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
   const dispatch = useDispatch();
   
-
   useEffect(() => {
     dispatch(getAllProductsShop(id));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
     <div className="w-full">

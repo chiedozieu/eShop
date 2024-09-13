@@ -1,20 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/style";
-
 import {
   displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
-// import { useSelector } from "react-redux";
 import { backend_url } from "../../../server";
 
 
 const ProductSectionCard = ({ data }) => {
-  // const { products } = useSelector((state) => state.product);
-console.log('ProductSectionCardata', data);
-  // const productName = data.name;
-  // const product_name = productName.replace(/\s+/g, "-");
+console.log('ProductSectionCard-data', data);
+  const productName = data.name;
+  const product_name = productName.replace(/\s+/g, "-");
 
   const originalPrice = data.originalPrice;
   const discountPrice = data.discountPrice;
@@ -25,7 +22,7 @@ console.log('ProductSectionCardata', data);
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
         <div className="flex justify-between px-4 ">
-          <Link to={`/product/${data._id}`}>
+          <Link to={`/product/${product_name}`}>
             <img
               src={`${backend_url}${data.images && data.images[0]}`}
               alt={data.id}
@@ -33,12 +30,12 @@ console.log('ProductSectionCardata', data);
             />           
           </Link>
 
-          <Link to={`/shop/preview/${data?.shop._id}`} className="flex flex-col ml-3 mt-2">
-            <h4 className="font-medium">
+          <div className="flex flex-col ml-3 mt-2 product-name">
+            <Link to={`/product/${product_name}`} className="font-medium hover:underline">
               {data?.name.length > 27
                 ? data?.name.slice(0, 27) + " ..."
                 : data?.name}
-            </h4>
+            </Link>
 
             <div className="">
                 <div className="py-1 flex items-center justify-between">
@@ -60,10 +57,10 @@ console.log('ProductSectionCardata', data);
                       : null}
                   </span>
             </div>
-            <span className={`${styles.shop_name} flex justify-end`}>{data.shop.name}</span>
+            <Link to={`/shop/preview/${data?.shop._id}`} className={`${styles.shop_name} flex justify-end`}>{data.shop.name}</Link>
              
             </div>
-          </Link>
+          </div>
         </div>
 
        

@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "../../../styles/style";
 // import { productData } from "../../../static/data";
 import ProductSectionCard from "../productSectionCard/ProductSectionCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "../../../redux/actions/product";
 
 const ProductSection = () => {
-  const { allProduct } = useSelector((state) => state.product)
+  const { allProducts } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProducts());  // Fetch products when the component mounts
+  }, [dispatch]);
+
   return (
     <div className="">
       <div className={`${styles.section}`}>
@@ -13,8 +20,8 @@ const ProductSection = () => {
           <h1>Product Section</h1>
         </div>
         <div className='grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-[30px]'>
-          {allProduct &&
-            allProduct.map((i, index) => (
+          {allProducts &&
+            allProducts.map((i, index) => (
               <ProductSectionCard data={i} key={index} />
             ))}
         </div>

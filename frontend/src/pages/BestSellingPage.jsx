@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/layout/Header";
 import styles from "../styles/style";
-import { productData } from "../static/data.js";
+// import { productData } from "../static/data.js";
 import ProductCard from "../components/route/productCard/ProductCard";
 import Footer from "../components/layout/Footer.jsx";
+import { useSelector } from "react-redux";
 
 const BestSellingPage = () => {
   const [data, setData] = useState([]);
-
-  console.log('data', data);
-
+  const { allProducts } = useSelector((state) => state.product);
+ 
   useEffect(() => {
-    const d =
-      productData && productData.sort((a, b) => b.total_sell - a.total_sell);
-    setData(d);
-      window.scrollTo(0,0)
-  }, []);
+    const firstFive = allProducts && allProducts.slice(0, 20);
+    setData(firstFive);
+  }, [allProducts]);
+
+  window.scrollTo(0,0)
 
   return (
     <div>

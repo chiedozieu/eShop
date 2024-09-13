@@ -31,11 +31,16 @@ import {
   ShopCreateEvents,
   ShopAllEvents,
 } from "./Routes/shopRoutes.js";
+import { getAllProducts } from "./redux/actions/product.js";
+import { getAllEvents } from "./redux/actions/event.js";
 
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
     store.dispatch(loadSeller());
+    store.dispatch(getAllProducts());
+    store.dispatch(getAllEvents());
+
   }, []);
 
   return (

@@ -78,6 +78,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   }
 };
 
+// get all shop products site
 
 export const getAllProducts = () => async (dispatch) => {
   try {
