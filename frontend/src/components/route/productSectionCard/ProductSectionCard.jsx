@@ -9,7 +9,7 @@ import { backend_url } from "../../../server";
 
 
 const ProductSectionCard = ({ data }) => {
-console.log('ProductSectionCard-data', data);
+
   const productName = data.name;
   const product_name = productName.replace(/\s+/g, "-");
 

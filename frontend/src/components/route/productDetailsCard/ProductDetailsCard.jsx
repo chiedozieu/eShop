@@ -9,24 +9,51 @@ import {
 } from "../../../utils/displayCurrency";
 import { backend_url } from "../../../server";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, removeFromWishlist } from "../../../redux/actions/wishlist";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
+  const { wishlist } = useSelector((state) => state.wishlist)
   const [click, setClick] = useState(false);
   const modalRef = useRef(null);
 
-  // Close the modal when clicking outside of it
+  const dispatch = useDispatch()
+
+
+
+
+  //ˆ Close the modal when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setOpen]);
+//ˆ
+
+
+useEffect(() => {
+  if(wishlist && wishlist.find((i) => i._id === data._id)){
+    setClick(true);
+  }else {
+    setClick(false);
+  }
+}, [wishlist, data._id])
+
+  const removeFromWishlistHandler = (data) => {
+    setClick(!click)
+    dispatch(removeFromWishlist(data));
+ }
+ const addToWishlistHandler = (data) => {
+    setClick(!click)
+    dispatch(addToWishlist(data));
+ }
+
 
   const handleMessageSubmit = () => {};
 
@@ -97,20 +124,18 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         <div className="cursor-pointer bg-black w-10 h-10 flex justify-center items-center opacity-90 rounded-full">
                           <PiHeartStraightFill
                             size={30}
-                            onClick={() => setClick(!click)}
+                            onClick={() => removeFromWishlistHandler(data)}
                             color={click ? "red" : "white"}
                             title="Remove from wishlist"
-                            className="hover:animate-spin transition-all"
                           />
                         </div>
                       ) : (
                         <div className="cursor-pointer bg-black w-10 h-10 flex justify-center items-center opacity-90 rounded-full">
                           <PiHeartStraightThin
                             size={30}
-                            onClick={() => setClick(!click)}
+                            onClick={() => addToWishlistHandler(data)}
                             color={click ? "red" : "white"}
                             title="Add to wishlist"
-                            className="hover:animate-bounce transition-all"
                           />
                         </div>
                       )}

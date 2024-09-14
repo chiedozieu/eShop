@@ -3,94 +3,21 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { displayNGNCurrency } from "../../utils/displayCurrency";
 import { BsHeart } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
+import { backend_url } from "../../server";
 
 const Wishlist = ({ setOpenWishlist }) => {
-  const wishListData = [
-    {
-      id: 1,
-      title: "Computers and Laptops",
-      price: 1859000,
-      image_Url:
-        "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
-    },
-    {
-      id: 2,
-      title: "cosmetics and body care",
-      price: 239090,
-      image_Url:
-        "https://static.vecteezy.com/system/resources/previews/035/197/725/non_2x/cosmetics-products-transparent-background-fashion-outfit-profucts-png.png",
-    },
-    {
-      id: 3,
-      title: "Accesories",
-      price: 50000,
-      image_Url:
-        "https://motorolaus.vtexassets.com/arquivos/power-category-image.png",
-    },
-    {
-      id: 4,
-      title: "Computers and Laptops",
-      price: 1859000,
-      image_Url:
-        "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
-    },
-    {
-      id: 5,
-      title: "cosmetics and body care",
-      price: 239090,
-      image_Url:
-        "https://static.vecteezy.com/system/resources/previews/035/197/725/non_2x/cosmetics-products-transparent-background-fashion-outfit-profucts-png.png",
-    },
-    {
-      id: 6,
-      title: "Accesories",
-      price: 50000,
-      image_Url:
-        "https://motorolaus.vtexassets.com/arquivos/power-category-image.png",
-    },
-    {
-      id: 7,
-      title: "Computers and Laptops",
-      price: 1859000,
-      image_Url:
-        "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
-    },
-    {
-      id: 8,
-      title: "cosmetics and body care",
-      price: 239090,
-      image_Url:
-        "https://static.vecteezy.com/system/resources/previews/035/197/725/non_2x/cosmetics-products-transparent-background-fashion-outfit-profucts-png.png",
-    },
-    {
-      id: 9,
-      title: "Accesories",
-      price: 50000,
-      image_Url:
-        "https://motorolaus.vtexassets.com/arquivos/power-category-image.png",
-    },
-    {
-      id: 10,
-      title: "Computers and Laptops",
-      price: 1859000,
-      image_Url:
-        "https://cdn.shopify.com/s/files/1/1706/9177/products/NEWAppleMacbookProwithM1ProChip14InchLaptop2021ModelMKGQ3LL_A_16GB_1TBSSD_custommacbd.jpg?v=1659592838",
-    },
-    {
-      id: 11,
-      title: "cosmetics and body care",
-      price: 239090,
-      image_Url:
-        "https://static.vecteezy.com/system/resources/previews/035/197/725/non_2x/cosmetics-products-transparent-background-fashion-outfit-profucts-png.png",
-    },
-    {
-      id: 12,
-      title: "Accesories",
-      price: 50000,
-      image_Url:
-        "https://motorolaus.vtexassets.com/arquivos/power-category-image.png",
-    },
-  ];
+  const { wishlist } = useSelector((state) => state.wishlist);
+
+  const dispatch = useDispatch();
+
+  const removeFromWishlistHandler = (data) => {
+    dispatch(removeFromWishlist(data));
+  };
+  
 
   return (
     <div className="fixed top-0 left-0 bg-[#0000004b] w-full h-screen z-10">
@@ -105,11 +32,22 @@ const Wishlist = ({ setOpenWishlist }) => {
           </div>
           <div className="my-8 flex items-center justify-center">
             <div className="flex gap-2 items-center">
-              <BsHeart size={25} className="" />
+              <BsHeart
+                size={25}
+                className={`wishlist?.length > 0 ? text-red-600 : '' `}
+              />
 
               <div className="flex gap-1 text-xl font-semibold">
-                <h6>{wishListData.length}</h6>
-                <p>items</p>
+                <h6>
+                  {wishlist?.length === 0 ? (
+                    <p>You do not have any items in your wishlist</p>
+                  ) : (
+                    <p>
+                      {wishlist.length}{" "}
+                      {wishlist.length === 1 ? "item" : "items"}
+                    </p>
+                  )}
+                </h6>
               </div>
             </div>
           </div>
@@ -124,9 +62,9 @@ const Wishlist = ({ setOpenWishlist }) => {
           </div>
           {/* mapped */}
           <div className="">
-            {wishListData &&
-              wishListData.map((i, index) => (
-                <WishlistSingleItem data={i} key={index} />
+            {wishlist &&
+              wishlist.map((i, index) => (
+                <WishlistSingleItem data={i} key={index} removeFromWishlistHandler={removeFromWishlistHandler} />
               ))}
           </div>
         </div>
@@ -135,25 +73,25 @@ const Wishlist = ({ setOpenWishlist }) => {
   );
 };
 
-const WishlistSingleItem = ({ data }) => {
+const WishlistSingleItem = ({ data, removeFromWishlistHandler }) => {
   return (
     <div className="max-w-[600px] mx-auto border-[1px] border-t-0 p-2 flex justify-between items-center">
-      <Link to={`/product/${data.title}`}>
+      <Link to={`/product/${data.name}`}>
         <div className="flex items-center gap-4">
-          <img src={data.image_Url} alt="" className="h-20 w-20 object-cover" />
+          <img src={`${backend_url}${data.images[0]}`} alt="" className="h-20 w-20 object-cover" />
           <h6>
-            {data.title.length > 20
-              ? data.title.slice(0, 20) + "..."
-              : data.title}
+            {data.name.length > 20
+              ? data.name.slice(0, 20) + "..."
+              : data.name}
           </h6>
         </div>
       </Link>
       <div className="flex gap-2 items-center">
-        <h6>{displayNGNCurrency(data.price)}</h6>
-        <IoIosCloseCircleOutline
-          // onClick={}
+        <h6>{displayNGNCurrency(data.discountPrice)}</h6>
+        <IoIosCloseCircleOutline onClick={() => removeFromWishlistHandler(data)}
           className="cursor-pointer"
           color="red"
+        
         />
       </div>
     </div>

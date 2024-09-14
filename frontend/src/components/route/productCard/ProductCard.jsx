@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/style";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -11,23 +11,41 @@ import {
 } from "../../../utils/displayCurrency";
 import ProductDetailsCard from '../productDetailsCard/ProductDetailsCard.jsx';
 import { backend_url } from "../../../server.js";
+import { addToWishlist, removeFromWishlist } from "../../../redux/actions/wishlist.js";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const  ProductCard = ({ data }) => {
-
+  const { wishlist } = useSelector((state) => state.wishlist)
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  console.log('ProductCard-data', data)
+  const dispatch = useDispatch()
  
-  const productName = data.name;
-  const product_name = productName.replace(/\s+/g, "-");
-
+  useEffect(() => {
+    if(wishlist && wishlist.find((i) => i._id === data._id)){
+      setClick(true);
+    }else {
+      setClick(false);
+    }
+  }, [wishlist, data._id])
+  
+ 
   const originalPrice = data.originalPrice;
   const discountPrice = data.discountPrice;
   const discountAmount = originalPrice - discountPrice;
   const discountPercentage = (discountAmount / originalPrice) * 100;
+
+
+  const removeFromWishlistHandler = (data) => {
+     setClick(!click)
+     dispatch(removeFromWishlist(data));
+  }
+  const addToWishlistHandler = (data) => {
+     setClick(!click)
+     dispatch(addToWishlist(data));
+  }
 
   return (
     <>
@@ -37,7 +55,7 @@ const  ProductCard = ({ data }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex justify-end"></div> 
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data._id}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt={data.id}
@@ -47,7 +65,7 @@ const  ProductCard = ({ data }) => {
         <Link to={`/`}>
           <h2 className={`${styles.shop_name}`}>{data.shop.name}</h2>
         </Link>
-        <Link to={`/product/${product_name}`}>
+        <Link to={`/product/${data._id}`}>
           <h4 className="pb-3 font-medium">
             {data?.name.length > 40
               ? data?.name.slice(0, 40) + " ..."
@@ -100,13 +118,15 @@ const  ProductCard = ({ data }) => {
         {/* Side options */}
         {
             isHovered && (
-        <div className="">      
+        <div className="">   
+                  {/* wishlist remove/add */}
           {click ? (
+            
             <div className="cursor-pointer absolute top-5 right-2 bg-blue-50 w-10 h-10 flex justify-center items-center opacity-90">
               <PiHeartStraightFill
                 size={22}
                 className=""
-                onClick={() => setClick(!click)}
+                onClick={() => removeFromWishlistHandler(data)}
                 color={click ? "red" : "#333"}
                 title="Remove from wishlist"
               />
@@ -116,7 +136,7 @@ const  ProductCard = ({ data }) => {
               <PiHeartStraightThin
                 size={22}
                 className=""
-                onClick={() => setClick(!click)}
+                onClick={() => addToWishlistHandler(data)}
                 color={click ? "red" : "#333"}
                 title="Add to wishlist"
               />

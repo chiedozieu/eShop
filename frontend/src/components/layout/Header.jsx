@@ -19,13 +19,14 @@ import { RxCross1 } from "react-icons/rx";
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const { allProducts } = useSelector((state) => state.product);
+  const { wishlist } = useSelector((state) => state.wishlist)
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
-
+ 
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -90,10 +91,9 @@ const Header = ({ activeHeading }) => {
               >
                 {searchData &&
                   searchData.map((i, index) => {
-                    const d = i.name;
-                    const product_name = d.replace(/\s+/g, "-");
+                    
                     return (
-                      <Link to={`/product/${product_name}`} key={index}>
+                      <Link to={`/product/${i._id}`} key={index}>
                         <div className={`w-full flex items-start py-3 `}>
                           <img
                             src={`${backend_url}${i.images[0]}`}
@@ -158,7 +158,7 @@ const Header = ({ activeHeading }) => {
               >
                 <PiHeartThin size={30} />
                 <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
-                  12
+                {wishlist?.length}
                 </span>
               </div>
             </div>

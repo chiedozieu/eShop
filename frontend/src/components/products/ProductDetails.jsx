@@ -11,10 +11,11 @@ import { backend_url } from "../../server";
 import { scrollTop } from "../../../src/utils/scrollTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
+import { addToWishlist, removeFromWishlist } from "../../redux/actions/wishlist";
 
 const ProductDetails = ({ data }) => {
   scrollTop();
-
+  const { wishlist } = useSelector((state) => state.wishlist)
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
@@ -27,6 +28,23 @@ useEffect(() => {
   dispatch(getAllProductsShop(data && data.shop._id));
 }, [dispatch, data]);
 //*
+
+useEffect(() => {
+  if(wishlist && wishlist.find((i) => i._id === data._id)){
+    setClick(true);
+  }else {
+    setClick(false);
+  }
+}, [wishlist, data._id])
+
+const removeFromWishlistHandler = (data) => {
+  setClick(!click)
+  dispatch(removeFromWishlist(data));
+}
+const addToWishlistHandler = (data) => {
+  setClick(!click)
+  dispatch(addToWishlist(data));
+}
 
   const handleMessageSubmit = () => {
     navigate("/inbox?conversation=tryhrt53heghs");
@@ -52,6 +70,7 @@ useEffect(() => {
                   {
                     data && data.images.map((i, index) => (
                       <div
+                      key={index}
                     className={`${
                       select === 0 ? "border" : "null"
                     } cursor-pointer `}
@@ -97,17 +116,16 @@ useEffect(() => {
                       <div className="cursor-pointer bg-black w-10 h-10 flex justify-center items-center opacity-90 rounded-full">
                         <PiHeartStraightFill
                           size={30}
-                          onClick={() => setClick(!click)}
+                          onClick={() => removeFromWishlistHandler(data)}
                           color={click ? "red" : "white"}
                           title="Remove from wishlist"
-                          className="hover:animate-spin transition-all"
                         />
                       </div>
                     ) : (
                       <div className="cursor-pointer bg-black w-10 h-10 flex justify-center items-center opacity-90 rounded-full">
                         <PiHeartStraightThin
                           size={30}
-                          onClick={() => setClick(!click)}
+                          onClick={() => addToWishlistHandler(data)}
                           color={click ? "red" : "white"}
                           title="Add to wishlist"
                         />
