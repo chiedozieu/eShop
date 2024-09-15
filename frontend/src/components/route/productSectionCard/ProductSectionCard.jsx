@@ -10,8 +10,6 @@ import { backend_url } from "../../../server";
 
 const ProductSectionCard = ({ data }) => {
 
-  const productName = data.name;
-  const product_name = productName.replace(/\s+/g, "-");
 
   const originalPrice = data.originalPrice;
   const discountPrice = data.discountPrice;
@@ -22,7 +20,7 @@ const ProductSectionCard = ({ data }) => {
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
         <div className="flex justify-between px-4 ">
-          <Link to={`/product/${product_name}`}>
+          <Link to={`/product/${data._id}`}>
             <img
               src={`${backend_url}${data.images && data.images[0]}`}
               alt={data.id}
@@ -31,7 +29,7 @@ const ProductSectionCard = ({ data }) => {
           </Link>
 
           <div className="flex flex-col ml-3 mt-2 product-name">
-            <Link to={`/product/${product_name}`} className="font-medium hover:underline">
+            <Link to={`/product/${data._id}`} className="font-medium hover:underline">
               {data?.name.length > 27
                 ? data?.name.slice(0, 27) + " ..."
                 : data?.name}

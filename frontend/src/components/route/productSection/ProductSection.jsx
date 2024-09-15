@@ -1,17 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "../../../styles/style";
-// import { productData } from "../../../static/data";
 import ProductSectionCard from "../productSectionCard/ProductSectionCard";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../../../redux/actions/product";
+import { useSelector } from "react-redux";
+
 
 const ProductSection = () => {
   const { allProducts } = useSelector((state) => state.product);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllProducts());  // Fetch products when the component mounts
-  }, [dispatch]);
 
   return (
     <div className="">

@@ -5,19 +5,25 @@ import { Link, useParams } from "react-router-dom";
 import styles from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
+import { TfiHome } from "react-icons/tfi";
 
 const ShopProfileData = ({ isOwner }) => {
   const [active, setActive] = useState(1);
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getAllProductsShop(id));
   }, [dispatch, id]);
 
   return (
     <div className="w-full">
+      <div className="Home flex justify-end cursor-pointer">
+        <Link to={"/"}>
+          <TfiHome size={20}/>
+        </Link>
+      </div>
       <div className="flex w-full items-center font-Poppins justify-between">
         <div className="mainWrapper w-full flex">
           <div className="flex items-center" onClick={() => setActive(1)}>

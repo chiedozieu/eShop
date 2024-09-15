@@ -53,7 +53,7 @@ const Wishlist = ({ setOpenWishlist }) => {
           </div>
         </div>
 
-        <div className="h-[calc(100vh-200px)] overflow-scroll">
+        <div className={`h-[calc(100vh-200px)] overflow-scroll ${wishlist.length === 0 ? 'hidden' : null}`}>
           <div className="max-w-[600px] mx-auto border-[1px] w-full mt-12 p-2 bg-slate-50">
             <div className="flex justify-between">
               <h3 className="">Product</h3>
