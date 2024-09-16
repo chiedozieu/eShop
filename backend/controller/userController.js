@@ -8,14 +8,13 @@ import jwt from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { sendToken } from "../utils/jwtToken.js";
-import { errorMiddleware } from "../middleware/error.js";
 import { isAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 
 // Create the activation token function
 const createActivationToken = (user) => {
-  return jwt.sign(user, process.env.ACTIVATION_SECRET, {
+  return jwt.sign(user, process.env.ACTIVATION_SECRET, {  
     expiresIn: "5m",
   });
 };
@@ -26,14 +25,14 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
     const { name, email, password } = req.body;
 
     const userEmail = await userModel.findOne({ email });
-    
+
     if (userEmail) {
       const filename = req.file.filename;
       const filePath = `uploads/${filename}`;
       fs.unlink(filePath, (err) => {
         if (err) {
           console.log(err);
-          res.status(500).json({ message: "Error deleting file" }); 
+          res.status(500).json({ message: "Error deleting file" });
         }
       });
       return next(errorHandler(400, "User already exists"));
@@ -73,7 +72,7 @@ router.post("/create-user", upload.single("file"), async (req, res, next) => {
   } catch (error) {
     next(errorHandler(500, error.message));
   }
-}); 
+});
 
 // Route to activate the user
 router.post(
@@ -150,40 +149,148 @@ router.post(
 
 // load or store user // Goto Apps.js add useEffect
 
-router.get( 
+router.get(
   "/get-user",
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const user = await userModel.findById(req.user.id);
       if (!user) {
-        return next(errorHandler(400, "User doesn't exists")); 
+        return next(errorHandler(400, "User doesn't exists"));
       }
       res.status(200).json({
         success: true,
         user,
       });
     } catch (error) {
-     return next(errorHandler(500, error.message));
+      return next(errorHandler(500, error.message));
     }
   })
 );
 
 // logout
- router.get('/logout', isAuthenticated, catchAsyncErrors(async (req, res, next) => {
-  try {
-    res.cookie('token', null, {
-      expires: new Date(Date.now()),
-      httpOnly: true
-    })
+router.get(
+  "/logout",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
 
-    res.status(201).json({
-      success: true,
-      message: 'Logout successful!'
-    })
-  } catch (error) {
-    return next(errorHandler(500, error.message));
-  }
- }));
+      res.status(201).json({
+        success: true,
+        message: "Logout successful!",
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// Update user information
+
+router.put(
+  "/update-user-info",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { name, phoneNumber, password } = req.body;
+      const user = await userModel
+        .findOne({ email: req.user.email })
+        .select("+password");
+
+      if (!user) {
+        return next(errorHandler(400, "User not found"));
+      }
+      const isPasswordValid = await user.comparePassword(password);
+
+      if (!isPasswordValid) {
+        return next(errorHandler(400, "Please enter a valid password"));
+      }
+
+      user.name = name;
+      user.phoneNumber = phoneNumber;
+
+      await user.save();
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+//Update user avatar
+
+// router.put(
+//   "/update-avatar",
+//   isAuthenticated,
+//   upload.single("image"),
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const existUser = await userModel.findById(req.user.id);
+
+//       const existAvatarPath = `uploads/${existUser.avatar}`;
+ 
+//       fs.unlinkSync(existAvatarPath);
+     
+//       const fileUrl = path.join(req.file.filename);
+//       const user = await userModel.findByIdAndUpdate(req.user.id, {
+//         avatar: fileUrl,
+//       });
+
+//       res.status(200).json({
+//         success: true,
+//         user,
+//       });
+//     } catch (error) {
+//       return next(errorHandler(500, error.message));
+//     }
+//   })
+// );
+
+router.put(
+  "/update-avatar",
+  isAuthenticated,
+  upload.single("image"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const existUser = await userModel.findById(req.user.id);
+
+      // Delete old avatar if it exists
+      if (existUser.avatar && existUser.avatar.public_id) {
+        const existAvatarPath = `uploads/${existUser.avatar.public_id}`; 
+        fs.unlinkSync(existAvatarPath); 
+      }
+
+      const fileUrl = path.join(req.file.filename); // Replace with actual URL
+      const publicId = req.file.filename; // Assuming this is the file's public ID
+
+      const user = await userModel.findByIdAndUpdate(
+        req.user.id,
+        {
+          avatar: {
+            public_id: publicId,
+            url: fileUrl,
+          },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
 
 export default router;

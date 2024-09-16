@@ -35,9 +35,7 @@ const userSchema = new mongoose.Schema({
       address2: {
         type: String,
       },
-      zipCode: {
-        type: Number,
-      },
+
       addressType: {
         type: String,
       },
@@ -47,7 +45,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
- 
+
   avatar: {
     public_id: {
       type: String,

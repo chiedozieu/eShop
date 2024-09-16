@@ -53,3 +53,38 @@ export const loadSeller = () => {
     }
   };
 };
+
+
+// Update User Information 
+
+export const updateUserInformation = (name,phoneNumber,password) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "updateUserInfoRequest",
+      });
+      const { data } = await axios.put(`${server}/user/update-user-info`, {
+        name,
+        phoneNumber,
+        password,
+      }
+      ,{
+        withCredentials: true,
+      })
+      dispatch({
+        type: "updateUserInfoSuccess",
+        payload: data.user,
+       
+      });
+    } catch (error) {
+      dispatch({
+        type: "updateUserInfoFailure",
+        payload: error.response.data.message,
+      });
+    }
+  }
+};
+
+export const clearErrors = () => {
+  return { type: "clearErrors" };
+};

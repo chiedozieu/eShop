@@ -69,6 +69,7 @@ export const productReducer = createReducer(initialState, (builder) => {
 
     .addCase("clearErrors", (state) => {
       state.error = null;
+      state.isLoading = false;
     });
 
 });

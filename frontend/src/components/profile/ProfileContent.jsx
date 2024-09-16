@@ -1,22 +1,64 @@
-import React, { useState } from "react";
-import { backend_url } from "../../server";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { backend_url, server } from "../../server";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineCamera } from "react-icons/ai";
 import styles from "../../styles/style";
 import { MdOutlineDeleteSweep } from "react-icons/md";
+import { updateUserInformation } from "../../redux/actions/user";
+import { toast } from "react-toastify";
+import { clearErrors } from "../../redux/actions/user";
+import axios from "axios";
 
 const ProfileContent = ({ active }) => {
-  const { user } = useSelector((state) => state.user);
+  const { user, error } = useSelector((state) => state.user);
+  const [avatar, setAvatar] = useState(null)
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
-  const [phoneNumber, setPhoneNumber] = useState();
-  const [state, setState] = useState("");
-  const [address1, setAddress1] = useState("");
-  const [address2, setAddress2] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => { 
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors()); 
+    }
+  }, [error, dispatch]);
 
   const handleSubmit = (e) => {
-    e.prevent.Default();
+    e.preventDefault();
+    dispatch(updateUserInformation(name, phoneNumber, password));
   };
+
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    setAvatar(file);
+  
+    const formData = new FormData();
+    formData.append("image", file);
+  
+    try {
+      const response = await axios.put(`${server}/user/update-avatar`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
+      });
+  
+      if (response.data.success) {
+        // Update the local state with the new avatar URL
+        const updatedUser = response.data.user;
+        setAvatar(updatedUser.avatar.url); // Update with the new avatar URL
+        window.location.reload(); // Reload to reflect the changes
+      }
+    } catch (error) {
+      toast.error("Failed to update avatar!");
+    }
+  };
+  
+
+
+
   return (
     <div className="w-full ">
       {/*  profile content view */}
@@ -30,7 +72,16 @@ const ProfileContent = ({ active }) => {
                 className="profile-pic h-36 w-36 flex border-[3px] rounded-full object-cover border-[#3ad132]"
               />
               <div className="w-[30px] h-[30px] bg-[#E3E9EE] flex rounded-full items-center justify-center cursor-pointer absolute bottom-[5px] right-[5px]">
-                <AiOutlineCamera />
+                <input
+                  type="file"
+                  id="image"
+                  className="hidden"
+                  onChange={handleImage}
+                />
+                <label htmlFor="image">
+                 <AiOutlineCamera />
+                </label>
+                
               </div>
             </div>
           </div>
@@ -54,10 +105,11 @@ const ProfileContent = ({ active }) => {
                   <label className="block pb-2">Email Address</label>
                   <input
                     type="text"
-                    className={`${styles.input} !w-[95%] mb-2  md:mb-0`}
+                    className={`${styles.input} !w-[95%] mb-2 md:mb-0`}
                     required
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    disabled
+                    title="Email cannot be updated"
                   />
                 </div>
               </div>
@@ -74,40 +126,18 @@ const ProfileContent = ({ active }) => {
                   />
                 </div>
                 <div className="w-[100%] md:w-[50%]">
-                  <label className="block pb-2">State</label>
+                  <label className="block pb-2">Password</label>
                   <input
-                    type="text"
+                    type="password"
                     className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
                     required
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>
-              {/* row 3 */}
-              <div className="md:flex block w-full pb-3">
-                <div className="w-[100%] md:w-[50%]">
-                  <label className="block pb-2">Address 1</label>
-                  <input
-                    type="address"
-                    className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
-                    required
-                    value={address1}
-                    onChange={(e) => setAddress1(e.target.value)}
-                  />
-                </div>
-                <div className="w-[100%] md:w-[50%]">
-                  <label className="block pb-2">Address 2</label>
-                  <input
-                    type="address"
-                    className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
-                    required
-                    value={address2}
-                    onChange={(e) => setAddress2(e.target.value)}
-                  />
-                </div>
-                {/* button update*/}
-              </div>
+
+              {/* button update*/}
               <input
                 type="submit"
                 className="w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer hover:border-[red] hover:text-[red] font-semibold"
@@ -129,6 +159,7 @@ const ProfileContent = ({ active }) => {
 };
 
 const Address = () => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="w-full px-5">
       <div className="flex w-full items-center justify-between">
@@ -147,11 +178,14 @@ const Address = () => {
         <div className="flex items-center pl-8">
           <h6 className="">123 Olabisi Ogudana Avenue, Aguda</h6>
         </div>
-        <div className="flex items-center pl-8 mb-4 md:mb-0 "> 
+        <div className="flex items-center pl-8 mb-4 md:mb-0 ">
           <h6 className="">0801 234 5678</h6>
         </div>
         <div className="min-w-[5%] flex pr-8 justify-end">
-          <MdOutlineDeleteSweep size={25} className="cursor-pointer text-red-500"/>
+          <MdOutlineDeleteSweep
+            size={25}
+            className="cursor-pointer text-red-500"
+          />
         </div>
       </div>
     </div>
