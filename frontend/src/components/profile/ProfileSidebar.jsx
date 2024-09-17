@@ -6,6 +6,7 @@ import { PiAddressBookThin } from "react-icons/pi";
 import { IoLogOutOutline } from "react-icons/io5";
 import { server } from "../../server";
 import axios from 'axios';
+import { CiLock } from "react-icons/ci";
 
 
 const ProfileSidebar = ({active, setActive}) => {
@@ -39,10 +40,16 @@ const ProfileSidebar = ({active, setActive}) => {
             Address
         </span>
       </div>
+      <div className="flex items-center cursor-pointer w-full mb-5" onClick={() => setActive(4)}>
+        <CiLock  size={20} color={active === 4 ? ('red') : ''}/>
+        <span className={`${active === 4 ? 'text-[red]' : ''} pl-3 font-thin hidden md:block`}>
+            Change Password
+        </span>
+      </div>
       
-      <div className="flex items-center cursor-pointer w-full mb-5" onClick={() => setActive(4) || handleLogout()}>
-        <IoLogOutOutline size={20} color={active === 4 ? ('red') : ''}/>
-        <span className={`${active === 4 ? 'text-[red]' : ''} pl-3 font-thin hidden md:block `}>
+      <div className="flex items-center cursor-pointer w-full mb-5" onClick={() => setActive(5) || handleLogout()}>
+        <IoLogOutOutline size={20} color={active === 5 ? ('red') : ''}/>
+        <span className={`${active === 5 ? 'text-[red]' : ''} pl-3 font-thin hidden md:block `}>
             Logout
         </span>
       </div>

@@ -5,7 +5,7 @@
 
 // categoriesData.js
 
-const categoriesData = [
+const ProductCategory = [
   {
     mainCategory: 'Electronics',
     subCategories: [
@@ -47,6 +47,55 @@ const categoriesData = [
       },
     ],
   },
+
+{
+  "mainCategory": "Vehicles",
+  "subCategories": [
+    {
+      "subCategory": "Cars",
+      "subSubCategories": [
+        "Sedans",
+        "Hatchbacks",
+        "SUVs",
+        "Trucks",
+        "Coupes",
+        "Convertibles"
+      ]
+    },
+    {
+      "subCategory": "Motorcycles",
+      "subSubCategories": [
+        "Cruisers",
+        "Sport Bikes",
+        "Touring Bikes",
+        "Off-Road Bikes",
+        "Scooters"
+      ]
+    },
+    {
+      "subCategory": "Commercial Vehicles",
+      "subSubCategories": [
+        "Buses",
+        "Trucks",
+        "Vans",
+        "Trailers",
+        "Tankers",
+        "Construction Equipment"
+      ]
+    },
+    {
+      "subCategory": "Auto Parts & Accessories",
+      "subSubCategories": [
+        "Engine Parts",
+        "Transmission Parts",
+        "Brake Systems",
+        "Electrical Systems",
+        "Exterior Accessories",
+        "Other Parts"
+      ]
+    }
+  ]
+}
   // You can add more main categories here
 ];
 

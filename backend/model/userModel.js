@@ -23,10 +23,10 @@ const userSchema = new mongoose.Schema({
   },
   addresses: [
     {
-      country: {
+      selectedState: {
         type: String,
       },
-      city: {
+      selectedCity: {
         type: String,
       },
       address1: {

@@ -2,26 +2,36 @@ import React, { useEffect, useState } from "react";
 import { backend_url, server } from "../../server";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineCamera } from "react-icons/ai";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import styles from "../../styles/style";
 import { MdOutlineDeleteSweep } from "react-icons/md";
-import { updateUserInformation } from "../../redux/actions/user";
+import {
+  clearMessages,
+  clearErrors,
+  deleteUserAddress,
+  updateUserAddress,
+  updateUserInformation,
+} from "../../redux/actions/user";
 import { toast } from "react-toastify";
-import { clearErrors } from "../../redux/actions/user";
 import axios from "axios";
+import { stateCategory } from "../../static/statesCategories";
 
 const ProfileContent = ({ active }) => {
-  const { user, error } = useSelector((state) => state.user);
-  const [avatar, setAvatar] = useState(null)
+  const { user, error, successMessage } = useSelector((state) => state.user);
+  const [avatar, setAvatar] = useState(null);
   const [name, setName] = useState(user && user.name);
   const [email, setEmail] = useState(user && user.email);
   const [phoneNumber, setPhoneNumber] = useState(user && user.phoneNumber);
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => { 
+  useEffect(() => {
     if (error) {
       toast.error(error);
-      dispatch(clearErrors()); 
+      dispatch(clearErrors());
+    }
+    if (successMessage) {
+      toast.success(successMessage);
     }
   }, [error, dispatch]);
 
@@ -33,18 +43,22 @@ const ProfileContent = ({ active }) => {
   const handleImage = async (e) => {
     const file = e.target.files[0];
     setAvatar(file);
-  
+
     const formData = new FormData();
     formData.append("image", file);
-  
+
     try {
-      const response = await axios.put(`${server}/user/update-avatar`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      });
-  
+      const response = await axios.put(
+        `${server}/user/update-avatar`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
+      );
+
       if (response.data.success) {
         // Update the local state with the new avatar URL
         const updatedUser = response.data.user;
@@ -55,9 +69,6 @@ const ProfileContent = ({ active }) => {
       toast.error("Failed to update avatar!");
     }
   };
-  
-
-
 
   return (
     <div className="w-full ">
@@ -79,9 +90,8 @@ const ProfileContent = ({ active }) => {
                   onChange={handleImage}
                 />
                 <label htmlFor="image">
-                 <AiOutlineCamera />
+                  <AiOutlineCamera />
                 </label>
-                
               </div>
             </div>
           </div>
@@ -159,35 +169,241 @@ const ProfileContent = ({ active }) => {
 };
 
 const Address = () => {
+  const { user } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [addressType, setAddressType] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [availableCities, setAvailableCities] = useState([]);
+  const dispatch = useDispatch();
+
+  const addressTypeData = [
+    {
+      name: "Default",
+    },
+    {
+      name: "Home",
+    },
+    {
+      name: "Office",
+    },
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (addressTypeData === "" || selectedState === "" || selectedCity === "") {
+      toast.error("Please fill all fields!");
+    } else {
+      dispatch(
+        updateUserAddress(
+          selectedState,
+          selectedCity,
+          address1,
+          address2,
+          addressType
+        )
+      );
+
+      setOpen(false);
+      setSelectedState("");
+      setSelectedCity("");
+      setAddress1("");
+      setAddress2("");
+      setAddressType("");
+    }
+  };
+
+  // Handle state selection and update cities accordingly
+  const handleStateChange = (e) => {
+    const stateName = e.target.value;
+    setSelectedState(stateName);
+
+    // Find the selected state's cities from the JSON
+    const cities =
+      stateCategory.states.find((state) => state.name === stateName)?.cities ||
+      [];
+
+    setAvailableCities(cities);
+  };
+
+  const handleDelete = (i) => {
+    dispatch(deleteUserAddress(i._id));
+  };
+
   return (
     <div className="w-full px-5">
+      {open && (
+        <div className="h-screen fixed w-full bg-[#0000004b] top-0 left-0 flex items-center justify-center">
+          <div className="w-[35%] bg-white h-[80vh] relative rounded shadow overflow-y-scroll">
+            <div className="flex justify-end w-full p-3">
+              <IoIosCloseCircleOutline
+                size={25}
+                className="cursor-pointer "
+                onClick={() => setOpen(false)}
+              />
+            </div>
+            <h1 className="text-[25px] font-Poppins text-[#000000ba] text-center">
+              Add Address
+            </h1>
+            <div className="w-full">
+              <form onSubmit={handleSubmit} className="w-full">
+                <div className="block w-full p-4">
+                  <div className="w-full p-2">
+                    <label className="block pb-2 ">State</label>
+                    <select
+                      name=""
+                      id="state"
+                      value={selectedState}
+                      onChange={handleStateChange}
+                      className="w-full border h-[40px] rounded-[4px]"
+                    >
+                      <option value="" className="block pb-2 border">
+                        -- Select a state --
+                      </option>
+                      {stateCategory &&
+                        stateCategory.states.map((state) => (
+                          <option
+                            value={state.name}
+                            key={state.name}
+                            className="block pb-2"
+                          >
+                            {state.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  {/* City Dropdown */}
+                  {selectedState && (
+                    <div className="w-full p-2">
+                      <label className="block pb-2 ">Select City</label>
+                      <select
+                        name=""
+                        id="city"
+                        value={selectedCity}
+                        onChange={(e) => setSelectedCity(e.target.value)}
+                        className="w-full border h-[40px] rounded-[4px]"
+                      >
+                        <option value="" className="block pb-2 border">
+                          -- Select a city --
+                        </option>
+                        {availableCities &&
+                          availableCities.map((city) => (
+                            <option
+                              value={city}
+                              key={city}
+                              className="block pb-2"
+                            >
+                              {city}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  )}
+
+                  <div className="w-full p-2">
+                    <label className="block pb-2 ">Address 1</label>
+                    <input
+                      type="address"
+                      className={`${styles.input}`}
+                      required
+                      value={address1}
+                      onChange={(e) => setAddress1(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-full p-2">
+                    <label className="block pb-2 ">Address 2</label>
+                    <input
+                      type="address"
+                      className={`${styles.input}`}
+                      required
+                      value={address2}
+                      onChange={(e) => setAddress2(e.target.value)}
+                    />
+                  </div>
+                  <div className="w-full p-2">
+                    <label className="block pb-2 ">Address Type</label>
+                    <select
+                      name="addressType"
+                      id="addressType"
+                      value={addressType}
+                      onChange={(e) => setAddressType(e.target.value)}
+                      className="w-full border h-[40px] rounded-[4px]"
+                    >
+                      <option value="" className="block pb-2 border">
+                        -- Select Address Type --
+                      </option>
+                      {addressTypeData &&
+                        addressTypeData.map((type) => (
+                          <option
+                            value={type.name}
+                            key={type.name}
+                            className="block pb-2"
+                          >
+                            {type.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <input
+                    type="submit"
+                    className={`${styles.input} !mt-5 !cursor-pointer hover:border-red-500 hover:text-red-700 hover:font-semibold`}
+                    required
+                    value="Submit"
+                    readOnly
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex w-full items-center justify-between">
         <h1 className="text-[25px] font-semibold text-[#000000ba] pb-2">
           My Addresses
         </h1>
-        <div className={`${styles.button} !rounded-md`}>
+        <div
+          className={`${styles.button} !rounded-md`}
+          onClick={() => setOpen(true)}
+        >
           <span className="text-[#fff]">Add New</span>
         </div>
       </div>
       <br />
-      <div className="w-full bg-white md:h-[70px] rounded-[4px] items-center md:flex block px-3 shadow justify-between md:pr-10 py-4">
-        <div className="flex items-center">
-          <h5 className="pl-5 font-semibold">Default</h5>
-        </div>
-        <div className="flex items-center pl-8">
-          <h6 className="">123 Olabisi Ogudana Avenue, Aguda</h6>
-        </div>
-        <div className="flex items-center pl-8 mb-4 md:mb-0 ">
-          <h6 className="">0801 234 5678</h6>
-        </div>
-        <div className="min-w-[5%] flex pr-8 justify-end">
-          <MdOutlineDeleteSweep
-            size={25}
-            className="cursor-pointer text-red-500"
-          />
-        </div>
-      </div>
+      {user &&
+        user.addresses.map((i, index) => (
+          <div
+            key={index}
+            className="w-full bg-white md:h-[70px] rounded-[4px] items-center md:flex block px-3 shadow justify-between md:pr-10 py-4 mb-5"
+          >
+            <div className="flex items-center">
+              <h5 className="pl-5 font-semibold">{i.addressType}</h5>
+            </div>
+            <div className="flex items-center pl-8 ">
+              <h6 className="md:h-[70px] md:overflow-scroll flex items-center">
+                {i.address1} {i.address2} {i.selectedCity}{" "}
+                {`${i.selectedState} State`}
+              </h6>
+            </div>
+            <div className="flex items-center pl-8 mb-4 md:mb-0 ">
+              <h6 className="">{user?.phoneNumber}</h6>
+            </div>
+            <div className="min-w-[15%] flex pr-2 justify-end">
+              <MdOutlineDeleteSweep
+                size={25}
+                className="cursor-pointer text-red-500"
+                onClick={() => handleDelete(i)}
+              />
+            </div>
+          </div>
+        ))}
+
+      {user && user.addresses.length === 0 && (
+        <h5 className="text-center pt-8 text-[18px]">
+          You do not have any saved address
+        </h5>
+      )}
     </div>
   );
 };

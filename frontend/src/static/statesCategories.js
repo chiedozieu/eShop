@@ -1,499 +1,234 @@
-const StateCategory = [
-  {
-    id: 1,
-    label: "Abia",
-    value: "Abia",
-    towns: [
-      { id: 1, label: "Aba North", value: "Aba North" },
-      { id: 2, label: "Aba South", value: "Aba South" },
-      { id: 3, label: "Arochukwu", value: "Arochukwu" },
-      { id: 4, label: "Bende", value: "Bende" },
-      { id: 5, label: "Ikwuano", value: "Ikwuano" },
-      { id: 6, label: "Isiala Ngwa North", value: "Isiala Ngwa North" },
-      { id: 7, label: "Isiala Ngwa South", value: "Isiala Ngwa South" },
-      { id: 8, label: "Isiukwuato", value: "Isiukwuato" },
-      { id: 9, label: "Obi Ngwa", value: "Obi Ngwa" },
-      { id: 10, label: "Ohafia", value: "Ohafia" },
-      { id: 11, label: "Osisioma Ngwa", value: "Osisioma Ngwa" },
-      { id: 12, label: "Ugwunagbo", value: "Ugwunagbo" },
-      { id: 13, label: "Ukwa East", value: "Ukwa East" },
-      { id: 14, label: "Ukwa West", value: "Ukwa West" },
-      { id: 15, label: "Umuahia North", value: "Umuahia North" },
-      { id: 16, label: "Umuahia South", value: "Umuahia South" },
-      { id: 17, label: "Umunneochi", value: "Umunneochi" },
-     
-    ],
-  },
-  {
-    id: 2,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "Abaji", value: "Abaji" },
-      { id: 2, label: "Abuja Municipal", value: "Abuja Municipal" },
-      { id: 3, label: "Bwari", value: "Bwari" },
-      { id: 4, label: "Gwagwalada", value: "Gwagwalada" },
-      { id: 5, label: "Kuje", value: "Kuje" },
-      { id: 6, label: "Kwali", value: "Kwali" },
-    ],
-  },
-  {
-    id: 3,
-    label: "Adamawa",
-    value: "Adamawa",
-    towns: [
-      { id: 1, label: "Demsa", value: "Demsa" },
-      { id: 2, label: "Fufore", value: "Fufore" },
-      { id: 3, label: "Ganye", value: "Ganye" },
-      { id: 4, label: "Girei", value: "Girei" },
-      { id: 5, label: "Gombi", value: "Gombi" },
-      { id: 6, label: "Guyuk", value: "Guyuk" },
-      { id: 7, label: "Hong", value: "Hong" },
-      { id: 8, label: "Jada", value: "Jada" },
-      { id: 9, label: "Lamurde", value: "Lamurde" },
-      { id: 10, label: "Madagali", value: "Madagali" },
-      { id: 11, label: "Maiha", value: "Maiha" },
-      { id: 12, label: "Mayo-Belwa", value: "Mayo-Belwa" },
-      { id: 13, label: "Michika", value: "Michika" },
-      { id: 14, label: "Mubi North", value: "Mubi North" },
-      { id: 15, label: "Mubi South", value: "Mubi South" },
-      { id: 16, label: "Numan", value: "Numan" },
-      { id: 17, label: "Shelleng", value: "Shelleng" },
-      { id: 18, label: "Song", value: "Song" },
-      { id: 19, label: "Toungo", value: "Toungo" },
-      { id: 20, label: "Yola North", value: "Yola North" },
-      { id: 21, label: "Yola South", value: "Yola South" },     
-    ],
-  },
-  {
-    id: 4,
-    label: "Akwa Ibom",
-    value: "Akwa Ibom",
-    towns: [
-       { id: 1, label: "Abak", value: "Abak" },
-      { id: 2, label: "Eastern Obolo", value: "Eastern Obolo" },
-      { id: 3, label: "Eket", value: "Eket" },
-      { id: 4, label: "Esit Eket", value: "Esit Eket" },
-      { id: 5, label: "Essien Udim", value: "Essien Udim" },
-      { id: 6, label: "Etim Ekpo", value: "Etim Ekpo" },
-      { id: 7, label: "Etinan", value: "Etinan" },
-      { id: 8, label: "Ibeno", value: "Ibeno" },
-      { id: 9, label: "Ibesikpo Asutan", value: "Ibesikpo Asutan" },
-      { id: 10, label: "Ibiono Ibom", value: "Ibiono Ibom" },
-      { id: 11, label: "Ika", value: "Ika" },
-      { id: 12, label: "Ikono", value: "Ikono" },
-      { id: 13, label: "Ikot Abasi", value: "Ikot Abasi" },
-      { id: 14, label: "Ikot Ekpene", value: "Ikot Ekpene" },
-      { id: 15, label: "Ini", value: "Ini" },
-      { id: 16, label: "Itu", value: "Itu" },
-      { id: 17, label: "Mbo", value: "Mbo" },
-      { id: 18, label: "Mkpat Enin", value: "Mkpat Enin" },
-      { id: 19, label: "Nsit Atai", value: "Nsit Atai" },
-      { id: 20, label: "Nsit Ibom", value: "Nsit Ibom" },
-      { id: 21, label: "Nsit Ubium", value: "" },
-      { id: 22, label: "Obot Akara", value: "Obot Akara" },
-      { id: 23, label: "Okobo", value: "Okobo" },
-      { id: 24, label: "Onna", value: "Onna" },
-      { id: 25, label: "Oron", value: "Oron" },
-      { id: 26, label: "Oruk Anam", value: "Oruk Anam" },
-      { id: 27, label: "Udung Uko", value: "Udung Uko" },
-      { id: 28, label: "Ukanafun", value: "Ukanafun" },
-      { id: 29, label: "Uruan", value: "Uruan" },
-      { id: 30, label: "Urue-Offong/Oruko", value: "Urue-Offong/Oruko" },
-      { id: 31, label: "Uyo", value: "Uyo" },      
-    ],
-  },
-  {
-    id: 5,
-    label: "Anambra",
-    value: "Anambra",
-    towns: [
-      { id: 1, label: "Aguata", value: "Aguata" },
-      { id: 2, label: "Anambra East", value: "Anambra East" },
-      { id: 3, label: "Anambra West", value: "Anambra West" },
-      { id: 4, label: "Anaocha", value: "Anaocha" },
-      { id: 5, label: "Awka North", value: "Awka North" },
-      { id: 6, label: "Awka South", value: "Awka South" },
-      { id: 7, label: "Ayamelum", value: "Ayamelum" },
-      { id: 8, label: "Dunukofia", value: "Dunukofia" },
-      { id: 9, label: "Ekwusigo", value: "Ekwusigo" },
-      { id: 10, label: "Idemili North", value: "Idemili North" },
-      { id: 11, label: "Idemili South", value: "Idemili South" },
-      { id: 12, label: "Ihiala", value: "Ihiala" },
-      { id: 13, label: "Njikoka", value: "Njikoka" },
-      { id: 14, label: "Nnewi North", value: "Nnewi North" },
-      { id: 15, label: "Nnewi South", value: "Nnewi South" },
-      { id: 16, label: "Ogbaru", value: "Ogbaru" },
-      { id: 17, label: "Onitsha North", value: "Onitsha North" },
-      { id: 18, label: "Onitsha South", value: "Onitsha South" },
-      { id: 19, label: "Orumba North", value: "Orumba North" },
-      { id: 20, label: "Orumba South", value: "Orumba South" },
-      { id: 21, label: "Oyi", value: "Oyi" },
-    ],
-  },
-  {
-    id: 6,
-    label: "Bauchi",
-    value: "Bauchi",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 7,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 8,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 11,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 12,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 13,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  {
-    id: 14,
-    label: "Abuja",
-    value: "Abuja",
-    towns: [
-      { id: 1, label: "", value: "" },
-      { id: 2, label: "", value: "" },
-      { id: 3, label: "", value: "" },
-      { id: 4, label: "", value: "" },
-      { id: 5, label: "", value: "" },
-      { id: 6, label: "", value: "" },
-      { id: 7, label: "", value: "" },
-      { id: 8, label: "", value: "" },
-      { id: 9, label: "", value: "" },
-      { id: 10, label: "", value: "" },
-      { id: 11, label: "", value: "" },
-      { id: 12, label: "", value: "" },
-      { id: 13, label: "", value: "" },
-      { id: 14, label: "", value: "" },
-      { id: 15, label: "", value: "" },
-      { id: 16, label: "", value: "" },
-      { id: 17, label: "", value: "" },
-      { id: 18, label: "", value: "" },
-      { id: 19, label: "", value: "" },
-      { id: 20, label: "", value: "" },
-      { id: 21, label: "", value: "" },
-      { id: 22, label: "", value: "" },
-      { id: 23, label: "", value: "" },
-      { id: 24, label: "", value: "" },
-      { id: 25, label: "", value: "" },
-      { id: 26, label: "", value: "" },
-      { id: 27, label: "", value: "" },
-      { id: 28, label: "", value: "" },
-      { id: 29, label: "", value: "" },
-      { id: 30, label: "", value: "" },
-      { id: 31, label: "", value: "" },
-    ],
-  },
-  
-];
-
-export {StateCategory} 
-
-
-
-
-
-import React, { useState } from 'react';
-import StateCategory from './StateCategory';
-
-const StateTowns = () => {
-  const [selectedState, setSelectedState] = useState(null);
-  const [selectedTown, setSelectedTown] = useState(null);
-
-  const handleStateChange = (event) => {
-    const selectedState = StateCategory.find((state) => state.value === event.target.value);
-    setSelectedState(selectedState);
-  };
-
-  const handleTownChange = (event) => {
-    setSelectedTown(event.target.value);
-  };
-
-  return (
-    <div>
-      <h1>States and Towns</h1>
-      <select value={selectedState?.value} onChange={handleStateChange}>
-        <option value="">Select a state</option>
-        {StateCategory.map((state) => (
-          <option key={index} value={state.value}>
-            {state.label}
-          </option>
-        ))}
-      </select>
-      {selectedState && (
-        <select value={selectedTown} onChange={handleTownChange}>
-          <option value="">Select a town</option>
-          {selectedState.towns.map((town) => (
-            <option key={index} value={town.value}>
-              {town.label}
-            </option>
-          ))}
-        </select>
-      )}
-      {selectedTown && <p>Selected town: {selectedTown}</p>}
-    </div>
-  );
+export const stateCategory = {
+  states: [
+    {
+      name: "Abia",
+      cities: [
+        "Aba North",
+        "Aba South",
+        "Arochukwu",
+        "Bende",
+        "Ikwuano",
+        "Isiala Ngwa North",
+        "Isiala Ngwa South",
+        "Isiukwuato",
+        "Obi Ngwa",
+        "Ohafia",
+        "Osisioma Ngwa",
+        "Ugwunagbo",
+        "Ukwa East",
+        "Ukwa West",
+        "Umuahia North",
+        "Umuahia South",
+        "Umunneochi",
+      ],
+    },
+    {
+      name: "Abuja",
+      cities: [
+        "Abaji",
+        "Abuja Municipal",
+        "Bwari",
+        "Gwagwalada",
+        "Kuje",
+        "Kwali",   
+      ],
+    },
+    
+    {
+      name: "Adamawa",
+      cities: [
+        "Demsa",
+        "Fufore",
+        "Ganye",
+        "Girei",
+        "Gombi",
+        "Guyuk",
+        "Hong",
+        "Jada",
+        "Lamurde",
+        "Madagali",
+        "Maiha",
+        "Mayo-Belwa",
+        "Michika",
+        "Mubi North",
+        "Mubi South",
+        "Numan",
+        "Shelleng",
+        "Song",
+        "Toungo",
+        "Yola North",
+        "Yola South",  
+      ],
+    },
+    {
+      name: "Akwa Ibom",
+      cities: [
+        "Abak",
+        "Eastern Obolo",
+        "Eket",
+        "Esit Eket",
+        "Essien Udim",
+        "Etim Ekpo",
+        "Etinan",
+        "Ibeno",
+        "Ibesikpo Asutan",
+        "Ibiono Ibom",
+        "Ika",
+        "Ikono",
+        "Ikot Abasi",
+        "Ikot Ekpene",
+        "Ini",
+        "Itu",
+        "Mbo",
+        "Mkpat Enin",
+        "Nsit Atai",
+        "Nsit Ibom",
+        "Nsit Ubium",
+        "Obot Akara",
+        "Okobo",
+        "Onna",
+        "Oron",
+        "Oruk Anam",
+        "Udung Uko",
+        "Ukanafun",
+        "Uruan",
+        "Urue-Offong/Oruko",
+        "Uyo",    
+      ],
+    },
+    {
+      name: "Anambra",
+      cities: [
+        "Aguata",
+        "Anambra East",
+        "Anambra West",
+        "Anaocha",
+        "Awka North",
+        "Awka South",
+        "Ayamelum",
+        "Dunukofia",
+        "Ekwusigo",
+        "Idemili North",
+        "Idemili South",
+        "Ihiala",
+        "Njikoka",
+        "Nnewi North",
+        "Nnewi South",
+        "Ogbaru",
+        "Onitsha North",
+        "Onitsha South",
+        "Orumba North",
+        "Orumba South",
+        "Oyi",    
+      ],
+    },
+    {
+      name: "",
+      cities: [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",     
+      ],
+    },
+  ],
 };
 
-export default StateTowns;
 
+// import React, { useState } from "react";
+// import nigeriaData from "./nigeria-states-cities.json"; // Import the JSON file
 
+// const AddressForm = () => {
+//   // State variables to store selected state and city
+//   const [selectedState, setSelectedState] = useState("");
+//   const [selectedCity, setSelectedCity] = useState("");
+//   const [availableCities, setAvailableCities] = useState([]);
 
+//   // Handle state selection and update cities accordingly
+//   const handleStateChange = (e) => {
+//     const stateName = e.target.value;
+//     setSelectedState(stateName);
 
-// const StateCategory = [
-//   { id: 1, label: "Abia", value: "Abia" },
-//   { id: 2, label: "Abuja", value: "Abuja" },
-//   { id: 3, label: "Adamawa", value: "Adamawa" },
-//   { id: 4, label: "Akwa Ibom", value: "Akwa Ibom" },
-//   { id: 5, label: "Anambra", value: "Anambra" },
-//   { id: 6, label: "Bauchi", value: "Bauchi" },
-//   { id: 7, label: "Bayelsa", value: "Bayelsa" },
-//   { id: 8, label: "Benue", value: "Benue" },
-//   { id: 9, label: "Borno", value: "Borno" },
-//   { id: 10, label: "Cross River", value: "Cross River" },
-//   { id: 11, label: "Delta", value: "Delta" },
-//   { id: 12, label: "Ebonyi", value: "Ebonyi" },
-//   { id: 13, label: "Edo", value: "Edo" },
-//   { id: 14, label: "Ekiti", value: "Ekiti" },
-//   { id: 15, label: "Enugu", value: "Enugu" },
-//   { id: 14, label: "Gombe", value: "Gombe" },
-//   { id: 17, label: "Imo", value: "Imo" },
-//   { id: 18, label: "Jigawa", value: "Jigawa" },
-//   { id: 19, label: "Kaduna", value: "Kaduna" },
-//   { id: 20, label: "Kano", value: "Kano" },
-//   { id: 21, label: "Katsina", value: "Katsina" },
-//   { id: 22, label: "Kebbi", value: "Kebbi" },
-//   { id: 23, label: "Kogi", value: "Kogi" },
-//   { id: 24, label: "Kwara", value: "Kwara" },
-//   { id: 25, label: "Lagos", value: "Lagos" },
-//   { id: 26, label: "Nasarawa", value: "Nasarawa" },
-//   { id: 27, label: "Niger", value: "Niger" },
-//   { id: 28, label: "Ogun", value: "Ogun" },
-//   { id: 29, label: "Ondo", value: "Ondo" },
-//   { id: 30, label: "Osun", value: "Osun" },
-//   { id: 31, label: "Oyo", value: "Oyo" },
-//   { id: 32, label: "Plateau", value: "Plateau" },
-//   { id: 33, label: "Rivers", value: "Rivers" },
-//   { id: 34, label: "Sokoto", value: "Sokoto" },
-//   { id: 35, label: "Taraba", value: "Taraba" },
-//   { id: 36, label: "Yobe", value: "Yobe" },
-//   { id: 37, label: "Zamfara", value: "Zamfara" },
-// ];
+//     // Find the selected state's cities from the JSON
+//     const cities = nigeriaData.states.find(
+//       (state) => state.name === stateName
+//     )?.cities || [];
 
-// export default StateCategory;
+//     setAvailableCities(cities);
+//   };
 
+//   return (
+//     <div>
+//       {/* State Dropdown */}
+//       <div>
+//         <label htmlFor="state">Select State</label>
+//         <select
+//           id="state"
+//           value={selectedState}
+//           onChange={handleStateChange}
+//           className="border p-2 rounded"
+//         >
+//           <option value="">-- Select a state --</option>
+//           {nigeriaData.states.map((state) => (
+//             <option key={state.name} value={state.name}>
+//               {state.name}
+//             </option>
+//           ))}
+//         </select>
+//       </div>
 
+//       {/* City Dropdown */}
+//       {selectedState && (
+//         <div>
+//           <label htmlFor="city">Select City</label>
+//           <select
+//             id="city"
+//             value={selectedCity}
+//             onChange={(e) => setSelectedCity(e.target.value)}
+//             className="border p-2 rounded"
+//           >
+//             <option value="">-- Select a city --</option>
+//             {availableCities.map((city) => (
+//               <option key={city} value={city}>
+//                 {city}
+//               </option>
+//             ))}
+//           </select>
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default AddressForm;
 

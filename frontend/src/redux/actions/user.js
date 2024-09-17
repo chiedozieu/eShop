@@ -4,7 +4,6 @@ import { server } from "../../server";
 // load user
 
 export const loadUser = () => {
-  
   return async (dispatch) => {
     try {
       dispatch({
@@ -16,7 +15,6 @@ export const loadUser = () => {
       dispatch({
         type: "loadUserSuccess",
         payload: data.user,
-       
       });
     } catch (error) {
       dispatch({
@@ -27,11 +25,9 @@ export const loadUser = () => {
   };
 };
 
-
 // load seller
 
 export const loadSeller = () => {
-  
   return async (dispatch) => {
     try {
       dispatch({
@@ -43,7 +39,6 @@ export const loadSeller = () => {
       dispatch({
         type: "loadSellerSuccess",
         payload: data.seller,
-       
       });
     } catch (error) {
       dispatch({
@@ -54,27 +49,28 @@ export const loadSeller = () => {
   };
 };
 
+// Update User Information
 
-// Update User Information 
-
-export const updateUserInformation = (name,phoneNumber,password) => {
+export const updateUserInformation = (name, phoneNumber, password) => {
   return async (dispatch) => {
     try {
       dispatch({
         type: "updateUserInfoRequest",
       });
-      const { data } = await axios.put(`${server}/user/update-user-info`, {
-        name,
-        phoneNumber,
-        password,
-      }
-      ,{
-        withCredentials: true,
-      })
+      const { data } = await axios.put(
+        `${server}/user/update-user-info`,
+        {
+          name,
+          phoneNumber,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       dispatch({
         type: "updateUserInfoSuccess",
         payload: data.user,
-       
       });
     } catch (error) {
       dispatch({
@@ -82,9 +78,86 @@ export const updateUserInformation = (name,phoneNumber,password) => {
         payload: error.response.data.message,
       });
     }
-  }
+  };
+};
+
+// Update User addresses
+
+export const updateUserAddress = (
+  selectedState,
+  selectedCity,
+  address1,
+  address2,
+  addressType
+) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "updateUserAddressRequest",
+      });
+      const { data } = await axios.put(
+        `${server}/user/update-user-addresses`,
+        {
+          selectedState,
+          selectedCity,
+          address1,
+          address2,
+          addressType,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch({
+        type: "updateUserAddressSuccess",
+        payload: {
+          successMessage: "Address successfully updated",
+          user: data.user,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: "updateUserAddressFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
+};
+
+// delete user address
+
+export const deleteUserAddress = (id) => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "deleteUserAddressRequest",
+      });
+      const { data } = await axios.delete(
+        `${server}/user/delete-user-address/${id}`,
+
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch({
+        type: "deleteUserAddressSuccess",
+        payload: {
+          successMessage: 'Address deleted successfully',
+          user: data.user,
+        }
+      });
+    } catch (error) { 
+      dispatch({
+        type: "deleteUserAddressFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
 };
 
 export const clearErrors = () => {
   return { type: "clearErrors" };
+};
+export const clearMessages = () => {
+  return { type: "clearMessages" };
 };

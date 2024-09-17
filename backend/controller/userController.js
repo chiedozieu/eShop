@@ -14,7 +14,7 @@ const router = express.Router();
 
 // Create the activation token function
 const createActivationToken = (user) => {
-  return jwt.sign(user, process.env.ACTIVATION_SECRET, {  
+  return jwt.sign(user, process.env.ACTIVATION_SECRET, {
     expiresIn: "5m",
   });
 };
@@ -120,7 +120,9 @@ router.post(
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return next(errorHandler(400, "Please enter a valid email & password"));
+        return next(
+          errorHandler(400, "Please enter a valid email & password")
+        );
       }
 
       const user = await userModel.findOne({ email }).select("+password");
@@ -137,7 +139,9 @@ router.post(
       const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
-        return next(errorHandler(400, "Please enter a valid email & password"));
+        return next(
+          errorHandler(400, "Please enter a valid email & password")
+        );
       }
 
       sendToken(user, 201, res);
@@ -225,35 +229,6 @@ router.put(
   })
 );
 
-//Update user avatar
-
-// router.put(
-//   "/update-avatar",
-//   isAuthenticated,
-//   upload.single("image"),
-//   catchAsyncErrors(async (req, res, next) => {
-//     try {
-//       const existUser = await userModel.findById(req.user.id);
-
-//       const existAvatarPath = `uploads/${existUser.avatar}`;
- 
-//       fs.unlinkSync(existAvatarPath);
-     
-//       const fileUrl = path.join(req.file.filename);
-//       const user = await userModel.findByIdAndUpdate(req.user.id, {
-//         avatar: fileUrl,
-//       });
-
-//       res.status(200).json({
-//         success: true,
-//         user,
-//       });
-//     } catch (error) {
-//       return next(errorHandler(500, error.message));
-//     }
-//   })
-// );
-
 router.put(
   "/update-avatar",
   isAuthenticated,
@@ -264,8 +239,8 @@ router.put(
 
       // Delete old avatar if it exists
       if (existUser.avatar && existUser.avatar.public_id) {
-        const existAvatarPath = `uploads/${existUser.avatar.public_id}`; 
-        fs.unlinkSync(existAvatarPath); 
+        const existAvatarPath = `uploads/${existUser.avatar.public_id}`;
+        fs.unlinkSync(existAvatarPath);
       }
 
       const fileUrl = path.join(req.file.filename); // Replace with actual URL
@@ -292,5 +267,69 @@ router.put(
   })
 );
 
+// update user addresses
+router.put(
+  "/update-user-addresses",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await userModel.findById(req.user.id);
+      const sameTypeAddress = user.addresses.find(
+        (address) => address.addressType === req.body.addressType
+      );
+      if (sameTypeAddress) {
+        return next(
+          errorHandler(`${req.body.addressType} address already exists`)
+        );
+      }
+      const existAddress = user.addresses.find(
+        (address) => address._id === req.body._id
+      );
+      if (existAddress) {
+        Object.assign(existAddress, req.body);
+      } else {
+        // add the new address to the array
+        user.addresses.push(req.body);
+      }
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// delete user address
+
+router.delete(
+  "/delete-user-address/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const userId = req.user._id;
+      const addressId = req.params.id;
+
+      await userModel.updateOne(
+        {
+          _id: userId,
+        },
+        { $pull: { addresses: { _id: addressId } } }
+      );
+      const user = await userModel.findById(userId);
+
+      res.status(200).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
 
 export default router;
