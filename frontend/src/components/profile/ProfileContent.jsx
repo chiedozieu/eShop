@@ -32,6 +32,7 @@ const ProfileContent = ({ active }) => {
     }
     if (successMessage) {
       toast.success(successMessage);
+      clearMessages();
     }
   }, [error, dispatch]);
 
@@ -162,6 +163,13 @@ const ProfileContent = ({ active }) => {
       {active === 3 && (
         <div className="md:mt-0 mt-10">
           <Address />
+        </div>
+      )}
+
+      {/*  Change password view */}
+      {active === 4 && (
+        <div className="md:mt-0 mt-10">
+          <ChangePassword />
         </div>
       )}
     </div>
@@ -405,6 +413,93 @@ const Address = () => {
         </h5>
       )}
     </div>
+  );
+};
+
+const ChangePassword = () => {
+  const { user } = useSelector((state) => state.user);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  console.log("user-profileContent", user);
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `${server}/user/update-user-password`,
+        { oldPassword, newPassword, confirmPassword },
+        {
+          withCredentials: true,
+        }
+      );
+        toast.success(response.data.message);
+        setOldPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      
+      console.log(response.data);
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+
+  return (
+    <>
+      {user && (
+        <div className="w-full px-5">
+          <h1 className="text-[25px] font-semibold text-[#000000ba] pb-2 text-center">
+            Change Password
+          </h1>
+          <div className="w-full">
+            <form
+              onSubmit={handlePasswordSubmit}
+              className="flex flex-col items-center"
+            >
+              <div className="w-[100%] md:w-[50%] mt-5">
+                <label className="block pb-2">Old Password</label>
+                <input
+                  type="password"
+                  className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
+                  required
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                />
+              </div>
+              <div className="w-[100%] md:w-[50%] mt-2">
+                <label className="block pb-2">New Password</label>
+                <input
+                  type="password"
+                  className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
+                  required
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </div>
+              <div className="w-[100%] md:w-[50%] mt-2">
+                <label className="block pb-2">Confirm new password</label>
+                <input
+                  type="password"
+                  className={`${styles.input} !w-[95%] mb-4 md:mb-0`}
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <input
+                  type="submit"
+                  className="w-[95%] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer hover:border-[red] hover:text-[red] font-semibold"
+                  value="Change Password"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+
+          <br />
+        </div>
+      )}
+    </>
   );
 };
 

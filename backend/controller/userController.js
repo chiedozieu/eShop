@@ -120,9 +120,7 @@ router.post(
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return next(
-          errorHandler(400, "Please enter a valid email & password")
-        );
+        return next(errorHandler(400, "Please enter a valid email & password"));
       }
 
       const user = await userModel.findOne({ email }).select("+password");
@@ -139,9 +137,7 @@ router.post(
       const isPasswordValid = await user.comparePassword(password);
 
       if (!isPasswordValid) {
-        return next(
-          errorHandler(400, "Please enter a valid email & password")
-        );
+        return next(errorHandler(400, "Please enter a valid email & password"));
       }
 
       sendToken(user, 201, res);
@@ -325,6 +321,38 @@ router.delete(
       res.status(200).json({
         success: true,
         user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// update user password
+
+router.put(
+  "/update-user-password",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      
+      const user = await userModel.findById(req.user.id).select("+password");
+      const isPasswordMatched = await user.comparePassword(
+        req.body.oldPassword
+      );
+      if (!isPasswordMatched) {
+        return next(errorHandler(400, "Old password mismatch"));
+      }
+      if (req.body.newPassword !== req.body.confirmPassword) {
+        return next(errorHandler(400, "Confirm password mismatch"));
+      }
+      user.password = req.body.newPassword;
+
+      await user.save();
+
+      res.status(200).json({
+        success: true,
+        message: "Password updated successfully",
       });
     } catch (error) {
       return next(errorHandler(500, error.message));

@@ -19,8 +19,6 @@ const productSchema = new mongoose.Schema({
 
 // Controller
 
-const Product = require('../models/Product');
-const cloudinary = require('cloudinary').v2; // Assuming you're using cloudinary for image storage
 
 // Create a new product
 // controllers/ProductController.js
