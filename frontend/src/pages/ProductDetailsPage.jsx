@@ -4,16 +4,24 @@ import ProductDetails from "../components/products/ProductDetails";
 import SuggestedProduct from "../components/products/SuggestedProduct";
 import Footer from "../components/layout/Footer";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
-const ProductDetailsPage = () => {
+const ProductDetailsPage = () => { 
   const { allProducts } = useSelector((state) => state.product);
+  const { allEvents } = useSelector((state) => state.event)
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [searchParams] = useSearchParams();
+  const eventData = searchParams.get('isEvent');
 
   useEffect(() => {
-    const productData = allProducts && allProducts.find((i) => i._id === id);
-    setData(productData);
+    if(eventData !== null){
+      const data = allEvents && allEvents.find((i) => i._id === id);
+      setData(data);
+    }else{
+      const data = allProducts && allProducts.find((i) => i._id === id);
+      setData(data);
+    }
   }, [id, allProducts]);
 
   return (

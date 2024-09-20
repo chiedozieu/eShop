@@ -4,14 +4,9 @@ import EventCard from '../eventCard/EventCard'
 import { useSelector } from "react-redux";
 
 const Events = () => {
-  const { allEvents, isLoading } = useSelector((state) => state.event)
-  // const [runningEvents, setRunningEvents] = useState([]);
 
-  // useEffect(() => {
-  //  const data = allEvents && allEvents.filter((event) => event.status === 'Running')
-  //  setRunningEvents(data);
-  // }, [allEvents]);
-  // console.log('events:', runningEvents)
+  const { allEvents, isLoading } = useSelector((state) => state.event)
+
   
   return (
     <div className="">

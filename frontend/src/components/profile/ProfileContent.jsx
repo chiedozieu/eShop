@@ -34,7 +34,7 @@ const ProfileContent = ({ active }) => {
       toast.success(successMessage);
       clearMessages();
     }
-  }, [error, dispatch]);
+  }, [error, dispatch, successMessage]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -422,7 +422,6 @@ const ChangePassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  console.log("user-profileContent", user);
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -439,7 +438,6 @@ const ChangePassword = () => {
         setNewPassword("");
         setConfirmPassword("");
       
-      console.log(response.data);
     } catch (error) {
       toast.error(error.response.data.message);
     }
