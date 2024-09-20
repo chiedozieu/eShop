@@ -6,6 +6,7 @@ import styles from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { TfiHome } from "react-icons/tfi";
+import Review from "../review/Review";
 
 const ShopProfileData = ({ isOwner }) => {
   const [active, setActive] = useState(1);
@@ -21,7 +22,7 @@ const ShopProfileData = ({ isOwner }) => {
     <div className="w-full">
       <div className="Home flex justify-end cursor-pointer">
         <Link to={"/"}>
-          <TfiHome size={20}/>
+          <TfiHome size={20} />
         </Link>
       </div>
       <div className="flex w-full items-center font-Poppins justify-between">
@@ -74,12 +75,18 @@ const ShopProfileData = ({ isOwner }) => {
         </div>
       </div>
       <br />
-      <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
-        {products &&
-          products.map((i, index) => (
-            <ProductCard data={i} key={index} isShop={true} />
-          ))}
-      </div>
+      {active === 1 && (
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-2 lg:gap-[25px] xl:grid-cols-3 xl:gap-[20px] mb-12 border-0">
+          {products &&
+            products.map((i, index) => (
+              <ProductCard data={i} key={index} isShop={true} />
+            ))}
+        </div>
+      )}
+
+      {active === 3 && <div className="">
+        <Review />
+      </div>}
     </div>
   );
 };

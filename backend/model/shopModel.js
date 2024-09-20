@@ -29,6 +29,26 @@ const shopSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  reviews: [
+    {
+      user: {
+        type: Object,
+      },
+      rating: {
+        type: Number,
+      },
+      comment: {
+        type: String,
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
+  ],
+  ratings: {
+    type: Number,
+  },
   role: {
     type: String,
     default: "seller",
@@ -73,4 +93,3 @@ shopSchema.methods.comparePassword = async function (enteredPassword) {
 const shopModel = mongoose.model("Shop", shopSchema);
 
 export default shopModel;
-

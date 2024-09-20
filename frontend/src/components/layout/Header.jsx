@@ -18,15 +18,16 @@ import { RxCross1 } from "react-icons/rx";
 
 const Header = ({ activeHeading }) => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const { isSeller } = useSelector((state) => state.seller);
   const { allProducts } = useSelector((state) => state.product);
-  const { wishlist } = useSelector((state) => state.wishlist)
+  const { wishlist } = useSelector((state) => state.wishlist);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchData, setSearchData] = useState("");
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [openWishlist, setOpenWishlist] = useState(false);
   const [open, setOpen] = useState(false);
- 
+
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -34,9 +35,11 @@ const Header = ({ activeHeading }) => {
     if (term === "") {
       setSearchData([]); // Clear search results when the input is empty
     } else {
-      const filteredProducts = allProducts &&  allProducts.filter((product) =>
-        product.name.toLowerCase().includes(term.toLowerCase())
-      );
+      const filteredProducts =
+        allProducts &&
+        allProducts.filter((product) =>
+          product.name.toLowerCase().includes(term.toLowerCase())
+        );
       setSearchData(filteredProducts);
     }
   };
@@ -91,7 +94,6 @@ const Header = ({ activeHeading }) => {
               >
                 {searchData &&
                   searchData.map((i, index) => {
-                    
                     return (
                       <Link to={`/product/${i._id}`} key={index}>
                         <div className={`w-full flex items-start py-3 `}>
@@ -110,8 +112,21 @@ const Header = ({ activeHeading }) => {
           </div>
           <div className={`${styles.button} !rounded-md !h-10`}>
             <Link to="/shop-create">
-              <h1 className="text-white flex items-center">
-                Become Seller <IoIosArrowForward />
+              <h1
+                className={`text-white flex items-center 
+      ${isSeller ? "font-thin text-sm justify-center" : ""} 
+    `}
+              >
+                {isSeller ? (
+                  <p className="flex items-center ">
+                    Profile
+                    <IoIosArrowForward />
+                    Dashboard
+                  </p>
+                ) : (
+                  "Become Seller"
+                )}
+                <IoIosArrowForward />
               </h1>
             </Link>
           </div>
@@ -158,7 +173,7 @@ const Header = ({ activeHeading }) => {
               >
                 <PiHeartThin size={30} />
                 <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
-                {wishlist?.length}
+                  {wishlist?.length}
                 </span>
               </div>
             </div>
@@ -253,9 +268,9 @@ const Header = ({ activeHeading }) => {
               <div className="w-full justify-between flex pr-3">
                 <div className="">
                   <div className="relative mr-[15px]">
-                    <PiHeartThin size={30} className=" mt-5 ml-3" />
+                    <PiHeartThin size={30} className=" mt-5 ml-3"/>
                     <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
-                      12
+                      {wishlist.length}
                     </span>
                   </div>
                 </div>
@@ -305,8 +320,21 @@ const Header = ({ activeHeading }) => {
               </div>
               <div className={`${styles.button} !rounded-md !h-10 ml-4`}>
                 <Link to="/shop-create">
-                  <h1 className="text-white flex items-center">
-                    Become Seller <IoIosArrowForward />
+                  <h1
+                    className={`text-white flex items-center 
+      ${isSeller ? "font-thin text-sm justify-center" : ""} 
+    `}
+                  >
+                    {isSeller ? (
+                      <p className="flex items-center ">
+                        Profile
+                        <IoIosArrowForward />
+                        Dashboard
+                      </p>
+                    ) : (
+                      "Become Seller"
+                    )}
+                    <IoIosArrowForward />
                   </h1>
                 </Link>
               </div>
@@ -314,8 +342,7 @@ const Header = ({ activeHeading }) => {
               <br />
               <br />
 
-              {
-                !isAuthenticated && (
+              {!isAuthenticated && (
                 <div className="w-full justify-center flex">
                   <Link
                     to="/login"

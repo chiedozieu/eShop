@@ -1,8 +1,7 @@
-
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { isSeller } from "../middleware/auth.js";
+import { isAuthenticated, isSeller } from "../middleware/auth.js";
 import { sendShopToken } from "../utils/shopToken.js";
 import { sendMail } from "../utils/sendMail.js";
 import jwt from "jsonwebtoken";
@@ -13,69 +12,69 @@ import { errorHandler } from "../utils/errorHandler.js";
 
 const router = express.Router();
 
-  // Create the activation token function
-  const createActivationToken = (seller) => {
-    return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
-      expiresIn: "10m",
-    });
-  };
-
+// Create the activation token function
+const createActivationToken = (seller) => {
+  return jwt.sign(seller, process.env.ACTIVATION_SECRET, {
+    expiresIn: "10m",
+  });
+};
 
 // Route to create a shop and send activation email
-router.post("/create-shop", upload.single("file"), catchAsyncErrors(async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    const sellerEmail = await shopModel.findOne({ email });
+router.post(
+  "/create-shop",
+  upload.single("file"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { email } = req.body;
+      const sellerEmail = await shopModel.findOne({ email });
 
-    if (sellerEmail) {
+      if (sellerEmail) {
+        const filename = req.file.filename;
+        const filePath = `uploads/${filename}`;
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.log(err);
+            res.status(500).json({ message: "Error deleting file" });
+          }
+        });
+        return next(errorHandler(400, "User already exists"));
+      }
+
       const filename = req.file.filename;
-      const filePath = `uploads/${filename}`;
-      fs.unlink(filePath, (err) => {
-        if (err) {
-          console.log(err);
-          res.status(500).json({ message: "Error deleting file" });
-        }
+      const fileUrl = path.join(filename);
+
+      const seller = {
+        name: req.body.name,
+        email: email,
+        password: req.body.password,
+        avatar: {
+          public_id: filename,
+          url: fileUrl,
+        },
+        address: req.body.address,
+        phoneNumber: req.body.phoneNumber,
+      };
+
+      // Generate activation token
+      const activationToken = createActivationToken(seller);
+      const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
+
+      // Send activation email
+      await sendMail({
+        email: seller.email,
+        subject: "Activate your shop",
+        message: `Hello ${seller.name}, please click the link to activate your shop: ${activationUrl}`,
       });
-      return next(errorHandler(400, "User already exists"));
+
+      res.status(201).json({
+        success: true,
+        message: `Please check your email: ${seller.email} to activate your shop`,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
     }
-
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
-
-    const seller = {
-      name: req.body.name,
-      email: email,
-      password: req.body.password,
-      avatar: {
-        public_id: filename,
-        url: fileUrl,
-      },
-      address: req.body.address,
-      phoneNumber: req.body.phoneNumber,
-    };
-
-   
-    // Generate activation token
-    const activationToken = createActivationToken(seller);
-    const activationUrl = `http://localhost:3000/seller/activation/${activationToken}`;
-
-   
-
-    // Send activation email
-    await sendMail({
-      email: seller.email,
-      subject: "Activate your shop",
-      message: `Hello ${seller.name}, please click the link to activate your shop: ${activationUrl}`,
-    });
-
-    res.status(201).json({
-      success: true,
-      message: `Please check your email: ${seller.email} to activate your shop`,
-    });
-  } catch (error) {
-    return next(errorHandler(500, error.message));
-  }
-}));
+  })
+);
 
 // Route to activate the seller/shop
 router.post(
@@ -100,7 +99,7 @@ router.post(
       const { name, email, password, avatar, address, phoneNumber } = newSeller;
 
       // Check if seller already exists before creating a new one
-      let seller = await shopModel.findOne({ email: newSeller.email});
+      let seller = await shopModel.findOne({ email: newSeller.email });
       if (seller) {
         console.log("Seller already exists, not creating again");
         return next(errorHandler(400, "Seller already exists. Please login"));
@@ -119,25 +118,21 @@ router.post(
       // Send token to client if seller creation is successful
       sendShopToken(seller, 201, res);
 
-       // Send activation confirmation email
-    await sendMail({
-      email: seller.email,
-      subject: "Activation successful",
-      message: `Hello ${seller.name}, your shop has been activated`,
-    });
+      // Send activation confirmation email
+      await sendMail({
+        email: seller.email,
+        subject: "Activation successful",
+        message: `Hello ${seller.name}, your shop has been activated`,
+      });
 
-    res.status(201).json({
-      success: true,
-    });
-
-      
+      res.status(201).json({
+        success: true,
+      });
     } catch (error) {
       return next(errorHandler(500, error.message));
     }
   })
 );
-
-
 
 // login shop
 
@@ -175,61 +170,110 @@ router.post(
   })
 );
 
-
 // load shop or store shop // Goto Apps.js add useEffect // redux
 
-router.get( 
+router.get(
   "/getSeller",
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-  
       const seller = await shopModel.findById(req.seller._id);
       if (!seller) {
-        return next(errorHandler(400, "User doesn't exists")); 
+        return next(errorHandler(400, "User doesn't exists"));
       }
       res.status(200).json({
         success: true,
         seller,
       });
     } catch (error) {
-     return next(errorHandler(500, error.message));
+      return next(errorHandler(500, error.message));
     }
   })
 );
 
 // logout from shop
 
-router.get('/logout', catchAsyncErrors(async (req, res, next) => {
-  try {
-    res.cookie('seller_token', null, {
-      expires: new Date(Date.now()),
-      httpOnly: true
-    })
+router.get(
+  "/logout",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      res.cookie("seller_token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true,
+      });
 
-    res.status(201).json({
-      success: true,
-      message: 'Logout successful!'
-    })
-  } catch (error) {
-    return next(errorHandler(500, error.message));
-  }
- }));
+      res.status(201).json({
+        success: true,
+        message: "Logout successful!",
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
 
- // get shop info
-  
- router.get('/get-shop-info/:id', catchAsyncErrors(async(req, res, next) => {
-  try {
-    const shop = await shopModel.findById(req.params.id);
+// get shop info
 
-    res.status(201).json({
-      success: true,
-      shop,
-    })
-  } catch (error) {
-    return next(errorHandler(500, error.message));
-  }
- }))
+router.get(
+  "/get-shop-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const shop = await shopModel.findById(req.params.id);
 
+      res.status(201).json({
+        success: true,
+        shop,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+//   shop review
+router.put(
+  "/create-new-review", isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { user, rating, comment, shopId } = req.body;
+      const shop = await shopModel.findById(shopId);
+
+      const review =  {
+        user,
+        rating,
+        comment,
+        shopId 
+      }
+
+      const isReviewed = shop.reviews.find(
+        (rev) => rev.user._id === req.user._id
+      );
+      if(isReviewed){
+        shop.reviews.forEach((rev) => {
+          if(rev.user._id === req.user._id){
+            (rev.rating = rating), (rev.comment = comment), (rev.user = user)
+          }
+        })
+      }else {
+        shop.reviews.push(review)
+      }
+      let avg = 0
+      shop.reviews .forEach((rev) => {
+        avg += rev.rating
+      })
+      shop.ratings = avg / shop.reviews.length
+
+      await shop.save({ validateBeforeSave: false })
+
+      res.status(200).json({
+        success: true,
+        message: "Review created successfully",
+      })
+
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
 
 export default router;
