@@ -7,22 +7,19 @@ import { backend_url, server } from "../../server";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-// Important! Important!! Important!!!
-// Just putting this in shop/layout/ShopProfileData for testing
-const Review = () => {
-  const { user } = useSelector((state) => state.user);
+// Component in ShopInfo
+const Review = ({ data, id, user }) => {
   const { seller } = useSelector((state) => state.seller);
 
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(1);
   const [comment, setComment] = useState("");
 
- 
   const reviewHandler = async () => {
     await axios
       .put(
         `${server}/shop/create-new-review`,
-        { user, rating, comment, shopId: seller?._id },
+        { user, rating, comment, shopId: id },
         { withCredentials: true }
       )
       .then((res) => {
@@ -32,14 +29,14 @@ const Review = () => {
         setOpen(false);
       })
       .catch((error) => {
-        toast.error(error);
+        toast.error(error.data.message);
       });
   };
 
   return (
     <div className="">
       <div
-        className={`${styles.button} text-[#fff]`}
+        className={`bg-blue-500 w-[85%] mx-auto py-2 px-4 rounded-md text-[#fff] text-center cursor-pointer`}
         onClick={() => setOpen(true)}
       >
         Give a review
@@ -47,7 +44,7 @@ const Review = () => {
 
       {open && (
         <PopUp setOpen={setOpen}>
-          <div className="mx-2">
+          <div className="mx-2 min-h-fit">
             <h2 className="text-[30px] text-center font-Poppins font-medium">
               Write a Review
             </h2>
@@ -55,14 +52,14 @@ const Review = () => {
 
             <div className="flex flex-col items-center ">
               <img
-                src={`${backend_url}${seller?.avatar?.url}`}
+                src={`${backend_url}${data?.avatar?.url}`}
                 alt=""
                 className="w-12 h-12 object-cover rounded-full"
               />
-              <h4 className="text-sm">{seller.name}</h4>
-              <h4 className="text-xs">0{seller.phoneNumber}</h4>
+              <h4 className="text-sm">{data?.name}</h4>
+              <h4 className="text-xs">0{data?.phoneNumber}</h4>
             </div>
-            <br />
+   
             {/* ratings */}
             <h5 className="pl-2 text-[20] font-medium">
               Give a rating <span className="text-red-500">*</span>
@@ -88,7 +85,7 @@ const Review = () => {
                 )
               )}
             </div>
-            <br />
+         
             <div className="w-full">
               <label className="block text-[20] font-medium">
                 Write a comment
@@ -103,12 +100,12 @@ const Review = () => {
               ></textarea>
             </div>
             <div
-              className={`${styles.button} !text-white !text-[20px]`}
+              className={`bg-[rgb(246,186,0)] w-[85%] mx-auto py-2 mt-2 rounded-md text-[#fff] text-center cursor-pointer hover:bg-[rgb(246,172,0)] `}
               onClick={rating >= 1 ? reviewHandler : null}
             >
               Submit
             </div>
-          </div> 
+          </div>
         </PopUp>
       )}
     </div>

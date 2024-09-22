@@ -6,8 +6,10 @@ import styles from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { TfiHome } from "react-icons/tfi";
-import Review from "../review/Review";
 
+
+//isOwner?
+//ShopInfo || ShopProfileData
 const ShopProfileData = ({ isOwner }) => {
   const [active, setActive] = useState(1);
   const { products } = useSelector((state) => state.product);
@@ -20,10 +22,22 @@ const ShopProfileData = ({ isOwner }) => {
 
   return (
     <div className="w-full">
-      <div className="Home flex justify-end cursor-pointer">
+      <div className="Home flex justify-end cursor-pointer items-center gap-2">
+      <div className="">
+          {isOwner && (
+            <div className="">
+              <Link to="/dashboard">
+                <div className={`${styles.button} !rounded-[4px] !h-[42px]`}>
+                  <span className="text-[#fff]">Dashboard</span>
+                </div>
+              </Link>
+            </div>
+          )}
+        </div>
         <Link to={"/"}>
           <TfiHome size={20} />
         </Link>
+        
       </div>
       <div className="flex w-full items-center font-Poppins justify-between">
         <div className="mainWrapper w-full flex">
@@ -62,17 +76,7 @@ const ShopProfileData = ({ isOwner }) => {
           </div>
         </div>
 
-        <div className="">
-          {isOwner && (
-            <div className="">
-              <Link to="/dashboard">
-                <div className={`${styles.button} !rounded-[4px] !h-[42px]`}>
-                  <span className="text-[#fff]">Dashboard</span>
-                </div>
-              </Link>
-            </div>
-          )}
-        </div>
+      
       </div>
       <br />
       {active === 1 && (
@@ -85,7 +89,7 @@ const ShopProfileData = ({ isOwner }) => {
       )}
 
       {active === 3 && <div className="">
-        <Review />
+        
       </div>}
     </div>
   );

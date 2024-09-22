@@ -4,13 +4,28 @@ import styles from "../../styles/style";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loader from "../layout/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProductsShop } from "../../redux/actions/product";
+import Review from "../review/Review";
 
-const ShopInfo = ({ isOwner }) => {
+//ShopInfo || Shop
+
+//remember to pass in {isOwner}
+const ShopInfo = () => {
+  const {user} = useSelector((state) => state.user)
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(false)
- 
+  const [isOwner, setIsOwner] = useState(false)
+  
+
+  const { products } = useSelector((state) => state.product);
   const { id } = useParams();
- console.log('ShopInfoData', data)
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllProductsShop(id));
+  }, [dispatch, id]);
+ 
  
   useEffect(() => {
     setIsLoading(true);
@@ -61,18 +76,18 @@ const ShopInfo = ({ isOwner }) => {
         </div>
         <div className="p-3">
           <h5 className="font-semibold">Total Products</h5>
-          <h4 className="text-[#000000a6]">{data?.stock}10</h4>
+          <h4 className="text-[#000000a6]">{products?.length}</h4>
         </div>
         <div className="p-3">
           <h5 className="font-semibold">Shop Rating</h5>
-          <h4 className="text-[#000000a6]">4.6</h4>
+          <h4 className="text-[#000000a6]">{data?.ratings}</h4>
         </div>
         <div className="p-3">
           <h5 className="font-semibold">Joined On</h5>
           <h4 className="text-[#000000a6]">{data?.createdAt?.slice(0, 10)}</h4>
         </div>
         {
-          isOwner && (
+          isOwner ? (
               <div className="py-3 px-4 ">
                   <div className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}>
                       <span className="text-white">Edit Shop </span>
@@ -81,6 +96,8 @@ const ShopInfo = ({ isOwner }) => {
                       <span className="text-white">Logout</span>
                   </div>
               </div>
+          ) : (
+            <Review data={data} id={id} user={user}/>
           )
         }
       </div>

@@ -246,11 +246,11 @@ router.put(
       }
 
       const isReviewed = shop.reviews.find(
-        (rev) => rev.user._id === req.user._id
+        (rev) => rev.user?._id === req.user?._id
       );
       if(isReviewed){
         shop.reviews.forEach((rev) => {
-          if(rev.user._id === req.user._id){
+          if(rev.user?._id === req.user?._id){
             (rev.rating = rating), (rev.comment = comment), (rev.user = user)
           }
         })
@@ -258,7 +258,7 @@ router.put(
         shop.reviews.push(review)
       }
       let avg = 0
-      shop.reviews .forEach((rev) => {
+      shop.reviews.forEach((rev) => {
         avg += rev.rating
       })
       shop.ratings = avg / shop.reviews.length
