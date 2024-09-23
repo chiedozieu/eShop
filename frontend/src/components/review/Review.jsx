@@ -8,8 +8,8 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 // Component in ShopInfo
-const Review = ({ data, id, user }) => {
-  const { seller } = useSelector((state) => state.seller);
+const Review = ({ data, id, user, seller }) => {
+ 
 
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(1);
@@ -29,7 +29,7 @@ const Review = ({ data, id, user }) => {
         setOpen(false);
       })
       .catch((error) => {
-        toast.error(error.data.message);
+        toast.error(error.message);
       });
   };
 
@@ -108,6 +108,7 @@ const Review = ({ data, id, user }) => {
           </div>
         </PopUp>
       )}
+      
     </div>
   );
 };

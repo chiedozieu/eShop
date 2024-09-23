@@ -4,6 +4,7 @@ import { sellerReducer } from "./reducers/seller";
 import { productReducer } from "./reducers/product";
 import { eventReducer } from "./reducers/event";
 import { wishlistReducer } from "./reducers/wishList";
+import reviewReducer from './reducers/reviewSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     product: productReducer,
     event: eventReducer,
     wishlist: wishlistReducer,
+    review: reviewReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false,

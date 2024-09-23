@@ -1,55 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/style";
-import {
-  
-  displayNGNCurrency
-} from "../../utils/displayCurrency";
+import { displayNGNCurrency } from "../../utils/displayCurrency";
 import { PiHeartStraightFill, PiHeartStraightThin } from "react-icons/pi";
 import { AiOutlineMessage } from "react-icons/ai";
 import { backend_url } from "../../server";
 import { scrollTop } from "../../../src/utils/scrollTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
-import { addToWishlist, removeFromWishlist } from "../../redux/actions/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../redux/actions/wishlist";
+import Ratings from "../review/Ratings";
 
-const ProductDetails = ({ data }) => {
-  const { wishlist } = useSelector((state) => state.wishlist)
+const ProductDetails = ({ data, reviewData }) => {
+  const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
-// Getting data from ProductDetailsPage
-scrollTop();
+  // Getting data from ProductDetailsPage
+  scrollTop();
 
-//* for getting the total product count of a shop
-const { products } = useSelector((state) => state.product);
-const dispatch = useDispatch();
-useEffect(() => {
-  dispatch(getAllProductsShop(data && data.shop._id));
-}, [dispatch, data]);
-//*
+  //* for getting the total product count of a shop
+  const { products } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllProductsShop(data && data.shop._id));
+  }, [dispatch, data]);
+  //*
 
-useEffect(() => {
-  if(wishlist && wishlist.find((i) => i._id === data._id)){
-    setClick(true);
-  }else {
-    setClick(false);
-  }
-}, [wishlist, data._id])
 
-const removeFromWishlistHandler = (data) => {
-  setClick(!click)
-  dispatch(removeFromWishlist(data));
-}
-const addToWishlistHandler = (data) => {
-  setClick(!click)
-  dispatch(addToWishlist(data));
-}
+  useEffect(() => {
+    if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishlist, data?._id]);
+
+  const removeFromWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(removeFromWishlist(data));
+  };
+  const addToWishlistHandler = (data) => {
+    setClick(!click);
+    dispatch(addToWishlist(data));
+  };
 
   const handleMessageSubmit = () => {
     navigate("/inbox?conversation=tryhrt53heghs");
-
-
   };
 
   return (
@@ -67,23 +67,22 @@ const addToWishlistHandler = (data) => {
                 />
 
                 <div className="flex w-full items-center gap-2 mt-5">
-                  {
-                    data && data.images.map((i, index) => (
+                  {data &&
+                    data.images.map((i, index) => (
                       <div
-                      key={index}
-                    className={`${
-                      select === 0 ? "border" : "null"
-                    } cursor-pointer `}
-                  >
-                    <img
-                      src={`${backend_url}${i}`}
-                      alt=""
-                      className="h-[120px] w-[120px] object-contain p-1 mt-3 mr-[3px] overflow-x-scroll"
-                      onClick={() => setSelect(index)}
-                    />
-                  </div>
-                    ))
-                  }
+                        key={index}
+                        className={`${
+                          select === 0 ? "border" : "null"
+                        } cursor-pointer `}
+                      >
+                        <img
+                          src={`${backend_url}${i}`}
+                          alt=""
+                          className="h-[120px] w-[120px] object-contain p-1 mt-3 mr-[3px] overflow-x-scroll"
+                          onClick={() => setSelect(index)}
+                        />
+                      </div>
+                    ))}
                 </div>
               </div>
 
@@ -98,7 +97,6 @@ const addToWishlistHandler = (data) => {
                     <h4 className={`${styles.productDiscountPrice}`}>
                       {displayNGNCurrency(data?.discountPrice)}
                     </h4>
-                   
                   </div>
                   <div className="mr-4">
                     {click ? (
@@ -123,30 +121,35 @@ const addToWishlistHandler = (data) => {
                   </div>
                 </div>
                 {/* shop name/message */}
-                <div className="flex items-center pt-8 justify-between">             
-                  <Link  className to={`/shop/${data?.shop?._id}`}>
+                <div className="flex items-center pt-8 justify-between">
+                  <Link className to={`/shop/${data?.shop?._id}`}>
                     <h3 className={`${styles.shop_name}`}>
                       {data?.shop?.name}
                     </h3>
-                    <h5 className="pb-3 text-[15px]">Ratings {data?.shop?.ratings} </h5>
+                    <h5 className="pb-3 text-[15px]">
+                      Ratings {data?.shop?.ratings}{" "}
+                    </h5>
                   </Link>
-                 
                 </div>
                 <h5 className="text-[16px] text-cyan-700 mt-5">
                   ({data.stock}) Available
                 </h5>
                 <div
-                    className={`${styles.button} !rounded-[4px] !h-11 !bg-green-500 mt-6`}
-                    onClick={handleMessageSubmit}
-                  >
-                    <span className="text-[#fff] flex items-center">
-                      Send Message <AiOutlineMessage className="ml-1 " />
-                    </span>
-                  </div>
+                  className={`${styles.button} !rounded-[4px] !h-11 !bg-green-500 mt-6`}
+                  onClick={handleMessageSubmit}
+                >
+                  <span className="text-[#fff] flex items-center">
+                    Send Message <AiOutlineMessage className="ml-1 " />
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-          <ProductDetailsInfo data={data} products={products}/>
+          <ProductDetailsInfo
+            data={data}
+            products={products}
+            reviewData={reviewData}
+          />
           <br />
           <br />
         </div>
@@ -156,11 +159,12 @@ const addToWishlistHandler = (data) => {
 };
 
 const ProductDetailsInfo = ({ data, products }) => {
-  const {seller} = useSelector((state) => state.seller)
+  const { shopReviews } = useSelector((state) => state.review);
+  const { seller } = useSelector((state) => state.seller);
   const [active, setActive] = useState(1);
+  console.log("productDetailsInfo:shopReviews", shopReviews);
 
- console.log('ProductDetailsInfo:seller', seller)
- console.log('ProductDetailsInfo:data?.shop', data?.shop)
+ 
   return (
     <div className="bg-[#f5f6fb] rounded md:px-10 py-2">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
@@ -215,17 +219,32 @@ const ProductDetailsInfo = ({ data, products }) => {
       ) : null}
       {/* active 2 */}
       {active === 2 ? (
-        <div className="-full flex justify-center items-center h-[40vh]">
-          <p>
-            {
-              data?.shop &&
-              data?.shop?.reviews?.map((review) => (
-               <div className="" key={review?._id}>
+        <div className="w-full p-5 min-h-[40vh] flex flex-col py-3 overflow-y-scroll">
+          {
+            shopReviews && shopReviews?.length > 0 ? (
+            shopReviews.map((review, index) => (
+              <div key={index} className="w-full flex my-2 items-center">
+              <img src={`${backend_url}${review?.user?.avatar?.url}`} alt="" className="w-[60px] h-[60px] rounded-full"/>
+              <div className="">
+                <div className="flex items-center w-full ">
+                  <h1 className="mr-3">
+                    {review?.user?.name}
+                  </h1>
+                  <Ratings rating={review?.rating}/>
+                </div>
+                <p>
                   {review?.comment}
-               </div>
-              ))
-            }
-          </p>
+                </p>
+              </div>
+             
+              </div>
+            ))
+          ) : (
+            <div className="w-full flex justify-center ">
+              <h5>No reviews yet.</h5>
+            </div>
+          )
+          }
         </div>
       ) : null}
 
@@ -233,7 +252,10 @@ const ProductDetailsInfo = ({ data, products }) => {
       {active === 3 && (
         <div className="w-full block md:flex p-5">
           <div className="w-full md:w-[50%]">
-            <Link to={`/shop/${data?.shop?._id}`} className="flex items-center gap-2">
+            <Link
+              to={`/shop/${data?.shop?._id}`}
+              className="flex items-center gap-2"
+            >
               <img
                 src={`${backend_url}${data?.shop?.avatar?.url}`}
                 alt=""
@@ -241,7 +263,9 @@ const ProductDetailsInfo = ({ data, products }) => {
               />
               <div className="">
                 <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
-                <h5 className="pb-3 text-[15px]">Ratings {data?.shop?.ratings} </h5>
+                <h5 className="pb-3 text-[15px]">
+                  Ratings {data?.shop?.ratings}{" "}
+                </h5>
               </div>
             </Link>
             <p className="pt-2">{data?.shop?.description || null}</p>
@@ -264,9 +288,10 @@ const ProductDetailsInfo = ({ data, products }) => {
                 </span>
               </h5>
               <h5 className="font-bold mt-3">
-                Ratings: <span className="font-semibold">{data?.shop?.ratings}</span>
+                Ratings:{" "}
+                <span className="font-semibold">{data?.shop?.ratings}</span>
               </h5>
-              <Link to={`/shop/${data?.shop?._id}`} >
+              <Link to={`/shop/${data?.shop?._id}`}>
                 <div className={`${styles.button} !rounded-[4px] !h-10 mt-3`}>
                   <h4 className="text-white">Visit Shop</h4>
                 </div>
