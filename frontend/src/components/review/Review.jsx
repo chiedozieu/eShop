@@ -4,7 +4,7 @@ import PopUp from "../popUp/PopUp";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { backend_url, server } from "../../server";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 // Component in ShopInfo

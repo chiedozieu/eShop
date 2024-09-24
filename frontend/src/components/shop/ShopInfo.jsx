@@ -7,10 +7,14 @@ import Loader from "../layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
 import Review from "../review/Review";
-import { setShopReviews, setReviewsLoading, setReviewsError } from '../../redux/reducers/reviewSlice';
+import {
+  setShopReviews,
+  setReviewsLoading,
+  setReviewsError,
+} from "../../redux/reducers/reviewSlice";
+import Ratings from "../review/Ratings";
 
-
-//ShopInfo || Shop
+//ShopInfo || ShopProfileData
 
 //remember to pass in {isOwner}
 const ShopInfo = () => {
@@ -23,15 +27,15 @@ const ShopInfo = () => {
 
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
-  
 
   useEffect(() => {
     dispatch(getAllProductsShop(id));
+    // dispatch(getSeller(id));
   }, [dispatch, id]);
 
   useEffect(() => {
     setIsLoading(true);
-    
+
     axios
       .get(`${server}/shop/get-shop-info/${id}`)
       .then((res) => {
@@ -42,22 +46,17 @@ const ShopInfo = () => {
         console.error("Error fetching shop info:", error);
         setIsLoading(false);
       });
-
-    // Cleanup function
-   
   }, [id, dispatch]);
 
   useEffect(() => {
     dispatch(setReviewsLoading());
     if (data && data.reviews) {
       dispatch(setShopReviews(data.reviews));
-      console.log('ShopInfo:data,reviews', data.reviews)
-    }else {
+      dispatch(setReviewsLoading(false));
+    } else {
       dispatch(setReviewsError("Failed to fetch shop info"));
     }
-
   }, [data, dispatch]);
-
   const handleLogout = async () => {
     axios.get(`${server}/shop/logout`, { withCredentials: true });
     window.location.reload();
@@ -69,7 +68,7 @@ const ShopInfo = () => {
         <Loader />
       ) : (
         <div className="">
-          <div className="w-full py-5">
+          <div className="w-full py-3">
             <div className="w-full flex items-center justify-center">
               <img
                 src={`${backend_url}${data?.avatar?.url}`}
@@ -84,23 +83,28 @@ const ShopInfo = () => {
               {data?.description}
             </p>
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <h5 className="font-semibold">Address</h5>
             <h4 className="text-[#000000a6]">{data?.address}</h4>
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <h5 className="font-semibold">Phone Number</h5>
             <h4 className="text-[#000000a6]">{data?.phoneNumber}</h4>
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <h5 className="font-semibold">Total Products</h5>
             <h4 className="text-[#000000a6]">{products?.length}</h4>
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <h5 className="font-semibold">Shop Rating</h5>
-            <h4 className="text-[#000000a6]">{data?.ratings}</h4>
+            {/* <h4 className="text-[#000000a6]">{data?.ratings}</h4> */}
+            <Ratings rating={data?.ratings} />
           </div>
-          <div className="p-3">
+          <div className="p-2">
+            <h5 className="font-semibold">Total Reviews</h5>
+            <h4 className="text-[#000000a6]">{data?.reviews?.length}</h4>
+          </div>
+          <div className="p-2">
             <h5 className="font-semibold">Joined On</h5>
             <h4 className="text-[#000000a6]">
               {data?.createdAt?.slice(0, 10)}
@@ -120,8 +124,8 @@ const ShopInfo = () => {
                 <span className="text-white">Logout</span>
               </div>
             </div>
-          ) : (                       
-                <Review data={data} id={id} user={user} seller={seller} />                                    
+          ) : (
+            <Review data={data} id={id} user={user} seller={seller} />
           )}
         </div>
       )}

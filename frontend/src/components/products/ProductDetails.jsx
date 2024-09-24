@@ -12,9 +12,8 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../redux/actions/wishlist";
-import Ratings from "../review/Ratings";
 
-const ProductDetails = ({ data, reviewData }) => {
+const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
@@ -29,7 +28,6 @@ const ProductDetails = ({ data, reviewData }) => {
     dispatch(getAllProductsShop(data && data.shop._id));
   }, [dispatch, data]);
   //*
-
 
   useEffect(() => {
     if (wishlist && wishlist.find((i) => i._id === data?._id)) {
@@ -53,13 +51,13 @@ const ProductDetails = ({ data, reviewData }) => {
   };
 
   return (
-    <div className="bg-white ">
+    <div className="bg-white">
       {data ? (
         <div className={`${styles.section} w-[90%] md:w-[80%]`}>
           <div className="w-full py-5">
             <div className="block w-full md:flex">
               {/* Left */}
-              <div className="w-full md:w-50%">
+              <div className="w-full md:w-[50%]">
                 <img
                   src={`${backend_url}${data.images && data.images[select]}`}
                   alt=""
@@ -122,13 +120,10 @@ const ProductDetails = ({ data, reviewData }) => {
                 </div>
                 {/* shop name/message */}
                 <div className="flex items-center pt-8 justify-between">
-                  <Link className to={`/shop/${data?.shop?._id}`}>
+                  <Link to={`/shop/${data?.shop?._id}`}>
                     <h3 className={`${styles.shop_name}`}>
                       {data?.shop?.name}
                     </h3>
-                    <h5 className="pb-3 text-[15px]">
-                      Ratings {data?.shop?.ratings}{" "}
-                    </h5>
                   </Link>
                 </div>
                 <h5 className="text-[16px] text-cyan-700 mt-5">
@@ -145,11 +140,7 @@ const ProductDetails = ({ data, reviewData }) => {
               </div>
             </div>
           </div>
-          <ProductDetailsInfo
-            data={data}
-            products={products}
-            reviewData={reviewData}
-          />
+          <ProductDetailsInfo data={data} products={products} />
           <br />
           <br />
         </div>
@@ -159,12 +150,9 @@ const ProductDetails = ({ data, reviewData }) => {
 };
 
 const ProductDetailsInfo = ({ data, products }) => {
-  const { shopReviews } = useSelector((state) => state.review);
   const { seller } = useSelector((state) => state.seller);
   const [active, setActive] = useState(1);
-  console.log("productDetailsInfo:shopReviews", shopReviews);
 
- 
   return (
     <div className="bg-[#f5f6fb] rounded md:px-10 py-2">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
@@ -218,35 +206,13 @@ const ProductDetailsInfo = ({ data, products }) => {
         </>
       ) : null}
       {/* active 2 */}
-      {active === 2 ? (
+      {active === 2 && (
         <div className="w-full p-5 min-h-[40vh] flex flex-col py-3 overflow-y-scroll">
-          {
-            shopReviews && shopReviews?.length > 0 ? (
-            shopReviews.map((review, index) => (
-              <div key={index} className="w-full flex my-2 items-center">
-              <img src={`${backend_url}${review?.user?.avatar?.url}`} alt="" className="w-[60px] h-[60px] rounded-full"/>
-              <div className="">
-                <div className="flex items-center w-full ">
-                  <h1 className="mr-3">
-                    {review?.user?.name}
-                  </h1>
-                  <Ratings rating={review?.rating}/>
-                </div>
-                <p>
-                  {review?.comment}
-                </p>
-              </div>
-             
-              </div>
-            ))
-          ) : (
-            <div className="w-full flex justify-center ">
-              <h5>No reviews yet.</h5>
-            </div>
-          )
-          }
+          <div className="w-full flex justify-center ">
+            <h5>No reviews yet</h5>
+          </div>
         </div>
-      ) : null}
+      )}
 
       {/* active = 3 */}
       {active === 3 && (

@@ -10,17 +10,17 @@ import {
 import { backend_url } from "../../../server";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToWishlist, removeFromWishlist } from "../../../redux/actions/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../redux/actions/wishlist";
 
 const ProductDetailsCard = ({ setOpen, data }) => {
-  const { wishlist } = useSelector((state) => state.wishlist)
+  const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
   const modalRef = useRef(null);
 
-  const dispatch = useDispatch()
-
-
-
+  const dispatch = useDispatch();
 
   //ˆ Close the modal when clicking outside of it
   useEffect(() => {
@@ -34,26 +34,24 @@ const ProductDetailsCard = ({ setOpen, data }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [setOpen]);
-//ˆ
+  //ˆ
 
-
-useEffect(() => {
-  if(wishlist && wishlist.find((i) => i._id === data._id)){
-    setClick(true);
-  }else {
-    setClick(false);
-  }
-}, [wishlist, data._id])
+  useEffect(() => {
+    if (wishlist && wishlist.find((i) => i._id === data._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishlist, data._id]);
 
   const removeFromWishlistHandler = (data) => {
-    setClick(!click)
+    setClick(!click);
     dispatch(removeFromWishlist(data));
- }
- const addToWishlistHandler = (data) => {
-    setClick(!click)
+  };
+  const addToWishlistHandler = (data) => {
+    setClick(!click);
     dispatch(addToWishlist(data));
- }
-
+  };
 
   const handleMessageSubmit = () => {};
 
@@ -73,18 +71,21 @@ useEffect(() => {
             />
             <div className="block w-full md:flex">
               <div className="w-full md:w-1/2">
-                <img src={`${backend_url}${data.images && data.images[0]}`}alt="" />
-                <Link to={`/shop/${data?.shop?._id}`} className="flex items-center">
+                <img
+                  src={`${backend_url}${data.images && data.images[0]}`}
+                  alt=""
+                />
+                <Link
+                  to={`/shop/${data?.shop?._id}`}
+                  className="flex items-center"
+                >
                   <img
                     src={`${backend_url}${data.shop && data.shop.avatar.url}`}
                     alt=""
-                    className="w-12 h-12 rounded-full mr-2 mt-2 "
+                    className="w-12 h-12 rounded-full mr-2 mt-4 "
                   />
                   <div className="">
                     <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                    <h5 className="pb-3 text-[15px]">
-                      ({data.shop.ratings}) Ratings
-                    </h5>
                   </div>
                 </Link>
                 <div
@@ -108,9 +109,6 @@ useEffect(() => {
                     <h4 className={`${styles.productDiscountPrice}`}>
                       {displayNGNCurrency(data.discountPrice)}
                     </h4>
-                    <h3 className={`${styles.price}`}>
-                      {data.originalPrice ? displayCurrencyOnly(data.originalPrice) : null}
-                    </h3>
                   </div>
                   <div className="flex items-center justify-between mt-4">
                     <div className="">

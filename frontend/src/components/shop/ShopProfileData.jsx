@@ -6,11 +6,13 @@ import styles from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
 import { TfiHome } from "react-icons/tfi";
-
+import { backend_url } from "../../server";
+import Ratings from "../review/Ratings";
 
 //isOwner?
 //ShopInfo || ShopProfileData
 const ShopProfileData = ({ isOwner }) => {
+  const { shopReviews } = useSelector((state) => state.review);
   const [active, setActive] = useState(1);
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
@@ -23,7 +25,7 @@ const ShopProfileData = ({ isOwner }) => {
   return (
     <div className="w-full">
       <div className="Home flex justify-end cursor-pointer items-center gap-2">
-      <div className="">
+        <div className="">
           {isOwner && (
             <div className="">
               <Link to="/dashboard">
@@ -37,7 +39,6 @@ const ShopProfileData = ({ isOwner }) => {
         <Link to={"/"}>
           <TfiHome size={20} />
         </Link>
-        
       </div>
       <div className="flex w-full items-center font-Poppins justify-between">
         <div className="mainWrapper w-full flex">
@@ -71,12 +72,10 @@ const ShopProfileData = ({ isOwner }) => {
                 active === 3 ? "text-red-500" : "text-[#333]"
               }`}
             >
-              Shop Reviews
+              Shop Reviews 
             </h5>
           </div>
         </div>
-
-      
       </div>
       <br />
       {active === 1 && (
@@ -88,9 +87,36 @@ const ShopProfileData = ({ isOwner }) => {
         </div>
       )}
 
-      {active === 3 && <div className="">
-        
-      </div>}
+      {active === 3 ? (
+        <div className="w-full p-5 min-h-[40vh] flex flex-col py-3 overflow-y-scroll">
+          <h1 className="w-full text-[20px] font-semibold">Total Reviews: {shopReviews?.length}</h1>
+          {
+            shopReviews && shopReviews?.length > 0 ? (
+            shopReviews.map((review, index) => (
+              <div key={index} className="w-full flex my-2">
+              <img src={`${backend_url}${review?.user?.avatar?.url}`} alt="" className="w-[50px] h-[50px] rounded-full"/>
+              <div className="pl-3">
+                <div className="flex items-center w-full ">
+                  <h1 className="pr-2">
+                    {review?.user?.name}
+                  </h1>
+                  <Ratings rating={review?.rating}/>
+                </div>
+                <p>
+                  {review?.comment}
+                </p>
+              </div>
+             
+              </div>
+            ))
+          ) : (
+            <div className="w-full flex justify-center ">
+              <h5>No reviews yet.</h5>
+            </div>
+          )
+          }
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -8,11 +8,12 @@ const reviewSlice = createSlice({
     error: null,
   },
   reducers: {
+    
     setShopReviews: (state, action) => {
       state.shopReviews = action.payload;
       state.isLoading = false;
       state.error = null;
-    },
+    }, 
     setReviewsLoading: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -24,5 +25,5 @@ const reviewSlice = createSlice({
   },
 });
 
-export const { setShopReviews, setReviewsLoading, setReviewsError } = reviewSlice.actions;
+export const { setReviewsLoading, setShopReviews, setReviewsError } = reviewSlice.actions;
 export default reviewSlice.reducer;
