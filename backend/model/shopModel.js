@@ -25,6 +25,18 @@ const shopSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  //*** */
+
+  selectedState: {
+    type: String,
+    required: true,
+  },
+  selectedCity: {
+    type: String,
+    required: true,
+  },
+
+  //*** */
   address: {
     type: String,
     required: true,

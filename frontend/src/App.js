@@ -30,6 +30,7 @@ import {
   ShopAllProduct,
   ShopCreateEvents,
   ShopAllEvents,
+  ShopSettingsPage,
 } from "./Routes/shopRoutes.js";
 import { getAllProducts } from "./redux/actions/product.js";
 import { getAllEvents } from "./redux/actions/event.js";
@@ -89,9 +90,17 @@ const App = () => {
         <Route
           path="/shop/:id"
           element={
-            // <SellerProtectedRoute>
+            <SellerProtectedRoute>
               <ShopHomePage />
-            // </SellerProtectedRoute>
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <SellerProtectedRoute>
+              <ShopSettingsPage />
+            </SellerProtectedRoute>
           }
         />
 

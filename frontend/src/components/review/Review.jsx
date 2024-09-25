@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import styles from "../../styles/style";
 import PopUp from "../popUp/PopUp";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import axios from "axios";
 import { backend_url, server } from "../../server";
-// import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 // Component in ShopInfo
@@ -34,9 +32,9 @@ const Review = ({ data, id, user, seller }) => {
   };
 
   return (
-    <div className="">
+    <div className="p-4">
       <div
-        className={`bg-blue-500 w-[85%] mx-auto py-2 px-4 rounded-md text-[#fff] text-center cursor-pointer`}
+        className={`bg-blue-500 mx-auto w-full py-2 px-4 rounded-md text-[#fff] text-center cursor-pointer`}
         onClick={() => setOpen(true)}
       >
         Give a review

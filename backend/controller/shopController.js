@@ -51,6 +51,8 @@ router.post(
           public_id: filename,
           url: fileUrl,
         },
+        selectedState: req.body.selectedState,
+        selectedCity: req.body.selectedCity,
         address: req.body.address,
         phoneNumber: req.body.phoneNumber,
       };

@@ -2,16 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/style";
 import {
-  displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
 import { backend_url } from "../../../server";
 
 const ProductSectionCard = ({ data }) => {
-  const originalPrice = data.originalPrice;
-  const discountPrice = data.discountPrice;
-  const discountAmount = originalPrice - discountPrice;
-  const discountPercentage = (discountAmount / originalPrice) * 100;
+
 
   return (
     <>

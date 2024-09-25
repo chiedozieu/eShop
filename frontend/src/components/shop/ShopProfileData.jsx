@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../route/productCard/ProductCard";
-// import { productData } from "../../static/data";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styles from "../../styles/style";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -9,11 +8,17 @@ import { TfiHome } from "react-icons/tfi";
 import { backend_url } from "../../server";
 import Ratings from "../review/Ratings";
 
-//isOwner?
-//ShopInfo || ShopProfileData
+
+//parent:ShopHomePage ShopInfo || ShopProfileData
 const ShopProfileData = ({ isOwner }) => {
   const { shopReviews } = useSelector((state) => state.review);
-  const [active, setActive] = useState(1);
+  
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const activeParam = queryParams.get("active");
+
+  const [active, setActive] = useState(activeParam ? Number(activeParam) : 1);
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +26,8 @@ const ShopProfileData = ({ isOwner }) => {
   useEffect(() => {
     dispatch(getAllProductsShop(id));
   }, [dispatch, id]);
+
+
 
   return (
     <div className="w-full">

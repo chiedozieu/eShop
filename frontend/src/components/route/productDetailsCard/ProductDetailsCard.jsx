@@ -4,7 +4,6 @@ import styles from "../../../styles/style";
 import { AiOutlineMessage } from "react-icons/ai";
 import { PiHeartStraightFill, PiHeartStraightThin } from "react-icons/pi";
 import {
-  displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
 import { backend_url } from "../../../server";

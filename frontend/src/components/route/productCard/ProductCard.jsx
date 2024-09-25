@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../../styles/style";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { PiHeartStraightThin } from "react-icons/pi";
 import { PiHeartStraightFill } from "react-icons/pi";
 import { IoIosExpand } from "react-icons/io";
 import {
-  displayCurrencyOnly,
   displayNGNCurrency,
 } from "../../../utils/displayCurrency";
 import ProductDetailsCard from "../productDetailsCard/ProductDetailsCard.jsx";

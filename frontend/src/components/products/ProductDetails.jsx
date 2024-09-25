@@ -229,9 +229,7 @@ const ProductDetailsInfo = ({ data, products }) => {
               />
               <div className="">
                 <h3 className={`${styles.shop_name}`}>{data?.shop?.name}</h3>
-                <h5 className="pb-3 text-[15px]">
-                  Ratings {data?.shop?.ratings}{" "}
-                </h5>
+                <p className="text-[14px]">{data?.shop?.address}</p>
               </div>
             </Link>
             <p className="pt-2">{data?.shop?.description || null}</p>
@@ -253,10 +251,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                   {products && products.length}
                 </span>
               </h5>
-              <h5 className="font-bold mt-3">
-                Ratings:{" "}
-                <span className="font-semibold">{data?.shop?.ratings}</span>
-              </h5>
+
               <Link to={`/shop/${data?.shop?._id}`}>
                 <div className={`${styles.button} !rounded-[4px] !h-10 mt-3`}>
                   <h4 className="text-white">Visit Shop</h4>

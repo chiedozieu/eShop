@@ -7,8 +7,7 @@ import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-toastify";
 import { RxAvatar } from "react-icons/rx";
-
-
+import { stateCategory } from "../../static/statesCategories";
 
 const ShopCreate = () => {
   // const navigate = useNavigate();
@@ -19,6 +18,11 @@ const ShopCreate = () => {
   const [avatar, setAvatar] = useState();
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  //*** */
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [availableCities, setAvailableCities] = useState([]);
+  //*** */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,6 +37,11 @@ const ShopCreate = () => {
     newForm.append("address", address);
     newForm.append("phoneNumber", phoneNumber);
 
+    //*** */
+    newForm.append("selectedState", selectedState);
+    newForm.append("selectedCity", selectedCity);
+    //*** */
+
     await axios
       .post(`${server}/shop/create-shop`, newForm, config)
       .then((res) => {
@@ -43,6 +52,11 @@ const ShopCreate = () => {
         setAvatar();
         setAddress("");
         setPhoneNumber();
+        //*** */
+        setSelectedState("");
+        setSelectedCity("");
+
+        //*** */
       })
       .catch((error) => {
         toast.error(error?.response?.data.message);
@@ -53,6 +67,21 @@ const ShopCreate = () => {
     const file = e.target.files[0];
     setAvatar(file);
   };
+
+  //*** */
+// Handle state selection and update cities accordingly
+const handleStateChange = (e) => {
+  const stateName = e.target.value;
+  setSelectedState(stateName);
+
+  // Find the selected state's cities from the JSON
+  const cities =
+    stateCategory.states.find((state) => state.name === stateName)?.cities ||
+    [];
+
+  setAvailableCities(cities);
+};
+  //*** */
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
@@ -70,7 +99,7 @@ const ShopCreate = () => {
                 htmlFor="name"
                 className="block text-sm text-gray-700 font-medium"
               >
-                Shop Name 
+                Shop Name
               </label>
               <div className="mt-2 p-2 ">
                 <input
@@ -89,7 +118,7 @@ const ShopCreate = () => {
                 htmlFor="phone-number"
                 className="block text-sm text-gray-700 font-medium"
               >
-               Phone Number  
+                Phone Number
               </label>
               <div className="mt-2 p-2 ">
                 <input
@@ -102,13 +131,12 @@ const ShopCreate = () => {
                 />
               </div>
             </div>
-
             <div className="email">
               <label
                 htmlFor="email"
                 className="block text-sm text-gray-700 font-medium"
               >
-                Email Address 
+                Email Address
               </label>
               <div className="mt-2 p-2 ">
                 <input
@@ -121,13 +149,69 @@ const ShopCreate = () => {
                 />
               </div>
             </div>
- 
+
+            {/*  */}
+            <div className="w-full p-2">
+                    <label className="block pb-2 ">State</label>
+                    <select
+                      name=""
+                      id="state"
+                      value={selectedState}
+                      onChange={handleStateChange}
+                      className="w-full border h-[40px] rounded-[4px]"
+                    >
+                      <option value="" className="block pb-2 border">
+                        -- Select a state --
+                      </option>
+                      {stateCategory &&
+                        stateCategory.states.map((state) => (
+                          <option
+                            value={state.name}
+                            key={state.name}
+                            className="block pb-2"
+                          >
+                            {state.name}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  {/* City Dropdown */}
+                  {selectedState && (
+                    <div className="w-full p-2">
+                      <label className="block pb-2 ">City</label>
+                      <select
+                        name=""
+                        id="city"
+                        value={selectedCity}
+                        onChange={(e) => setSelectedCity(e.target.value)}
+                        className="w-full border h-[40px] rounded-[4px]"
+                      >
+                        <option value="" className="block pb-2 border">
+                          -- Select a city --
+                        </option>
+                        {availableCities &&
+                          availableCities.map((city) => (
+                            <option
+                              value={city}
+                              key={city}
+                              className="block pb-2"
+                            >
+                              {city}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
+                  )}
+            {/*  */}
+
+           
+
             <div className="address">
               <label
                 htmlFor="address"
                 className="block text-sm text-gray-700 font-medium"
               >
-                Address 
+                Address
               </label>
               <div className="mt-2 p-2 ">
                 <input
@@ -174,7 +258,7 @@ const ShopCreate = () => {
               </div>
             </div>
 
-            <div className="avatar">  
+            <div className="avatar">
               <label
                 htmlFor="avatar"
                 className="text-sm block font-medium text-gray-700"
@@ -208,7 +292,6 @@ const ShopCreate = () => {
               </div>
             </div>
 
-            
             <div className="">
               <button
                 type="submit"

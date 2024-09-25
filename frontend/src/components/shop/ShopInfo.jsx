@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { backend_url, server } from "../../server";
 import styles from "../../styles/style";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Loader from "../layout/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -14,16 +14,15 @@ import {
 } from "../../redux/reducers/reviewSlice";
 import Ratings from "../review/Ratings";
 
-//ShopInfo || ShopProfileData
+//parent:ShopHomePage ShopInfo || ShopProfileData
 
-//remember to pass in {isOwner}
-const ShopInfo = () => {
+const ShopInfo = ({ isOwner }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { seller } = useSelector((state) => state.seller);
   const [data, setData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [isOwner, setIsOwner] = useState(false);
+
 
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
@@ -110,13 +109,18 @@ const ShopInfo = () => {
               {data?.createdAt?.slice(0, 10)}
             </h4>
           </div>
-          {isOwner ? (
+          <div className="">
+          <Review data={data} id={id} user={user} seller={seller} />
+          </div>
+          {isOwner && (
             <div className="py-3 px-4 ">
-              <div
-                className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
-              >
-                <span className="text-white">Edit Shop </span>
-              </div>
+              <Link to="/settings">
+                <div
+                  className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
+                >
+                  <span className="text-white">Edit Shop </span>
+                </div>
+              </Link>
               <div
                 className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
                 onClick={handleLogout}
@@ -124,8 +128,6 @@ const ShopInfo = () => {
                 <span className="text-white">Logout</span>
               </div>
             </div>
-          ) : (
-            <Review data={data} id={id} user={user} seller={seller} />
           )}
         </div>
       )}
