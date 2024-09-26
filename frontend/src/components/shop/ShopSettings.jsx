@@ -4,6 +4,7 @@ import { backend_url } from "../../server";
 import { AiOutlineCamera } from "react-icons/ai";
 import styles from "../../styles/style";
 
+//Parent:ShopSettingsPage
 const ShopSettings = () => {
   const { seller } = useSelector((state) => state.seller);
   const [avatar, setAvatar] = useState('')

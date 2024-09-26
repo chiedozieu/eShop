@@ -84,10 +84,10 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     try {
       // Log when the activation route is hit
-      console.log("Activation route hit");
+      // console.log("Activation route hit");
 
       const { activation_token } = req.body;
-      console.log("Received activation token:", activation_token);
+      // console.log("Received activation token:", activation_token);
 
       const newSeller = jwt.verify(
         activation_token,
@@ -98,7 +98,16 @@ router.post(
         return next(errorHandler(400, "Invalid activation token"));
       }
 
-      const { name, email, password, avatar, address, phoneNumber } = newSeller;
+      const {
+        name,
+        email,
+        password,
+        avatar,
+        selectedState,
+        selectedCity,
+        address,
+        phoneNumber,
+      } = newSeller;
 
       // Check if seller already exists before creating a new one
       let seller = await shopModel.findOne({ email: newSeller.email });
@@ -113,6 +122,8 @@ router.post(
         email,
         password,
         avatar,
+        selectedState,
+        selectedCity,
         address,
         phoneNumber,
       });
@@ -234,44 +245,44 @@ router.get(
 
 //   shop review
 router.put(
-  "/create-new-review", isAuthenticated,
+  "/create-new-review",
+  isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { user, rating, comment, shopId } = req.body;
       const shop = await shopModel.findById(shopId);
 
-      const review =  {
+      const review = {
         user,
         rating,
         comment,
-        shopId 
-      }
+        shopId,
+      };
 
       const isReviewed = shop.reviews.find(
         (rev) => rev.user?._id === req.user?._id
       );
-      if(isReviewed){
+      if (isReviewed) {
         shop.reviews.forEach((rev) => {
-          if(rev.user?._id === req.user?._id){
-            (rev.rating = rating), (rev.comment = comment), (rev.user = user)
+          if (rev.user?._id === req.user?._id) {
+            (rev.rating = rating), (rev.comment = comment), (rev.user = user);
           }
-        })
-      }else {
-        shop.reviews.push(review)
+        });
+      } else {
+        shop.reviews.push(review);
       }
-      let avg = 0
+      let avg = 0;
       shop.reviews.forEach((rev) => {
-        avg += rev.rating
-      })
-      shop.ratings = avg / shop.reviews.length
+        avg += rev.rating;
+      });
+      shop.ratings = avg / shop.reviews.length;
 
-      await shop.save({ validateBeforeSave: false })
+      await shop.save({ validateBeforeSave: false });
 
       res.status(200).json({
         success: true,
         message: "Review created successfully",
-      })
-
+      });
     } catch (error) {
       return next(errorHandler(500, error.message));
     }

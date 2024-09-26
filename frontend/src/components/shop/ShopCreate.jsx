@@ -34,13 +34,12 @@ const ShopCreate = () => {
     newForm.append("name", name);
     newForm.append("email", email.trim());
     newForm.append("password", password);
-    newForm.append("address", address);
-    newForm.append("phoneNumber", phoneNumber);
-
-    //*** */
     newForm.append("selectedState", selectedState);
     newForm.append("selectedCity", selectedCity);
-    //*** */
+    newForm.append("address", address);
+    newForm.append("phoneNumber", phoneNumber);
+    
+   
 
     await axios
       .post(`${server}/shop/create-shop`, newForm, config)
@@ -51,12 +50,11 @@ const ShopCreate = () => {
         setPassword("");
         setAvatar();
         setAddress("");
-        setPhoneNumber();
-        //*** */
+        setPhoneNumber('');
         setSelectedState("");
         setSelectedCity("");
 
-        //*** */
+
       })
       .catch((error) => {
         toast.error(error?.response?.data.message);
@@ -68,7 +66,7 @@ const ShopCreate = () => {
     setAvatar(file);
   };
 
-  //*** */
+
 // Handle state selection and update cities accordingly
 const handleStateChange = (e) => {
   const stateName = e.target.value;
@@ -81,7 +79,7 @@ const handleStateChange = (e) => {
 
   setAvailableCities(cities);
 };
-  //*** */
+ 
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center flex-col py-12 sm:px-6 lg:px-8">
