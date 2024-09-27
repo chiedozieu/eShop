@@ -17,8 +17,6 @@ const AllEvents = () => {
   const { seller } = useSelector((state) => state.seller);
   const dispatch = useDispatch();
 
-  console.log('events', events)
-
   useEffect(() => {
     if (seller?._id) {
       dispatch(getAllEventsShop(seller._id));

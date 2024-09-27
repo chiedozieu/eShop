@@ -8,7 +8,7 @@ const Ratings = ({ rating }) => {
     if (i <= rating) {
       stars.push(
         <AiFillStar
-          key={i}
+          key={`filled-${i}`}
           size={20}
           color="#f6ba00"
           className="cursor-pointer mr-2"
@@ -16,11 +16,21 @@ const Ratings = ({ rating }) => {
       );
     } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
       stars.push(
-        <BsStarHalf size={17} color="#f6ba00" className="cursor-pointer mr-2" />
+        <BsStarHalf
+          size={17}
+          color="#f6ba00"
+          className="cursor-pointer mr-2"
+          key={`half-${i}`}
+        />
       );
     } else {
       stars.push(
-        <AiOutlineStar key={i} size={20} className="cursor-pointer mr-2" />
+        <AiOutlineStar
+          key={`outline-${i}`}
+          size={20}
+          color="#f6ba00"
+          className="cursor-pointer mr-2"
+        />
       );
     }
   }

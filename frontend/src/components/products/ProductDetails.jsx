@@ -150,7 +150,6 @@ const ProductDetails = ({ data }) => {
 };
 
 const ProductDetailsInfo = ({ data, products }) => {
-  const { seller } = useSelector((state) => state.seller);
   const [active, setActive] = useState(1);
 
   return (
@@ -242,9 +241,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                   {data.shop?.createdAt?.slice(0, 10)}
                 </span>
               </h5>
-              <h5 className="font-bold">
-                <p>{data?.shop?.description}</p>
-              </h5>
+             
               <h5 className="font-bold mt-3">
                 Total Products:{" "}
                 <span className="font-semibold">

@@ -4,6 +4,7 @@ import { displayNGNCurrency } from "../../../utils/displayCurrency";
 // import CountDown from "./CountDown";
 import { backend_url } from "../../../server";
 import { Link } from "react-router-dom";
+import CountDown from "./CountDown";
 
 const EventCard = ({ active, data }) => {
   return (
@@ -32,7 +33,7 @@ const EventCard = ({ active, data }) => {
             </h5>
           </div>
         </div>
-        {/* <CountDown data={data} /> */}
+        <CountDown data={data} />
         <br />
         <Link to={`/product/${data?._id}?isEvent=true`}>
           <div className={`${styles.button} text-white`}>See Details</div>

@@ -373,49 +373,5 @@ router.put(
   })
 );
 
-// // Update seller info
-
-// router.put(
-//   "/update-seller-info",
-//   isSeller,
-//   catchAsyncErrors(async (req, res, next) => {
-//     try {
-//       const {
-//         name,
-//         description,
-//         avatar,
-//         selectedState,
-//         selectedCity,
-//         address,
-//         phoneNumber,
-//       } = req.body;
-
-//       const shop = await shopModel
-//         .findOne(req.seller._id)
-//         .select("+password");
-
-//       if (!shop) {
-//         return next(errorHandler(400, "Shop not found"));
-//       }
-
-//       shop.name = name;
-//       shop.description = description;
-//       shop.avatar = avatar;
-//       shop.selectedState = selectedState;
-//       shop.selectedCity = selectedCity;
-//       shop.address = address;
-//       shop.phoneNumber = phoneNumber;
-
-//       await shop.save();
-
-//       res.status(201).json({
-//         success: true,
-//         shop,
-//       });
-//     } catch (error) {
-//       return next(errorHandler(500, error.message));
-//     }
-//   })
-// );
 
 export default router;

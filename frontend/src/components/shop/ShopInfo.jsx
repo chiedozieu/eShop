@@ -13,6 +13,7 @@ import {
   setReviewsError,
 } from "../../redux/reducers/reviewSlice";
 import Ratings from "../review/Ratings";
+import { formatDate } from "../../utils/dateFormat";
 
 //parent:ShopHomePage ShopInfo || ShopProfileData
 
@@ -27,14 +28,11 @@ const ShopInfo = ({ isOwner }) => {
   const { products } = useSelector((state) => state.product);
   const { id } = useParams();
 
+  
+
   useEffect(() => {
     dispatch(getAllProductsShop(id));
-    // dispatch(getSeller(id));
-  }, [dispatch, id]);
-
-  useEffect(() => {
     setIsLoading(true);
-
     axios
       .get(`${server}/shop/get-shop-info/${id}`)
       .then((res) => {
@@ -106,7 +104,7 @@ const ShopInfo = ({ isOwner }) => {
           <div className="p-2">
             <h5 className="font-semibold">Joined On</h5>
             <h4 className="text-[#000000a6]">
-              {data?.createdAt?.slice(0, 10)}
+              {formatDate(data?.createdAt)}
             </h4>
           </div>
           <div className="">

@@ -15,7 +15,7 @@ import {
 } from "../../../redux/actions/wishlist.js";
 import { useDispatch, useSelector } from "react-redux";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, isEvent }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
   const [click, setClick] = useState(false);
   const [open, setOpen] = useState(false);
@@ -31,10 +31,6 @@ const ProductCard = ({ data }) => {
     }
   }, [wishlist, data._id]);
 
-  // const originalPrice = data.originalPrice;
-  // const discountPrice = data.discountPrice;
-  // const discountAmount = originalPrice - discountPrice;
-  // const discountPercentage = (discountAmount / originalPrice) * 100;
 
   const removeFromWishlistHandler = (data) => {
     setClick(!click);
@@ -53,7 +49,7 @@ const ProductCard = ({ data }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex justify-end"></div>
-        <Link to={`/product/${data._id}`}>
+        <Link to={`${isEvent === true ? `/product/${data._id}/?isEvent=true` : `/product/${data._id}`}`}>
           <img
             src={`${backend_url}${data.images && data.images[0]}`}
             alt={data.id}
