@@ -31,6 +31,7 @@ import {
   ShopCreateEvents,
   ShopAllEvents,
   ShopSettingsPage,
+  ShopInboxPage,
 } from "./Routes/shopRoutes.js";
 import { getAllProducts } from "./redux/actions/product.js";
 import { getAllEvents } from "./redux/actions/event.js";
@@ -143,6 +144,14 @@ const App = () => {
           element={
             <SellerProtectedRoute>
               <ShopAllEvents />
+            </SellerProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-messages"
+          element={
+            <SellerProtectedRoute>
+              <ShopInboxPage />
             </SellerProtectedRoute>
           }
         />

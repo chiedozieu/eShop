@@ -56,10 +56,10 @@ const ProductCard = ({ data, isEvent }) => {
             className="w-full h-[170px] object-contain"
           />
         </Link>
-        <Link to={`/`}>
+        <Link to={`/shop/${data.shop._id}`}>
           <h2 className={`${styles.shop_name}`}>{data.shop.name}</h2>
         </Link>
-        <Link to={`/product/${data._id}`}>
+        <Link to={`${isEvent === true ? `/product/${data._id}/?isEvent=true` : `/product/${data._id}`}`}>
           <h4 className="pb-3 font-medium">
             {data?.name.length > 40
               ? data?.name.slice(0, 40) + " ..."
