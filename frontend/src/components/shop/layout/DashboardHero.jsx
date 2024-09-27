@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { getAllProductsShop } from "../../../redux/actions/product";
 import { MdOutlineRateReview } from "react-icons/md";
 
+//parent: ShopDashboardPage
 const DashboardHero = () => {
   const dispatch = useDispatch();
   const { seller } = useSelector((state) => state.seller);
@@ -14,6 +15,7 @@ const DashboardHero = () => {
   useEffect(() => {
     dispatch(getAllProductsShop(seller._id));
   }, [dispatch, seller._id])
+  
   console.log('products', products)
   console.log('seller', seller)
   return (

@@ -131,7 +131,7 @@ const DashboardSidebar = ({ active }) => {
       </div>
 
       <div className="dashboard w-full flex items-center p-4">
-        <Link to="/dashboard-settings" className="w-full flex items-center">
+        <Link to="/settings" className="w-full flex items-center">
           <MdOutlineSettings
             size={30}
             color={`${active === 8 ? "crimson" : "#555"}`}

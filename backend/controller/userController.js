@@ -225,6 +225,8 @@ router.put(
   })
 );
 
+// update user avatar
+
 router.put(
   "/update-avatar",
   isAuthenticated,

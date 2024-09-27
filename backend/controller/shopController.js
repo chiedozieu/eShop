@@ -83,11 +83,8 @@ router.post(
   "/activation",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      // Log when the activation route is hit
-      // console.log("Activation route hit");
-
+      
       const { activation_token } = req.body;
-      // console.log("Received activation token:", activation_token);
 
       const newSeller = jwt.verify(
         activation_token,
@@ -288,5 +285,137 @@ router.put(
     }
   })
 );
+
+//  Update shop profile picture
+
+router.put(
+  "/update-shop-avatar",
+  isSeller,
+  upload.single("image"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const existShop = await shopModel.findById(req.seller._id);
+
+      // Delete old avatar if it exists
+      if (existShop.avatar && existShop.avatar.public_id) {
+        const existAvatarPath = `uploads/${existShop.avatar.public_id}`;
+        fs.unlinkSync(existAvatarPath);
+      }
+
+      const fileUrl = path.join(req.file.filename); // Replace with actual URL
+      const publicId = req.file.filename; // Assuming this is the file's public ID
+
+      const shop = await shopModel.findByIdAndUpdate(
+        req.seller._id,
+        {
+          avatar: {
+            public_id: publicId,
+            url: fileUrl,
+          },
+        },
+        { new: true }
+      );
+
+      res.status(200).json({
+        success: true,
+        shop,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// Update seller info
+router.put(
+  "/update-seller-info",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const {
+        name,
+        description,
+        avatar,
+        selectedState,
+        selectedCity,
+        address,
+        phoneNumber,
+      } = req.body;
+
+      const shop = await shopModel.findById(req.seller._id);
+
+      if (!shop) {
+        return next(errorHandler(400, "Shop not found"));
+      }
+
+      // Update fields only if they are provided in the request
+      if (name) shop.name = name;
+      if (description) shop.description = description;
+      if (selectedState) shop.selectedState = selectedState;
+      if (selectedCity) shop.selectedCity = selectedCity;
+      if (address) shop.address = address;
+      if (phoneNumber) shop.phoneNumber = phoneNumber;
+
+      // Only update avatar if new data is provided
+      if (avatar && avatar.public_id && avatar.url) {
+        shop.avatar = avatar;
+      }
+
+      await shop.save();
+
+      res.status(200).json({
+        success: true,
+        shop,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// // Update seller info
+
+// router.put(
+//   "/update-seller-info",
+//   isSeller,
+//   catchAsyncErrors(async (req, res, next) => {
+//     try {
+//       const {
+//         name,
+//         description,
+//         avatar,
+//         selectedState,
+//         selectedCity,
+//         address,
+//         phoneNumber,
+//       } = req.body;
+
+//       const shop = await shopModel
+//         .findOne(req.seller._id)
+//         .select("+password");
+
+//       if (!shop) {
+//         return next(errorHandler(400, "Shop not found"));
+//       }
+
+//       shop.name = name;
+//       shop.description = description;
+//       shop.avatar = avatar;
+//       shop.selectedState = selectedState;
+//       shop.selectedCity = selectedCity;
+//       shop.address = address;
+//       shop.phoneNumber = phoneNumber;
+
+//       await shop.save();
+
+//       res.status(201).json({
+//         success: true,
+//         shop,
+//       });
+//     } catch (error) {
+//       return next(errorHandler(500, error.message));
+//     }
+//   })
+// );
 
 export default router;
