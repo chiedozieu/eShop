@@ -4,7 +4,7 @@ import styles from "../../styles/style";
 import { displayNGNCurrency } from "../../utils/displayCurrency";
 import { PiHeartStraightFill, PiHeartStraightThin } from "react-icons/pi";
 import { AiOutlineMessage } from "react-icons/ai";
-import { backend_url } from "../../server";
+import { backend_url, server } from "../../server";
 import { scrollTop } from "../../../src/utils/scrollTop";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProductsShop } from "../../redux/actions/product";
@@ -12,9 +12,12 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../redux/actions/wishlist";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ProductDetails = ({ data }) => {
   const { wishlist } = useSelector((state) => state.wishlist);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(0);
   const navigate = useNavigate();
@@ -46,8 +49,26 @@ const ProductDetails = ({ data }) => {
     dispatch(addToWishlist(data));
   };
 
-  const handleMessageSubmit = () => {
-    navigate("/inbox?conversation=tryhrt53heghs");
+  const handleMessageSubmit = async () => {
+    try {
+      if (isAuthenticated) {
+        const groupTitle = data._id + user._id;
+        const userId = user._id;
+        const sellerId = data.shop._id;
+        const res = await axios.post(
+          `${server}/conversation/create-new-conversation`,
+          { groupTitle, userId, sellerId },
+          { withCredentials: true }
+        );
+        if (res.data.success) {
+          navigate(`/conversation/${res.data.conversation._id}`);
+        }
+      } else {
+        toast.error("Please login to send message");
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Something went wrong');
+    }
   };
 
   return (
@@ -126,11 +147,11 @@ const ProductDetails = ({ data }) => {
                     </h3>
                   </Link>
                 </div>
-                <h5 className="text-[16px] text-cyan-700 mt-5">
+                <h5 className="text-[16px] text-cyan-700 mt-5 md:ml-10 ">
                   ({data.stock}) Available
                 </h5>
                 <div
-                  className={`${styles.button} !rounded-[4px] !h-11 !bg-green-500 mt-6`}
+                  className={`${styles.button} !rounded-[4px] !h-11 !bg-green-500 mt-6 md:ml-10 lg:ml-0`}
                   onClick={handleMessageSubmit}
                 >
                   <span className="text-[#fff] flex items-center">
@@ -241,7 +262,7 @@ const ProductDetailsInfo = ({ data, products }) => {
                   {data.shop?.createdAt?.slice(0, 10)}
                 </span>
               </h5>
-             
+
               <h5 className="font-bold mt-3">
                 Total Products:{" "}
                 <span className="font-semibold">

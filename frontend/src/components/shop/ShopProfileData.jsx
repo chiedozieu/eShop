@@ -31,7 +31,6 @@ const ShopProfileData = ({ isOwner }) => {
     dispatch(getAllEventsShop(seller._id));
   }, [dispatch, id, seller._id]);
 
-  console.log('events', events)
 
   return (
     <div className="w-full">
