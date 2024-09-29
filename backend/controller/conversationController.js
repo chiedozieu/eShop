@@ -2,6 +2,7 @@ import conversationModel from "../model/conversationModel.js";
 import express from "express";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { errorHandler } from "../utils/errorHandler.js";
+import { isSeller } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post(
         const conversation = isConversationExist;
         res.status(201).json({
           success: true,
-          conversation, 
+          conversation,
         });
       } else {
         const conversation = await conversationModel.create({
@@ -36,23 +37,28 @@ router.post(
   })
 );
 
-// get user conversation
+// get seller conversation
 
-// router.get(
-//   "/get-conversation/:id",
-//   catchAsyncErrors(async (req, res, next) => {
-//     try {
-//       const conversation = await conversationModel
-//         .findOne({ members: { $in: [req.params.id] } })
-//         .populate("members", "-password");
-//       res.status(200).json({
-//         message: true,
-//         conversation,
-//       });
-//     } catch (error) {
-//       return next(errorHandler(500, error.response.message));
-//     }
-//   })
-// );
+router.get(
+  "/get-all-conversation-seller/:id",
+  isSeller,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const conversations = await conversationModel.find({
+        members: { $in: [req.params.id] },
+      }).sort({
+        updatedAt: -1,
+        createdAt: -1,
+      });
+
+      res.status(201).json({
+        success: true,
+        conversations,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
 
 export default router;
