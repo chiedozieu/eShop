@@ -5,14 +5,17 @@ const messagesSchema = new mongoose.Schema(
     conversationId: {
       type: String,
     },
-    sender: [
+    text: {
+      type: String,
+    },
+    sender: {
+      type: String,
+    },
+    images: [
       {
         type: String,
       },
     ],
-    images: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

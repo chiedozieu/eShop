@@ -2,13 +2,13 @@ import conversationModel from "../model/conversationModel.js";
 import express from "express";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { errorHandler } from "../utils/errorHandler.js";
-import { isSeller } from "../middleware/auth.js";
+import { isAuthenticated, isSeller } from "../middleware/auth.js";
 
 const router = express.Router();
 
 // create a new conversation
 router.post(
-  "/create-new-conversation",
+  "/create-new-conversation", 
   catchAsyncErrors(async (req, res, next) => {
     try {
       const { groupTitle, userId, sellerId } = req.body;
@@ -18,7 +18,7 @@ router.post(
       if (isConversationExist) {
         const conversation = isConversationExist;
         res.status(201).json({
-          success: true,
+          success: true, 
           conversation,
         });
       } else {
@@ -44,12 +44,14 @@ router.get(
   isSeller,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const conversations = await conversationModel.find({
-        members: { $in: [req.params.id] },
-      }).sort({
-        updatedAt: -1,
-        createdAt: -1,
-      });
+      const conversations = await conversationModel
+        .find({
+          members: { $in: [req.params.id] },
+        })
+        .sort({
+          updatedAt: -1,
+          createdAt: -1,
+        });
 
       res.status(201).json({
         success: true,
@@ -57,6 +59,57 @@ router.get(
       });
     } catch (error) {
       return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+
+// get user conversation
+
+router.get(
+  "/get-all-conversation-user/:id",
+  isAuthenticated,
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const conversations = await conversationModel
+        .find({
+          members: { $in: [req.params.id] },
+        })
+        .sort({
+          updatedAt: -1,
+          createdAt: -1,
+        });
+
+      res.status(201).json({
+        success: true,
+        conversations,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// update the last conversation
+
+router.put(
+  "/update-last-message/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const { lastMessage, lastMessageId } = req.body;
+
+      const conversation = await conversationModel.findByIdAndUpdate(
+        req.params.id,
+        { lastMessage, lastMessageId },
+        { new: true }
+      );
+
+      res.status(201).json({
+        success: true,
+        conversation,
+      });
+    } catch (error) {
+      next(errorHandler(500, error.message));
     }
   })
 );

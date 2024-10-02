@@ -362,4 +362,23 @@ router.put(
   })
 );
 
+// find user information with the userId
+
+router.get(
+  "/user-info/:id",
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await userModel
+        .findById(req.params.id)
+    
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
 export default router;

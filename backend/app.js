@@ -8,6 +8,7 @@ import shop from "./controller/shopController.js";
 import product from "./controller/productController.js"; 
 import event from "./controller/eventController.js"; 
 import conversation from "./controller/conversationController.js"; 
+import message from "./controller/messageController.js"; 
 
 
 import { errorMiddleware } from "./middleware/error.js";
@@ -49,6 +50,7 @@ app.use("/api/v2/shop", shop);
 app.use("/api/v2/product", product); 
 app.use("/api/v2/event", event); 
 app.use("/api/v2/conversation", conversation); 
+app.use("/api/v2/message", message); 
  
 // Error handling middleware
 app.use(errorMiddleware);

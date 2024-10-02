@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const conversationSchema = new mongoose.Schema({
     groupTitle: {
-        type: Array,
+        type: String,
     },
     members: {
         type: Array,

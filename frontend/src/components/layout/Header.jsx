@@ -110,6 +110,8 @@ const Header = ({ activeHeading }) => {
               </div>
             ) : null}
           </div>
+
+          {/* // Remove & disappear */}
           <div className={`${styles.button} !rounded-md !h-10`}>
             <Link to="/shop-create">
               <h1
@@ -130,6 +132,7 @@ const Header = ({ activeHeading }) => {
               </h1>
             </Link>
           </div>
+           {/* // Remove & disappear */}
         </div>
       </div>
       <div
@@ -210,6 +213,7 @@ const Header = ({ activeHeading }) => {
       {/* last */}
 
       {/* mobile screen header  */}
+      {/* mobile screen header  */}
       <div
         className={`${
           active === true ? "shadow-sm fixed top-0 left-0 z-10" : null
@@ -259,7 +263,9 @@ const Header = ({ activeHeading }) => {
             </div>
           </div>
         </div>
+
         {/* header sidebar popup */}
+      
         {open && (
           <div
             className={`fixed w-full h-full bg-[#0000005f] z-20 top-0 left-0 `}

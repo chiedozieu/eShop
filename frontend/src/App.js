@@ -14,6 +14,7 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
+
 } from "./Routes/routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -84,6 +85,7 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        
 
         {/* Shop routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />

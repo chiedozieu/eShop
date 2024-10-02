@@ -3,7 +3,7 @@ import DashboardHeader from '../../components/shop/layout/DashboardHeader'
 import DashboardSidebar from '../../components/shop/layout/DashboardSidebar'
 import DashboardMessages from '../../components/shop/DashboardMessages'
 
-const ShopInboxPage = () => {
+const  ShopInboxPage = () => {
   return (
     <div>
         <DashboardHeader />
