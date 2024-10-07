@@ -362,7 +362,7 @@ router.put(
   })
 );
 
-// find user information with the userId
+// find user information with the userId (DashboardMessages.jsx)
 
 router.get(
   "/user-info/:id",

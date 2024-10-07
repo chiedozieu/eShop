@@ -15,8 +15,13 @@ import { useSelector } from "react-redux";
 import { backend_url } from "../../server.js";
 import Wishlist from "../wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
+import { PiEnvelopeSimpleThin } from "react-icons/pi";
 
 const Header = ({ activeHeading }) => {
+  const { totalUnseenCount } = useSelector((state) => state.messages);
+  const { totalUnseenCountSeller } = useSelector(
+    (state) => state.messagesSeller
+  );
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const { isSeller } = useSelector((state) => state.seller);
   const { allProducts } = useSelector((state) => state.product);
@@ -113,17 +118,30 @@ const Header = ({ activeHeading }) => {
 
           {/* // Remove & disappear */}
           <div className={`${styles.button} !rounded-md !h-10`}>
-            <Link to="/shop-create">
+            <Link to={`${isSeller ? "/dashboard" : "/shop-create"}`}>
               <h1
                 className={`text-white flex items-center 
-      ${isSeller ? "font-thin text-sm justify-center" : ""} 
+      } 
     `}
               >
                 {isSeller ? (
                   <p className="flex items-center ">
-                    Profile
-                    <IoIosArrowForward />
                     Dashboard
+                    <Link to="/dashboard-messages" className="pl-2">
+                      {totalUnseenCountSeller > 0 ? (
+                        <div className="relative">
+                          <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+                            <span className="text-white text-xs">
+                              {totalUnseenCountSeller > 99
+                                ? "99+"
+                                : totalUnseenCountSeller}
+                            </span>
+                          </div>
+                          <PiEnvelopeSimpleThin size={25} />
+                          {/* Your messages icon or link */}
+                        </div>
+                      ) : null}
+                    </Link>
                   </p>
                 ) : (
                   "Become Seller"
@@ -132,7 +150,7 @@ const Header = ({ activeHeading }) => {
               </h1>
             </Link>
           </div>
-           {/* // Remove & disappear */}
+          {/* // Remove & disappear */}
         </div>
       </div>
       <div
@@ -168,22 +186,45 @@ const Header = ({ activeHeading }) => {
           <div className={`${styles.normalFlex}`}>
             <Navbar active={activeHeading} />
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             <div className={`wishlist ${styles.normalFlex} `}>
               <div
-                className="relative cursor-pointer mr-4"
+                className="relative cursor-pointer mr-2"
                 onClick={() => setOpenWishlist(true)}
               >
-                <PiHeartThin size={30} />
-                <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
+                <PiHeartThin size={25} />
+                <span className="absolute -top-1 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
                   {wishlist?.length}
                 </span>
               </div>
             </div>
+            {/* Your existing header content */}
+            <Link to="/inbox" className="pr-3">
+              {isAuthenticated && totalUnseenCount > 0 ? (
+                <div className="relative">
+                  <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+                    <span className="text-white text-xs">
+                      {totalUnseenCount > 99 ? "99+" : totalUnseenCount}
+                    </span>
+                  </div>
+                  <PiEnvelopeSimpleThin size={25} />
+                  {/* Your messages icon or link */}
+                </div>
+              ) : null}
+            </Link>
             {/* user */}
             <div className={`username ${styles.normalFlex} `}>
               <div className="relative mr-4 capitalize font-thin ">
-                {user ? <h6>Hi {user?.name.split(" ")[0]}</h6> : "Hi Guest"}
+                {user ? (
+                  <h6>
+                    Hi{" "}
+                    {user?.name.includes(" ")
+                      ? user?.name.split(" ")[0]
+                      : user?.name}{" "}
+                  </h6>
+                ) : (
+                  "Hi Guest"
+                )}
               </div>
             </div>
             <div className={`user ${styles.normalFlex} `}>
@@ -265,20 +306,35 @@ const Header = ({ activeHeading }) => {
         </div>
 
         {/* header sidebar popup */}
-      
+        {/* header sidebar popup */}
+        {/* header sidebar popup */}
+
         {open && (
           <div
             className={`fixed w-full h-full bg-[#0000005f] z-20 top-0 left-0 `}
           >
             <div className="fixed w-[60%] bg-[#fff] h-screen top-0 left-0 z-10">
-              <div className="w-full justify-between flex pr-3">
-                <div className="">
-                  <div className="relative mr-[15px]">
-                    <PiHeartThin size={30} className=" mt-5 ml-3"/>
-                    <span className="absolute top-0 right-0 rounded-full bg-white w-4 h-4 p-0 m-0 text-orange-500 text-xs leading-tight text-center">
+              <div className="w-full justify-between flex items-center px-2">
+                <div className="flex items-center mt-5">
+                  <div className="relative">
+                    <PiHeartThin size={30} className="ml-3" />
+                    <p className="absolute top-0 right-0 rounded-full bg-[#ffbb38] w-4 h-4 p-0 m-0 text-[#fff] text-xs leading-tight text-center">
                       {wishlist.length}
-                    </span>
+                    </p>
                   </div>
+                  <Link to="/inbox" className="ml-3">
+                    {isAuthenticated && totalUnseenCount > 0 ? (
+                      <div className="relative">
+                        <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+                          <span className="text-white text-xs">
+                            {totalUnseenCount > 99 ? "99+" : totalUnseenCount}
+                          </span>
+                        </div>
+                        <PiEnvelopeSimpleThin size={30} />
+                        {/* Your messages icon or link */}
+                      </div>
+                    ) : null}
+                  </Link>
                 </div>
                 <RxCross1
                   size={25}
@@ -333,14 +389,27 @@ const Header = ({ activeHeading }) => {
                   >
                     {isSeller ? (
                       <p className="flex items-center ">
-                        Profile
-                        <IoIosArrowForward />
                         Dashboard
+                        <Link to="/dashboard-messages" className="pl-2">
+                      {totalUnseenCountSeller > 0 ? (
+                        <div className="relative">
+                          <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+                            <span className="text-white text-xs">
+                              {totalUnseenCountSeller > 99
+                                ? "99+"
+                                : totalUnseenCountSeller}
+                            </span>
+                          </div>
+                          <PiEnvelopeSimpleThin size={25} className=""/>
+                          {/* Your messages icon or link */}
+                        </div>
+                      ) : null}
+                    </Link>
                       </p>
                     ) : (
                       "Become Seller"
                     )}
-                    <IoIosArrowForward />
+                    <IoIosArrowForward  className="ml-2"/>
                   </h1>
                 </Link>
               </div>

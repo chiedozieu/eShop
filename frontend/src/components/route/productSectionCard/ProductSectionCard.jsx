@@ -13,7 +13,7 @@ const ProductSectionCard = ({ data }) => {
     <>
       <div className="w-full h-[150px] rounded-lg shadow-sm bg-white cursor-pointer">
         <div className="flex justify-between px-4 ">
-          <Link to={`/product/${data._id}`}>
+          <Link to={`/product/${data?._id}`}>
             <img
               src={`${backend_url}${data.images && data.images[0]}`}
               alt={data.id}

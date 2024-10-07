@@ -14,6 +14,7 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
+  UserInbox
 
 } from "./Routes/routes.js";
 import { ToastContainer } from "react-toastify";
@@ -82,6 +83,14 @@ const App = () => {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/inbox"
+          element={
+            <ProtectedRoute>
+              <UserInbox  />
             </ProtectedRoute>
           }
         />

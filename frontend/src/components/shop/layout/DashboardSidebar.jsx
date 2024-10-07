@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import { LuAlarmPlus } from "react-icons/lu";
 import { BiChat } from "react-icons/bi";
 import { AiOutlineGift } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 const DashboardSidebar = ({ active }) => {
+  const { totalUnseenCountSeller } = useSelector((state) => state.messagesSeller);
   return (
     <div className="w-full h-[89vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
       {/* Single item */}
@@ -98,11 +100,31 @@ const DashboardSidebar = ({ active }) => {
 
       <div className="dashboard w-full flex items-center p-4">
         <Link to="/dashboard-messages" className="w-full flex items-center">
+          <div className="">
+            {totalUnseenCountSeller > 0 ? (
+              <div className="relative">
+                <div className="absolute -top-1 -right-1 bg-red-700 rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="text-white text-xs">
+                    {totalUnseenCountSeller > 99 ? "99+" : totalUnseenCountSeller}
+                  </span>
+                </div>
+                <BiChat
+                  size={30}
+                  color={`${active === 6 ? "crimson" : "#555"}`}
+                  title="Messages"
+                />
+              </div>
+            )
+            : (
+
           <BiChat
-            size={30}
-            color={`${active === 6 ? "crimson" : "#555"}`}
-            title="Messages"
-          />
+                  size={30}
+                  color={`${active === 6 ? "crimson" : "#555"}`}
+                  title="Messages"
+                />
+            )}
+          </div>
+
           <h5
             className={`md:block hidden  pl-2 text-[18px] font-normal ${
               active === 6 ? "text-[crimson]" : "text-[#555]"

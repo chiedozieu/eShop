@@ -52,16 +52,20 @@ const ProductDetails = ({ data }) => {
   const handleMessageSubmit = async () => {
     try {
       if (isAuthenticated) {
-        const groupTitle = data._id + user._id;
-        const userId = user._id;
-        const sellerId = data.shop._id;
+        const groupTitle = data?._id + user?._id;
+        const userId = user?._id;
+        const sellerId = data?.shop._id;
+        const productImage = data.images[0];
+        const productName = data.name;
+        const productPrice = data.discountPrice;
+      
         const res = await axios.post(
           `${server}/conversation/create-new-conversation`,
-          { groupTitle, userId, sellerId },
+          { groupTitle, userId, sellerId, productImage, productName, productPrice },
           { withCredentials: true }
         );
         if (res.data.success) {
-          navigate(`/conversation/${res.data.conversation._id}`);
+          navigate(`/inbox?${res.data.conversation._id}`);
         }
       } else {
         toast.error("Please login to send message");
@@ -70,6 +74,7 @@ const ProductDetails = ({ data }) => {
       toast.error(error.response?.data?.message || 'Something went wrong');
     }
   };
+  
 
   return (
     <div className="bg-white">

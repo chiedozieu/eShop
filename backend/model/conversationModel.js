@@ -13,6 +13,15 @@ const conversationSchema = new mongoose.Schema({
     lastMessageId: {
         type: String,
     },
+    productImage: {     
+        type: String,
+      },
+      productName: {     
+        type: String,
+      },
+      productPrice: {     
+        type: String,
+      },
 
    
 }, {timestamps: true}

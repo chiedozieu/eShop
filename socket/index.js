@@ -37,9 +37,10 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
-const getUser = (userId) => {
+const getUser = (receiverId) => {
   return users.find((user) => user.userId === receiverId);
 };
+// Create a message object with a  seen property
 const createMessage = ({ senderId, receiverId, text, images }) => ({
   senderId,
   receiverId,
@@ -64,6 +65,12 @@ io.on("connection", (socket) => {
     const message = createMessage({ senderId, receiverId, text, images });
 
     const user = getUser(receiverId);
+    // Error handling: Check if the receiver exists
+    if (!user) {
+      console.error(`User with id ${receiverId} not found`);
+      socket.emit("error", { message: "User not found" });
+      return; // Exit the function if the user does not exist
+    }
 
     // store the message in the message object
     if (!messages[receiverId]) {
@@ -72,11 +79,33 @@ io.on("connection", (socket) => {
       messages[receiverId].push(message);
     }
     // send message to the receiver
-    io.to(user?.socketId).emit("getMessage", message);
+    try {
+      io.to(user?.socketId).emit("getMessage", message);
+      io.emit("updateUnseenCount", {
+        conversationId: message.conversationId,
+        userId: receiverId,
+      });
+      // for status (1)
+      // io.emit("updateStatus", {
+      //   conversationId: message.conversationId,
+      //   userId: receiverId,
+      //   status: "delivered",
+      // });
+    } catch (error) {
+      console.error("Error sending message:", error);
+      socket.emit("error", { message: "Failed to send message" });
+    }
   });
 
   socket.on("messageSeen", ({ senderId, receiverId, messageId }) => {
     const user = getUser(senderId);
+
+    // // Error handling: Check if the sender exists
+    if (!user) {
+      console.error(`User with id ${senderId} not found`);
+      socket.emit("error", { message: "Sender not found" });
+      return;
+    }
 
     //update the seen flag/feature
     if (messages[senderId]) {
@@ -86,13 +115,28 @@ io.on("connection", (socket) => {
       );
       if (message) {
         message.seen = true;
-        // send a seen message to the receiver
+        // send a seen message to the sender
         io.to(user?.socketId).emit("seenMessage", {
           senderId,
           receiverId,
           messageId,
         });
+
+        // emit event to update status (2)
+      // io.emit("updateStatus", {
+      //   conversationId: message.conversationId,
+      //   userId: receiverId,
+      //   status: "seen",
+      // });
+      } else {
+        console.error(
+          `Message with id ${messageId} not found for sender ${senderId}`
+        );
+        socket.emit("error", { message: "Message not found" });
       }
+    } else {
+      console.error(`No messages found for sender ${senderId}`);
+      socket.emit("error", { message: "No messages found" });
     }
   });
 
@@ -113,5 +157,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(process.env.PORT || 4000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 4000}`);
+  console.log(`Chat Server is running on port ${process.env.PORT || 4000}`);
 });

@@ -11,6 +11,15 @@ const messagesSchema = new mongoose.Schema(
     sender: {
       type: String,
     },
+    seen: {
+      type: Boolean,
+      default: false,  
+    },
+    status: {
+      type: String,
+      enum: ["sent", "delivered", "seen"],
+      default: "sent",  // Default status is 'sent'
+    },
     images: [
       {
         type: String,
