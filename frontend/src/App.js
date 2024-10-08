@@ -14,8 +14,7 @@ import {
   ShopCreatePage,
   SellerActivationPage,
   ShopLoginPage,
-  UserInbox
-
+  UserInbox,
 } from "./Routes/routes.js";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,8 +34,10 @@ import {
   ShopSettingsPage,
   ShopInboxPage,
 } from "./Routes/shopRoutes.js";
+import { AdminDashboardPage } from "./Routes/AdminRoutes";
 import { getAllProducts } from "./redux/actions/product.js";
 import { getAllEvents } from "./redux/actions/event.js";
+import AdminProtectedRoute from "./Routes/AdminProtectedRoute.js";
 
 const App = () => {
   useEffect(() => {
@@ -44,7 +45,6 @@ const App = () => {
     store.dispatch(loadSeller());
     store.dispatch(getAllProducts());
     store.dispatch(getAllEvents());
-
   }, []);
 
   return (
@@ -90,11 +90,10 @@ const App = () => {
           path="/inbox"
           element={
             <ProtectedRoute>
-              <UserInbox  />
+              <UserInbox />
             </ProtectedRoute>
           }
         />
-        
 
         {/* Shop routes */}
         <Route path="/shop-create" element={<ShopCreatePage />} />
@@ -164,6 +163,16 @@ const App = () => {
             <SellerProtectedRoute>
               <ShopInboxPage />
             </SellerProtectedRoute>
+          }
+        />
+        {/* admin routes */}
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardPage />
+            </AdminProtectedRoute>
           }
         />
       </Routes>

@@ -11,7 +11,7 @@ const ShopLoginPage = () => {
    if(isSeller){
     navigate(`/dashboard`)
    }
-  }, [isLoading, isSeller ])
+  }, [isLoading, isSeller, navigate ])
 
   window.scrollTo(0,0)
   return (

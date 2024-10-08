@@ -10,7 +10,7 @@ const ShopCreatePage = () => {
    if(isSeller){
     navigate(`/shop/${seller._id}`)
    }
-  }, [isSeller])
+  }, [isSeller, seller, navigate])
 
   window.scrollTo(0,0)
   return (

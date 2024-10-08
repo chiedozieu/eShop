@@ -123,11 +123,11 @@ io.on("connection", (socket) => {
         });
 
         // emit event to update status (2)
-      // io.emit("updateStatus", {
-      //   conversationId: message.conversationId,
-      //   userId: receiverId,
-      //   status: "seen",
-      // });
+        // io.emit("updateStatus", {
+        //   conversationId: message.conversationId,
+        //   userId: receiverId,
+        //   status: "seen",
+        // });
       } else {
         console.error(
           `Message with id ${messageId} not found for sender ${senderId}`

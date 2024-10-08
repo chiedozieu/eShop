@@ -11,7 +11,8 @@ const SignUpPage = () => {
    if(isAuthenticated){
     navigate('/')
    }
-  }, [isAuthenticated])
+  }, [isAuthenticated, navigate]);
+  
   window.scrollTo(0,0)
   return (
     <div>

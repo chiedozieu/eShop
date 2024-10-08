@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PiUserThin } from "react-icons/pi";
 import { GoInbox } from "react-icons/go";
 import { PiAddressBookThin } from "react-icons/pi";
@@ -8,8 +8,10 @@ import { server } from "../../server";
 import axios from "axios";
 import { CiLock } from "react-icons/ci";
 import { useSelector } from "react-redux";
+import { RiAdminLine } from "react-icons/ri";
 
 const ProfileSidebar = ({ active, setActive }) => {
+  const { user } = useSelector((state) => state.user);            
   const navigate = useNavigate();
   const { totalUnseenCount } = useSelector((state) => state.messages);
 
@@ -93,15 +95,34 @@ const ProfileSidebar = ({ active, setActive }) => {
           Change Password
         </span>
       </div>
+     {
+      user && user.role === 'admin' && (
+       <Link to="/admin/dashboard">
+         <div
+          className="flex items-center cursor-pointer w-full mb-5"
+          onClick={() => setActive(5)}
+               >
+          <RiAdminLine size={20} color={active === 4 ? "red" : ""} />
+          <span
+            className={`${
+              active === 5 ? "text-[red]" : ""
+            } pl-3 font-thin hidden md:block`}
+          >
+            Admin Dashboard
+          </span>
+               </div>
+       </Link>
+      )
+     }
 
       <div
         className="flex items-center cursor-pointer w-full mb-5"
-        onClick={() => setActive(5) || handleLogout()}
+        onClick={() => setActive(6) || handleLogout()}
       >
         <IoLogOutOutline size={20} color={active === 5 ? "red" : ""} />
         <span
           className={`${
-            active === 5 ? "text-[red]" : ""
+            active === 6 ? "text-[red]" : ""
           } pl-3 font-thin hidden md:block `}
         >
           Logout
