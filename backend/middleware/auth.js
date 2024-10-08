@@ -5,14 +5,11 @@ import userModel from "../model/userModel.js";
 import shopModel from "../model/shopModel.js";
 
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
-    
-
   const { token } = req.cookies;
-   
+
   if (!token) {
     return next(errorHandler(401, "Please login to continue"));
   }
- 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -26,18 +23,12 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-
-
-
 export const isSeller = catchAsyncErrors(async (req, res, next) => {
-    
-
   const { seller_token } = req.cookies;
-   
+
   if (!seller_token) {
     return next(errorHandler(401, "Please login to continue"));
   }
- 
 
   try {
     const decoded = jwt.verify(seller_token, process.env.JWT_SECRET_KEY);
@@ -49,3 +40,17 @@ export const isSeller = catchAsyncErrors(async (req, res, next) => {
     next(errorHandler(401, "Invalid token, please login again"));
   }
 });
+
+export const isAdmin = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        errorHandler(
+          401,
+          `${req.user.role} is not allowed to access this resource!`
+        )
+      );
+    }
+    next()
+  };
+};

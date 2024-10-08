@@ -38,7 +38,7 @@ if (process.env.NODE_ENV !== "production") {
     path: "backend/config/.env",
   });
 
-  if (result.error) {
+  if (result.error) { 
     console.error("Failed to load .env file", result.error);
     process.exit(1);
   }

@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { isAuthenticated, isSeller } from "../middleware/auth.js";
+import { isAdmin, isAuthenticated, isSeller } from "../middleware/auth.js";
 import { sendShopToken } from "../utils/shopToken.js";
 import { sendMail } from "../utils/sendMail.js";
 import jwt from "jsonwebtoken";
@@ -83,7 +83,6 @@ router.post(
   "/activation",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      
       const { activation_token } = req.body;
 
       const newSeller = jwt.verify(
@@ -373,5 +372,26 @@ router.put(
   })
 );
 
+// All sellers ---admin only
+
+router.get(
+  "/admin-all-sellers",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const sellers = await shopModel.find().sort({
+        createdAt: -1
+      });
+
+      res.status(201).json({
+        success: true,
+        sellers,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
 
 export default router;
