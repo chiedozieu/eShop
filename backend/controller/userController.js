@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail.js";
 import catchAsyncErrors from "../middleware/catchAsyncErrors.js";
 import { sendToken } from "../utils/jwtToken.js";
-import { isAuthenticated } from "../middleware/auth.js";
+import { isAdmin, isAuthenticated } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -337,7 +337,6 @@ router.put(
   isAuthenticated,
   catchAsyncErrors(async (req, res, next) => {
     try {
-      
       const user = await userModel.findById(req.user.id).select("+password");
       const isPasswordMatched = await user.comparePassword(
         req.body.oldPassword
@@ -368,12 +367,56 @@ router.get(
   "/user-info/:id",
   catchAsyncErrors(async (req, res, next) => {
     try {
-      const user = await userModel
-        .findById(req.params.id)
-    
+      const user = await userModel.findById(req.params.id);
+
       res.status(201).json({
         success: true,
         user,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
+// All users ---admin only (adminDashboardMain.jsx)
+
+router.get(
+  "/admin-all-users",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const users = await userModel.find().sort({
+        createdAt: -1,
+      });
+
+      res.status(201).json({
+        success: true,
+        users,
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+// delete user ---admin only (allUsers.jsx)
+
+router.delete(
+  "/delete-user/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const user = await userModel.findById(req.params.id);
+      if(!user){
+        return next(errorHandler(400, "User not found"));
+      }
+      await userModel.findByIdAndDelete(req.params.id);
+
+      res.status(201).json({
+        success: true,
+        message: "User deleted successfully",
       });
     } catch (error) {
       return next(errorHandler(500, error.message));

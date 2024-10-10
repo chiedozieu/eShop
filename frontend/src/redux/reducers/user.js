@@ -3,6 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: null,
+  users: [],
 };
 
 export const userReducer = createReducer(initialState, (builder) => {
@@ -35,19 +36,18 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.error = action.payload;
     })
 
-
-    // Update user addresses 
+    // Update user addresses
 
     .addCase("updateUserAddressRequest", (state) => {
       state.addressLoading = true;
     })
     .addCase("updateUserAddressSuccess", (state, action) => {
-      state.addressLoading = false; 
-      state.successMessage = action.payload.successMessage
+      state.addressLoading = false;
+      state.successMessage = action.payload.successMessage;
       state.user = action.payload.user;
     })
     .addCase("updateUserAddressFailure", (state, action) => {
-      state.addressLoading  = false;
+      state.addressLoading = false;
       state.error = action.payload;
     })
 
@@ -58,15 +58,27 @@ export const userReducer = createReducer(initialState, (builder) => {
     })
     .addCase("deleteUserAddressSuccess", (state, action) => {
       state.addressLoading = false;
-      state.successMessage = action.payload.successMessage
+      state.successMessage = action.payload.successMessage;
       state.user = action.payload.user;
-    })  
+    })
     .addCase("deleteUserAddressFailure", (state, action) => {
-      state.addressLoading  = false; 
+      state.addressLoading = false;
       state.error = action.payload;
     })
 
+    // get all users admin only
 
+    .addCase("getAllUsersRequest", (state) => {
+      state.usersLoading = true;
+    })
+    .addCase("getAllUsersSuccess", (state, action) => {
+      state.usersLoading = false;
+      state.users = action.payload;
+    })
+    .addCase("getAllUsersFailure", (state, action) => {
+      state.usersLoading = false;
+      state.error = action.payload;
+    })
 
     .addCase("clearErrors", (state) => {
       state.error = null;

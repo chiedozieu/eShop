@@ -14,10 +14,8 @@ const AdminDashboardMain = () => {
 
   useEffect(() => {
     dispatch(getAllSellers());
-  }, []);
+  }, [dispatch]);
 
-
-console.log('sellers', sellers)
   return (
     <div className="w-full p-4 ">
       <h1 className="text-[22px] text-[#393939] font-Poppins pb-2">Overview</h1>

@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { TbEyeCheck } from "react-icons/tb";
 import { TbEyeClosed } from "react-icons/tb";
 import styles from "../styles/style.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RxAvatar } from "react-icons/rx";
 import axios from "axios";
 import { server } from "../server.js";
 import { toast } from "react-toastify";
 
 const SignUp = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -36,10 +36,11 @@ const SignUp = () => {
       .post(`${server}/user/create-user`, newForm, config)
       .then((res) => {
         toast.success(res.data.message);
-        setName("");
-        setEmail("");
-        setPassword("");
-        setAvatar();
+        navigate("/login");
+        // setName("");
+        // setEmail("");
+        // setPassword("");
+        // setAvatar();
       })
       .catch((error) => {
         toast.error(error.response.data.message);

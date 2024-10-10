@@ -155,6 +155,32 @@ export const deleteUserAddress = (id) => {
   };
 };
 
+
+// get all users ---admin only
+
+export const getAllUsers = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: "getAllUsersRequest",
+      });
+      const { data } = await axios.get(`${server}/user/admin-all-users`, {
+        withCredentials: true,
+      });
+      dispatch({
+        type: "getAllUsersSuccess",
+        payload: data.users,
+      });
+    } catch (error) {
+      dispatch({
+        type: "getAllUsersFailure",
+        payload: error.response.data.message,
+      });
+    }
+  };
+};
+
+
 export const clearErrors = () => {
   return { type: "clearErrors" };
 };

@@ -11,7 +11,6 @@ import { backend_url } from "../../../server";
 const AdminHeader = () => {
   const user = useSelector((state) => state.user);
 
-  console.log("user", user);
   return (
     <div className="w-full bg-white h-[80px] sticky top-0 left-0 z-30 flex  items-center justify-between px-4">
       <div className="logo px-4">

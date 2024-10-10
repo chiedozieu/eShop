@@ -16,8 +16,8 @@ const productSchema = new mongoose.Schema({
   tags: {
     type: String,
   },
-  originalPrice: {
-    type: Number,
+  location: {
+    type: String,
   },
 
   discountPrice: {
@@ -30,22 +30,23 @@ const productSchema = new mongoose.Schema({
   },
   images: [
     {
-        type: String,
-        required: [true, "Please upload image"],
-    }
+      type: String,
+      required: [true, "Please upload image"],
+    },
   ],
+
   shopId: {
     type: String,
-    required: true, 
+    required: true,
   },
   shop: {
     type: Object,
-    required: true, 
+    required: true,
   },
   createdAt: {
     type: Date,
-    default: Date.now()
-  }
+    default: Date.now(),
+  },
 });
 
 const productModel = mongoose.model("Product", productSchema);

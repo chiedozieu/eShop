@@ -394,4 +394,28 @@ router.get(
   })
 );
 
+// delete seller ---admin only (AllSellers.jsx)
+
+router.delete(
+  "/delete-seller/:id",
+  isAuthenticated,
+  isAdmin("admin"),
+  catchAsyncErrors(async (req, res, next) => {
+    try {
+      const seller = await shopModel.findById(req.params.id);
+      if(!seller){
+        return next(errorHandler(400, "Seller not found"));
+      }
+      await shopModel.findByIdAndDelete(req.params.id);
+
+      res.status(201).json({
+        success: true,
+        message: "Seller deleted successfully",
+      });
+    } catch (error) {
+      return next(errorHandler(500, error.message));
+    }
+  })
+);
+
 export default router;

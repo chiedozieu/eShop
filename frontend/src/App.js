@@ -34,7 +34,11 @@ import {
   ShopSettingsPage,
   ShopInboxPage,
 } from "./Routes/shopRoutes.js";
-import { AdminDashboardPage } from "./Routes/AdminRoutes";
+import {
+  AdminDashboardPage,
+  AdminDashboardUsersPage,
+  AdminDashboardSellersPage,
+} from "./Routes/AdminRoutes";
 import { getAllProducts } from "./redux/actions/product.js";
 import { getAllEvents } from "./redux/actions/event.js";
 import AdminProtectedRoute from "./Routes/AdminProtectedRoute.js";
@@ -172,6 +176,24 @@ const App = () => {
           element={
             <AdminProtectedRoute>
               <AdminDashboardPage />
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-users"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardUsersPage />
+            </AdminProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-sellers"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboardSellersPage />
             </AdminProtectedRoute>
           }
         />

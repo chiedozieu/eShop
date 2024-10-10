@@ -8,7 +8,7 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    return next(errorHandler(401, "Please login to continue"));
+    return next(errorHandler(401, "You are not authenticated! Please login to access this resource"));
   }
 
   try {
@@ -27,7 +27,7 @@ export const isSeller = catchAsyncErrors(async (req, res, next) => {
   const { seller_token } = req.cookies;
 
   if (!seller_token) {
-    return next(errorHandler(401, "Please login to continue"));
+    return next(errorHandler(401, "Please login in to you shop account"));
   }
 
   try {

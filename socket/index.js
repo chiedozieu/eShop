@@ -51,7 +51,7 @@ const createMessage = ({ senderId, receiverId, text, images }) => ({
 
 // Event handling for socket connections
 io.on("connection", (socket) => {
-  console.log("user connected");
+  console.log("user connected ✅");
 
   // Take userId and socketId from user
   socket.on("addUser", (userId) => {
@@ -150,7 +150,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("user disconnected");
+    console.log("user disconnected ❌");
     removeUser(socket.id);
     io.emit("getUsers", users);
   });

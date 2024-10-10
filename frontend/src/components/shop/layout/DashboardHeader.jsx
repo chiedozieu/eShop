@@ -14,7 +14,7 @@ const DashboardHeader = () => {
   return (
     <div className="w-full bg-white h-[80px] sticky top-0 left-0 z-30 flex  items-center justify-between px-4">
       <div className="logo px-4">
-        <Link to="/dashboard" className="flex relative">
+        <Link to="/" className="flex relative">
           <div className="bg-black rounded-full absolute p-1 -top-2 -left-4">
             <CiShop size={20} className="text-[#ffbb38]" />
           </div>
